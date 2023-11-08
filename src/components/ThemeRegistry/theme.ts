@@ -10,20 +10,27 @@ const roboto = Roboto({
 const theme = createTheme({
   palette: {
     mode: 'light',
+    primary: {
+      main: '#004798',
+    },
+    secondary: {
+      main: '#009398',
+    },
+    error: {
+      main: '#980047',
+    },
+    warning: {
+      main: '#985100',
+    },
+    info: {
+      main: '#00b8c3',
+    },
+    success: {
+      main: '#065c58',
+    },
   },
   typography: {
     fontFamily: roboto.style.fontFamily,
-  },
-  components: {
-    MuiAlert: {
-      styleOverrides: {
-        root: ({ ownerState }) => ({
-          ...(ownerState.severity === 'info' && {
-            backgroundColor: '#60a5fa',
-          }),
-        }),
-      },
-    },
   },
 });
 
