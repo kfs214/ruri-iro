@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/react';
+import { AppProvider } from '../src/providers/app';
+import React from 'react';
 
 const preview: Preview = {
   parameters: {
@@ -9,7 +11,15 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    layout: 'fullscreen',
   },
+  decorators: [
+    (Story) => (
+      <AppProvider>
+        <Story />
+      </AppProvider>
+    ),
+  ],
 };
 
 export default preview;
