@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry';
 import { AppBar } from '@/features/AppBar';
+import { AppProvider } from '@/providers/app';
 
 export default function RootLayout({
   children,
@@ -9,9 +9,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body>
-        <ThemeRegistry>
+        <AppProvider>
           <AppBar />
           <Box
             component="main"
@@ -24,7 +24,7 @@ export default function RootLayout({
           >
             {children}
           </Box>
-        </ThemeRegistry>
+        </AppProvider>
       </body>
     </html>
   );
