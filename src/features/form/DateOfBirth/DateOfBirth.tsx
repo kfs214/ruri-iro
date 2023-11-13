@@ -17,19 +17,21 @@ type DayjsDOBProps = {
 };
 
 export type DateOfBirthProps = {
+  label: string;
   isCustomDOBEnabled: boolean;
   handleChangeIsCustomDOBEnabled: (e: ChangeEvent<HTMLInputElement>) => void;
   customDOB: CustomDOBProps;
   dayjsDOB: DayjsDOBProps;
 };
 
-export function DateOfBirth(params: DateOfBirthProps) {
+export function DateOfBirth(props: DateOfBirthProps) {
   const {
+    label,
     isCustomDOBEnabled,
     handleChangeIsCustomDOBEnabled,
     customDOB,
     dayjsDOB,
-  } = params;
+  } = props;
 
   return (
     <>
@@ -47,7 +49,7 @@ export function DateOfBirth(params: DateOfBirthProps) {
 
       {isCustomDOBEnabled && (
         <TextField
-          label="お誕生日"
+          label={label}
           variant="outlined"
           margin="normal"
           value={customDOB.value}
@@ -57,7 +59,7 @@ export function DateOfBirth(params: DateOfBirthProps) {
       )}
       {!isCustomDOBEnabled && (
         <DatePicker
-          label="お誕生日"
+          label={label}
           value={dayjsDOB.value}
           onChange={dayjsDOB.onChange}
           slotProps={{
