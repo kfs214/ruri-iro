@@ -35,18 +35,6 @@ export function DateOfBirth(props: DateOfBirthProps) {
 
   return (
     <>
-      <Box>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={isCustomDOBEnabled}
-              onChange={handleChangeIsCustomDOBEnabled}
-            />
-          }
-          label="お誕生日を自由記述で設定する"
-        />
-      </Box>
-
       {isCustomDOBEnabled && (
         <TextField
           label={label}
@@ -70,6 +58,17 @@ export function DateOfBirth(props: DateOfBirthProps) {
           }}
         />
       )}
+      <Box>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isCustomDOBEnabled}
+              onChange={handleChangeIsCustomDOBEnabled}
+            />
+          }
+          label="お誕生日を自由記述で設定する"
+        />
+      </Box>
     </>
   );
 }
