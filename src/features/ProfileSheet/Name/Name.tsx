@@ -1,13 +1,14 @@
 import Typography from '@mui/material/Typography';
 import React, { ReactNode } from 'react';
+import { useNameStore } from '@/store';
+
+type StyledNameProps = {
+  children: ReactNode;
+};
 
 type Props = {
   fullName: string;
   preferredName?: string;
-};
-
-type StyledNameProps = {
-  children: ReactNode;
 };
 
 function StyledName({ children }: StyledNameProps) {
@@ -18,11 +19,17 @@ function StyledName({ children }: StyledNameProps) {
   );
 }
 
-export function Name({ fullName, preferredName }: Props) {
+export function NameDOMComponent({ fullName, preferredName }: Props) {
   return (
     <>
       <StyledName>{fullName}</StyledName>
       {preferredName && <StyledName>({preferredName})</StyledName>}
     </>
   );
+}
+
+export function Name() {
+  const { fullName, preferredName } = useNameStore();
+
+  return <NameDOMComponent fullName={fullName} preferredName={preferredName} />;
 }
