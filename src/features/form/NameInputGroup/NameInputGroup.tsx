@@ -1,6 +1,9 @@
+'use client';
+
 import TextField from '@mui/material/TextField';
 import React, { ChangeEvent } from 'react';
-import { QuestionsGroupWrapper } from '@/features/form/QuestionsGroupWrapper';
+import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
+import { useNameStore } from '@/store';
 
 type NameInputGroupProps = {
   fullName: {
@@ -13,7 +16,7 @@ type NameInputGroupProps = {
   };
 };
 
-export function NameInputGroup({
+export function NameInputGroupDOMComponent({
   fullName,
   preferredName,
 }: NameInputGroupProps) {
@@ -37,5 +40,20 @@ export function NameInputGroup({
         {...preferredName}
       />
     </QuestionsGroupWrapper>
+  );
+}
+
+export function NameInputGroup() {
+  const { fullName, onChangeFullName, preferredName, onChangePreferredName } =
+    useNameStore();
+
+  return (
+    <NameInputGroupDOMComponent
+      fullName={{ value: fullName, onChange: onChangeFullName }}
+      preferredName={{
+        value: preferredName,
+        onChange: onChangePreferredName,
+      }}
+    />
   );
 }

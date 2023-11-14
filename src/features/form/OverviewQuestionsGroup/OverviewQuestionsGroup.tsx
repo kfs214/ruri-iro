@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import React, { ChangeEvent } from 'react';
 import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
-import { QuestionsGroupWrapper } from '@/features/form/QuestionsGroupWrapper';
+import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
 
 type OverviewQuestionsGroupProps = {
   dateOfBirth: DateOfBirthProps;
