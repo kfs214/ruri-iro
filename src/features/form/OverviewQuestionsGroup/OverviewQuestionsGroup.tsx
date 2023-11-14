@@ -2,6 +2,7 @@ import TextField from '@mui/material/TextField';
 import React, { ChangeEvent } from 'react';
 import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
+import { useOverviewStore } from '@/store';
 
 type OverviewQuestionsGroupProps = {
   dateOfBirth: DateOfBirthProps;
@@ -15,7 +16,7 @@ type OverviewQuestionsGroupProps = {
   };
 };
 
-export function OverviewQuestionsGroup({
+export function OverviewQuestionsGroupDOMComponent({
   dateOfBirth,
   occupation,
   location,
@@ -38,5 +39,34 @@ export function OverviewQuestionsGroup({
         {...location}
       />
     </QuestionsGroupWrapper>
+  );
+}
+
+export function OverviewQuestionsGroup() {
+  const {
+    isCustomDOBEnabled,
+    handleChangeIsCustomDOBEnabled,
+    customDOB,
+    handleOnChangeCustomDOB,
+    dayjsDOB,
+    handleOnChangeDayjsDOB,
+    occupation,
+    onChangeOccupation,
+    location,
+    onChangeLocation,
+  } = useOverviewStore();
+
+  return (
+    <OverviewQuestionsGroupDOMComponent
+      dateOfBirth={{
+        label: 'お誕生日',
+        isCustomDOBEnabled,
+        handleChangeIsCustomDOBEnabled,
+        customDOB: { value: customDOB, onChange: handleOnChangeCustomDOB },
+        dayjsDOB: { value: dayjsDOB, onChange: handleOnChangeDayjsDOB },
+      }}
+      occupation={{ value: occupation, onChange: onChangeOccupation }}
+      location={{ value: location, onChange: onChangeLocation }}
+    />
   );
 }
