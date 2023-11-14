@@ -38,6 +38,7 @@ function Item({ icon, children }: ItemProps) {
   return (
     <Box sx={{ display: 'flex' }}>
       {icon}
+      {/* TODO Typography当てる */}
       {children}
     </Box>
   );
@@ -47,6 +48,7 @@ export function Overview({ dateOfBirth, occupation, location }: OverviewProps) {
   const shownDOB = formatDOB(dateOfBirth);
 
   return (
+    // TODO 古いブラウザに対応。flex-gap使わない実装
     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
       {shownDOB && <Item icon={<CakeIcon />}>{shownDOB}</Item>}
       {occupation && <Item icon={<VillaIcon />}>{occupation}</Item>}
