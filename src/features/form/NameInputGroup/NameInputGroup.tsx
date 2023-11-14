@@ -4,7 +4,7 @@ import { QuestionsGroupWrapper } from '@/features/form/QuestionsGroupWrapper';
 
 type NameInputGroupProps = {
   fullName: {
-    value?: string;
+    value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   };
   preferredName: {
@@ -17,13 +17,16 @@ export function NameInputGroup({
   fullName,
   preferredName,
 }: NameInputGroupProps) {
+  // TODO お名前が空欄のときの振る舞い
   return (
     <QuestionsGroupWrapper groupName="お名前">
       <TextField
         label="お名前"
         variant="outlined"
         fullWidth
+        required
         margin="normal"
+        // error={!fullName.value}
         {...fullName}
       />
       <TextField
