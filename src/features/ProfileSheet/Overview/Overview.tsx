@@ -4,6 +4,7 @@ import VillaIcon from '@mui/icons-material/Villa';
 import Box from '@mui/material/Box';
 import { Dayjs } from 'dayjs';
 import React, { ReactNode } from 'react';
+import { useOverviewStore } from '@/store';
 
 type DOB = {
   isCustomDOBEnabled: boolean;
@@ -44,7 +45,11 @@ function Item({ icon, children }: ItemProps) {
   );
 }
 
-export function Overview({ dateOfBirth, occupation, location }: OverviewProps) {
+export function OverviewDOMComponent({
+  dateOfBirth,
+  occupation,
+  location,
+}: OverviewProps) {
   const shownDOB = formatDOB(dateOfBirth);
 
   return (
@@ -54,5 +59,18 @@ export function Overview({ dateOfBirth, occupation, location }: OverviewProps) {
       {occupation && <Item icon={<VillaIcon />}>{occupation}</Item>}
       {location && <Item icon={<PlaceIcon />}>{location}</Item>}
     </Box>
+  );
+}
+
+export function Overview() {
+  const { isCustomDOBEnabled, customDOB, dayjsDOB, occupation, location } =
+    useOverviewStore();
+
+  return (
+    <OverviewDOMComponent
+      dateOfBirth={{ isCustomDOBEnabled, customDOB, dayjsDOB }}
+      occupation={occupation}
+      location={location}
+    />
   );
 }
