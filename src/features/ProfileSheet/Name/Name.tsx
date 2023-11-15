@@ -1,5 +1,7 @@
-import Typography from '@mui/material/Typography';
 import React, { ReactNode } from 'react';
+
+import Typography from '@mui/material/Typography';
+
 import { useNameStore } from '@/store';
 
 type StyledNameProps = {

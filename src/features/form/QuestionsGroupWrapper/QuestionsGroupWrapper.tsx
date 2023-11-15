@@ -1,6 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React, { ReactNode } from 'react';
 
 type Props = {
   groupName: string;

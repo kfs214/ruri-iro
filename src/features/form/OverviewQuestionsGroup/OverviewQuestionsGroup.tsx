@@ -1,8 +1,11 @@
-import TextField from '@mui/material/TextField';
 import React, { ChangeEvent } from 'react';
-import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
+
+import TextField from '@mui/material/TextField';
+
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
 import { useOverviewStore } from '@/store';
+
+import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
 
 type OverviewQuestionsGroupProps = {
   dateOfBirth: DateOfBirthProps;

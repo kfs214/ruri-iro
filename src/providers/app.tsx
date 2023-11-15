@@ -3,6 +3,7 @@
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/ja';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 import ThemeRegistry from '@/providers/ThemeRegistry/ThemeRegistry';
 
 type AppProviderProps = {

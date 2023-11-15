@@ -1,10 +1,11 @@
+import React, { ChangeEvent } from 'react';
+
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
-import React, { ChangeEvent } from 'react';
 
 type CustomDOBProps = {
   value: string;

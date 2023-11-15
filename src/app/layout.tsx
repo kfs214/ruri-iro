@@ -1,5 +1,7 @@
-import Box from '@mui/material/Box';
 import * as React from 'react';
+
+import Box from '@mui/material/Box';
+
 import { AppBar } from '@/features/AppBar';
 import { AppProvider } from '@/providers/app';
 
