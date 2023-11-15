@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 import { OverviewDOMComponent } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -17,21 +15,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const DayjsDOB: Story = {
+export const Sample: Story = {
   args: {
-    dateOfBirth: { isCustomDOBEnabled: false, dayjsDOB: dayjs() },
-    occupation: 'エンジニア',
-    location: '門前仲町',
-  },
-};
-
-export const CustomDOB: Story = {
-  args: {
-    dateOfBirth: {
-      isCustomDOBEnabled: true,
-      dayjsDOB: null,
-      customDOB: '5/14',
-    },
+    shownDOB: '95年',
     occupation: 'エンジニア',
     location: '門前仲町',
   },

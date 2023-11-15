@@ -4,15 +4,8 @@ import CakeIcon from '@mui/icons-material/Cake';
 import PlaceIcon from '@mui/icons-material/Place';
 import VillaIcon from '@mui/icons-material/Villa';
 import Box from '@mui/material/Box';
-import { Dayjs } from 'dayjs';
 
 import { useOverviewStore } from '@/store';
-
-type DOB = {
-  isCustomDOBEnabled: boolean;
-  customDOB?: string;
-  dayjsDOB: Dayjs | null;
-};
 
 type ItemProps = {
   icon: ReactNode;
@@ -20,22 +13,10 @@ type ItemProps = {
 };
 
 type OverviewProps = {
-  dateOfBirth: DOB;
+  shownDOB: string;
   occupation?: string;
   location?: string;
 };
-
-function formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB }: DOB) {
-  if (isCustomDOBEnabled && customDOB) {
-    return customDOB;
-  }
-
-  if (!isCustomDOBEnabled && dayjsDOB) {
-    return dayjsDOB.format('YYYY-MM-DD');
-  }
-
-  return '';
-}
 
 function Item({ icon, children }: ItemProps) {
   return (
@@ -48,12 +29,10 @@ function Item({ icon, children }: ItemProps) {
 }
 
 export function OverviewDOMComponent({
-  dateOfBirth,
+  shownDOB,
   occupation,
   location,
 }: OverviewProps) {
-  const shownDOB = formatDOB(dateOfBirth);
-
   return (
     // TODO 古いブラウザに対応。flex-gap使わない実装
     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -65,12 +44,11 @@ export function OverviewDOMComponent({
 }
 
 export function Overview() {
-  const { isCustomDOBEnabled, customDOB, dayjsDOB, occupation, location } =
-    useOverviewStore();
+  const { shownDOB, occupation, location } = useOverviewStore();
 
   return (
     <OverviewDOMComponent
-      dateOfBirth={{ isCustomDOBEnabled, customDOB, dayjsDOB }}
+      shownDOB={shownDOB}
       occupation={occupation}
       location={location}
     />

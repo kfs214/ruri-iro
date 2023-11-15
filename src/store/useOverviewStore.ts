@@ -4,28 +4,59 @@ import { Dayjs } from 'dayjs';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export type OverviewState = {
+type DOBEditing = {
   isCustomDOBEnabled: boolean;
-  handleChangeIsCustomDOBEnabled: (e: ChangeEvent<HTMLInputElement>) => void;
   customDOB: string;
-  handleOnChangeCustomDOB: (e: ChangeEvent<HTMLInputElement>) => void;
   dayjsDOB: Dayjs | null;
-  handleOnChangeDayjsDOB: (newValue: Dayjs | null) => void;
-  occupation?: string;
-  onChangeOccupation: (e: ChangeEvent<HTMLInputElement>) => void;
-  location?: string;
-  onChangeLocation: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
+export type OverviewState = {
+  shownDOB: string;
+  occupation?: string;
+  location?: string;
+  handleChangeIsCustomDOBEnabled: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleOnChangeCustomDOB: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleOnChangeDayjsDOB: (newValue: Dayjs | null) => void;
+  onChangeOccupation: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeLocation: (e: ChangeEvent<HTMLInputElement>) => void;
+} & DOBEditing;
+
+function formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB }: DOBEditing) {
+  if (isCustomDOBEnabled && customDOB) {
+    return customDOB;
+  }
+
+  if (!isCustomDOBEnabled && dayjsDOB) {
+    return dayjsDOB.format('YYYY-MM-DD');
+  }
+
+  return '';
+}
+
 export const useOverviewStore = create<OverviewState>()(
-  devtools((set) => ({
+  devtools((set, get) => ({
     isCustomDOBEnabled: false,
-    handleChangeIsCustomDOBEnabled: (e) =>
-      set({ isCustomDOBEnabled: e.target.checked }),
     customDOB: '',
-    handleOnChangeCustomDOB: (e) => set({ occupation: e.target.value }),
     dayjsDOB: null,
-    handleOnChangeDayjsDOB: (newValue) => set({ dayjsDOB: newValue }),
+    shownDOB: '',
+    handleChangeIsCustomDOBEnabled: (e) => {
+      set({ isCustomDOBEnabled: e.target.checked });
+      const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
+      const shownDOB = formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB });
+      set({ shownDOB });
+    },
+    handleOnChangeCustomDOB: (e) => {
+      set({ customDOB: e.target.value });
+      const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
+      const shownDOB = formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB });
+      set({ shownDOB });
+    },
+    handleOnChangeDayjsDOB: (newValue) => {
+      set({ dayjsDOB: newValue });
+      const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
+      const shownDOB = formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB });
+      set({ shownDOB });
+    },
     onChangeOccupation: (e) => set({ occupation: e.target.value }),
     onChangeLocation: (e) => set({ location: e.target.value }),
   })),
