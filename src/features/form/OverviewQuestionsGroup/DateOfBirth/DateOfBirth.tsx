@@ -40,7 +40,6 @@ export function DateOfBirth(props: DateOfBirthProps) {
         <TextField
           label={label}
           variant="outlined"
-          margin="normal"
           value={customDOB.value}
           onChange={customDOB.onChange}
           fullWidth
@@ -54,7 +53,6 @@ export function DateOfBirth(props: DateOfBirthProps) {
           slotProps={{
             textField: {
               fullWidth: true,
-              margin: 'normal',
             },
           }}
         />

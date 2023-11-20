@@ -40,6 +40,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
   const handleShare = useCallback(async () => {
     const file = await base64toFile(base64url);
 
+    // TODO AbortError: Abort due to cancellation of share.
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator
         .share({
