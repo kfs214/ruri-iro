@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 
 import CakeIcon from '@mui/icons-material/Cake';
