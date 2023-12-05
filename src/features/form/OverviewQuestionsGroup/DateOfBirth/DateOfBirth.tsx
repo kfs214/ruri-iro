@@ -36,7 +36,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
 
   // TODO 余白の調整
   return (
-    <>
+    <Box>
       {isCustomDOBEnabled && (
         <TextField
           label={label}
@@ -69,6 +69,6 @@ export function DateOfBirth(props: DateOfBirthProps) {
           label="お誕生日を自由記述で設定する"
         />
       </Box>
-    </>
+    </Box>
   );
 }

@@ -14,7 +14,9 @@ export function QuestionsGroupWrapper({ groupName, children }: Props) {
       <Typography variant="h4" component="h2">
         {groupName}
       </Typography>
-      <Box>{children}</Box>
+      <Box display="grid" gap={2} mt={2}>
+        {children}
+      </Box>
     </Box>
   );
 }

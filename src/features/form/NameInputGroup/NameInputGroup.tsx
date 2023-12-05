@@ -30,7 +30,6 @@ export function NameInputGroupDOMComponent({
         variant="outlined"
         fullWidth
         required
-        margin="normal"
         // error={!fullName.value}
         {...fullName}
       />
@@ -38,7 +37,6 @@ export function NameInputGroupDOMComponent({
         label="なんて呼ばれてる？？"
         variant="outlined"
         fullWidth
-        margin="normal"
         {...preferredName}
       />
     </QuestionsGroupWrapper>

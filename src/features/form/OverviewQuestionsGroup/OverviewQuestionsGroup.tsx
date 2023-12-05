@@ -33,14 +33,12 @@ export function OverviewQuestionsGroupDOMComponent({
         label="何してる人？？"
         variant="outlined"
         fullWidth
-        margin="normal"
         {...occupation}
       />
       <TextField
         label="どこの人？？"
         variant="outlined"
         fullWidth
-        margin="normal"
         {...location}
       />
     </QuestionsGroupWrapper>

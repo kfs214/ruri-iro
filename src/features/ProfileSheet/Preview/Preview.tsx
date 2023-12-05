@@ -16,8 +16,10 @@ type Props = {
 export function Preview({ children }: Props) {
   const previewRef = useRef<HTMLDivElement>(null);
   const { base64url, handleShare } = usePreview(previewRef);
+
   return (
-    <Box sx={{ py: 2 }}>
+    <Box>
+      {/* TODO シェアボタンをアイコンに */}
       <Box>
         <Button onClick={handleShare} variant="outlined">
           Share
@@ -26,6 +28,7 @@ export function Preview({ children }: Props) {
 
       <Box position="relative" sx={{ mt: 2 }}>
         <Box sx={{ width: 320 }}>
+          {/* TODO プレビューのレイアウト */}
           <Card ref={previewRef}>
             <Box display="flex" justifyContent="center" alignItems="center">
               <CardContent>{children}</CardContent>
