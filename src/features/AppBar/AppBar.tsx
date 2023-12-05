@@ -10,10 +10,30 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
 import { metadata } from '@/const';
+import { useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
-export function AppBar() {
+function TogglePreviewSwitch() {
   const { showPreview, setShowPreview } = useAppStore();
+
+  return (
+    <FormControlLabel
+      control={
+        //  TODO 色が溶けるので修正
+        <Switch
+          checked={showPreview}
+          onChange={setShowPreview}
+          inputProps={{ 'aria-label': 'toggle-preview-switch' }}
+        />
+      }
+      label="👀"
+    />
+  );
+}
+
+export function AppBar() {
+  const { isPC } = useLayout();
+
   return (
     <MUIAppBar position="fixed" sx={{ zIndex: 2000 }}>
       <Toolbar>
@@ -27,17 +47,7 @@ export function AppBar() {
         >
           {metadata.title}
         </Typography>
-        <FormControlLabel
-          control={
-            //  TODO 色が溶けるので修正
-            <Switch
-              checked={showPreview}
-              onChange={setShowPreview}
-              inputProps={{ 'aria-label': 'controlled' }}
-            />
-          }
-          label="👀"
-        />
+        {!isPC && <TogglePreviewSwitch />}
       </Toolbar>
     </MUIAppBar>
   );
