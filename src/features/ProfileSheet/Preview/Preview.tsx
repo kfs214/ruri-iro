@@ -28,10 +28,13 @@ export function Preview({ children }: Props) {
 
       <Box position="relative" sx={{ mt: 2 }}>
         <Box sx={{ width: 320 }}>
-          {/* TODO プレビューのレイアウト */}
           <Card ref={previewRef}>
             <Box display="flex" justifyContent="center" alignItems="center">
-              <CardContent>{children}</CardContent>
+              <CardContent>
+                <Box display="grid" gap={1}>
+                  {children}
+                </Box>
+              </CardContent>
             </Box>
           </Card>
         </Box>

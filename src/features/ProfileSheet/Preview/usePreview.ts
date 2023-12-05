@@ -47,7 +47,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
           ...imageOptions.share,
           files: [file],
         })
-        .catch();
+        .catch(() => {});
     } else {
       saveImage(base64url);
     }

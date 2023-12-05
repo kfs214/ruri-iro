@@ -6,6 +6,7 @@ import CakeIcon from '@mui/icons-material/Cake';
 import PlaceIcon from '@mui/icons-material/Place';
 import VillaIcon from '@mui/icons-material/Villa';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import { useOverviewStore } from '@/store';
 
@@ -24,12 +25,14 @@ function Item({ icon, children }: ItemProps) {
   return (
     <Box sx={{ display: 'flex' }}>
       {icon}
-      {/* TODO Typography当てる */}
-      {children}
+      <Typography variant="subtitle1" component="span" align="center">
+        {children}
+      </Typography>
     </Box>
   );
 }
 
+// TODO 長さによって折り返し時にはみ出る
 export function OverviewDOMComponent({
   shownDOB,
   occupation,

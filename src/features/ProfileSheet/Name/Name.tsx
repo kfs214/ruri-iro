@@ -19,7 +19,7 @@ type Props = {
 
 function StyledName({ children }: StyledNameProps) {
   return (
-    <Typography variant="h3" component="p" align="center">
+    <Typography variant="h4" component="p" align="center">
       {children}
     </Typography>
   );
