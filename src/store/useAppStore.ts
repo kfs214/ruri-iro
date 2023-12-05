@@ -3,15 +3,19 @@ import { devtools } from 'zustand/middleware';
 
 type AppState = {
   showPreview: boolean;
-  toggleShowPreview: () => void;
+  setShowPreview: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean,
+  ) => void;
 };
 
 export const useAppStore = create<AppState>()(
   devtools((set) => ({
     showPreview: false,
-    toggleShowPreview: () =>
-      set(({ showPreview }) => ({
-        showPreview: !showPreview,
-      })),
+    setShowPreview: (e, checked) => {
+      set({
+        showPreview: checked,
+      });
+    },
   })),
 );

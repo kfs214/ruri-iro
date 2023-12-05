@@ -34,6 +34,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
     dayjsDOB,
   } = props;
 
+  // TODO 余白の調整
   return (
     <>
       {isCustomDOBEnabled && (
