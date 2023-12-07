@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Box from '@mui/material/Box';
@@ -49,7 +49,7 @@ const VisuallyHiddenInput = styled('input')({
 export function SelectImage({ buttonText, type }: Props) {
   const [imgSrc, setImgSrc] = useState('');
   const [crop, setCrop] = useState<Crop>();
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+  const imgRef = useRef<HTMLImageElement>(null);
   const { setCoverImage, setProfileImage } = useImageStore();
 
   // TODO プロフ画用の丸切り抜きに対応
@@ -86,6 +86,39 @@ export function SelectImage({ buttonText, type }: Props) {
     [aspect],
   );
 
+  const handleCompleteCrop = (pixelCrop: PixelCrop): void => {
+    if (!imgRef.current) throw new Error('No HTMLImageElement');
+    const img = imgRef.current;
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('No 2d context');
+
+    const scaleX = img.naturalWidth / img.width;
+    const scaleY = img.naturalHeight / img.height;
+    const pixelRatio = devicePixelRatio;
+
+    canvas.width = Math.floor(pixelCrop.width * scaleX * pixelRatio);
+    canvas.height = Math.floor(pixelCrop.height * scaleY * pixelRatio);
+
+    ctx.scale(pixelRatio, pixelRatio);
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(
+      img,
+      pixelCrop.x,
+      pixelCrop.y,
+      pixelCrop.width,
+      pixelCrop.height,
+      0,
+      0,
+      pixelCrop.width,
+      pixelCrop.height,
+    );
+
+    setter(canvas.toDataURL('image/jpeg'));
+  };
+
   return (
     <>
       <Box>
@@ -108,13 +141,13 @@ export function SelectImage({ buttonText, type }: Props) {
           <ReactCrop
             crop={crop}
             onChange={(_, percentCrop) => setCrop(percentCrop)}
-            onComplete={(c) => setCompletedCrop(c)}
+            onComplete={handleCompleteCrop}
             aspect={aspect}
           >
             {/* TODO 画像のサイズ制御 */}
             {/* TODO width/heightを動的に取得してImageコンポーネントを使う */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="Crop me" src={imgSrc} onLoad={onImageLoad} />
+            <img alt="Crop me" src={imgSrc} ref={imgRef} onLoad={onImageLoad} />
           </ReactCrop>
         </Box>
       )}
