@@ -20,12 +20,14 @@ export function MainVisual() {
       >
         {profileImage && (
           <>
-            <Box mr={1}>
+            {/* TODO Overviewが広がると画像が圧迫される */}
+            <Box mr={1} sx={{ borderRadius: '50%', overflow: 'hidden' }}>
               <Image
                 src={profileImage}
                 width={128}
                 height={128}
                 alt="プロフィール画像"
+                style={{ display: 'block' }}
               />
             </Box>
             <Box pt={coverImage && 11}>

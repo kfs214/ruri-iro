@@ -57,6 +57,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     if (ref.current) {
       toPng(ref.current, { cacheBust: true })
         .then(async (dataUrl) => {
+          // TODO 画像の生成不具合調査
           setBase64url(dataUrl);
         })
         .catch((error) => {
