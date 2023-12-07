@@ -1,5 +1,5 @@
-import { NameDOMComponent } from '../Name';
-import { OverviewDOMComponent } from '../Overview';
+import { NameDOMComponent } from '../MainVisual/Name';
+import { OverviewDOMComponent } from '../MainVisual/Overview';
 
 import { Preview } from '.';
 

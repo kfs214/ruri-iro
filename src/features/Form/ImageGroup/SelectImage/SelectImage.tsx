@@ -96,24 +96,23 @@ export function SelectImage({ buttonText, type }: Props) {
 
     const scaleX = img.naturalWidth / img.width;
     const scaleY = img.naturalHeight / img.height;
-    const pixelRatio = devicePixelRatio;
 
-    canvas.width = Math.floor(pixelCrop.width * scaleX * pixelRatio);
-    canvas.height = Math.floor(pixelCrop.height * scaleY * pixelRatio);
+    canvas.width = Math.floor(pixelCrop.width * scaleX * devicePixelRatio);
+    canvas.height = Math.floor(pixelCrop.height * scaleY * devicePixelRatio);
 
-    ctx.scale(pixelRatio, pixelRatio);
+    ctx.scale(devicePixelRatio, devicePixelRatio);
     ctx.imageSmoothingQuality = 'high';
 
     ctx.drawImage(
       img,
-      pixelCrop.x,
-      pixelCrop.y,
-      pixelCrop.width,
-      pixelCrop.height,
+      pixelCrop.x * scaleX,
+      pixelCrop.y * scaleY,
+      pixelCrop.width * scaleX,
+      pixelCrop.height * scaleY,
       0,
       0,
-      pixelCrop.width,
-      pixelCrop.height,
+      pixelCrop.width * scaleX,
+      pixelCrop.height * scaleY,
     );
 
     setter(canvas.toDataURL('image/jpeg'));

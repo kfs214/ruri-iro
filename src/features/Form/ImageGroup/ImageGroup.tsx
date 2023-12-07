@@ -7,6 +7,7 @@ import { SelectImage } from './SelectImage';
 
 export function ImageGroup() {
   return (
+    // TODO chromeにおいて選択範囲が干渉するので確認
     <QuestionsGroupWrapper groupName="画像を設定">
       <Box>
         <Typography variant="h5">プロフィール画像</Typography>
@@ -14,7 +15,7 @@ export function ImageGroup() {
           <SelectImage buttonText="画像を選択" type="profile" />
         </Box>
       </Box>
-      <Box mt={2}>
+      <Box>
         <Typography variant="h5">カバー画像</Typography>
         <Box mt={1}>
           <SelectImage buttonText="画像を選択" type="cover" />
