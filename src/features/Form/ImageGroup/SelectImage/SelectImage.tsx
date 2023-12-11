@@ -46,6 +46,8 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+// TODO スマホレイアウトのプレビューで一度アンマウントされると
+// 切り抜き作業中プレビューが消えるので永続化検討
 export function SelectImage({ buttonText, type }: Props) {
   const [imgSrc, setImgSrc] = useState('');
   const [crop, setCrop] = useState<Crop>();
@@ -139,7 +141,7 @@ export function SelectImage({ buttonText, type }: Props) {
           {/* TODO CSSが当たっておらずCrop時の見た目が期待値と異なるのでサンプルを見る */}
           <ReactCrop
             crop={crop}
-            onChange={(_, percentCrop) => setCrop(percentCrop)}
+            onChange={(pixelCrop) => setCrop(pixelCrop)}
             onComplete={handleCompleteCrop}
             aspect={aspect}
           >
