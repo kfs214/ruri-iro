@@ -2,45 +2,53 @@ import { RefObject, useCallback, useEffect, useState } from 'react';
 
 import { toPng } from 'html-to-image';
 
-import { useNameStore, useOverviewStore } from '@/store';
+import { useNameStore, useOverviewStore, useImageStore } from '@/store';
 
-// TODO 共有オプションを動的に生成
-const imageOptions = {
+type ImageOptions = {
   share: {
-    title: 'さんの自己紹介シート[ruri-iro]',
-    text: 'ruri-iroで自己紹介シートを作ろう！',
-  },
-  fileName: 'さんの自己紹介シート_ruri-iro.png',
+    title: string;
+    text: string;
+  };
+  fileName: string;
 };
 
 // eslint-disable-next-line consistent-return
-async function base64toFile(base64url: string) {
+async function base64toFile(base64url: string, options: ImageOptions) {
   try {
     const blob = await fetch(base64url).then((res) => res.blob());
-    return new File([blob], imageOptions.fileName, { type: blob.type });
+    return new File([blob], options.fileName, { type: blob.type });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
   }
 }
 
-function saveImage(dataUrl: string) {
+function saveImage(dataUrl: string, options: ImageOptions) {
   const link = document.createElement('a');
-  link.download = imageOptions.fileName;
+  link.download = options.fileName;
   link.href = dataUrl;
   link.click();
 }
 
 export function usePreview(ref: RefObject<HTMLDivElement>) {
+  // TODO 更新を検知するselector
   const { shownDOB, occupation, location } = useOverviewStore();
   const { fullName, preferredName } = useNameStore();
+  const { profileImage, coverImage } = useImageStore();
 
   const [base64url, setBase64url] = useState('');
 
   const handleShare = useCallback(async () => {
-    const file = await base64toFile(base64url);
+    const userName = preferredName || fullName;
+    const imageOptions = {
+      share: {
+        title: `${userName}さんの自己紹介シート[ruri-iro]`,
+        text: '自己紹介シートをシェアしよう！',
+      },
+      fileName: `${userName}さんの自己紹介シート_ruri-iro.png`,
+    };
 
-    // TODO AbortError: Abort due to cancellation of share.
+    const file = await base64toFile(base64url, imageOptions);
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator
         .share({
@@ -49,15 +57,15 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
         })
         .catch(() => {});
     } else {
-      saveImage(base64url);
+      saveImage(base64url, imageOptions);
     }
-  }, [base64url]);
+  }, [base64url, preferredName, fullName]);
 
+  // TODO 画像が更新されてもPreviewが再描画されない（Safari）
   useEffect(() => {
     if (ref.current) {
       toPng(ref.current, { cacheBust: true })
         .then(async (dataUrl) => {
-          // TODO 画像の生成不具合調査
           setBase64url(dataUrl);
         })
         .catch((error) => {
@@ -66,7 +74,15 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shownDOB, occupation, location, fullName, preferredName]);
+  }, [
+    shownDOB,
+    occupation,
+    location,
+    fullName,
+    preferredName,
+    profileImage,
+    coverImage,
+  ]);
 
   return { base64url, handleShare };
 }
