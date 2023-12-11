@@ -20,8 +20,14 @@ export function MainVisual() {
       >
         {profileImage && (
           <>
-            {/* TODO Overviewが広がると画像が圧迫される */}
-            <Box mr={1} sx={{ borderRadius: '50%', overflow: 'hidden' }}>
+            <Box
+              width={128}
+              height={128}
+              mr={1}
+              overflow="hidden"
+              borderRadius="50%"
+              flexShrink={0}
+            >
               <Image
                 src={profileImage}
                 width={128}
