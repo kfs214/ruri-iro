@@ -46,46 +46,75 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-// TODO スマホレイアウトのプレビューで一度アンマウントされると
-// 切り抜き作業中プレビューが消えるので永続化検討
 export function SelectImage({ buttonText, type }: Props) {
-  const [imgSrc, setImgSrc] = useState('');
-  const [crop, setCrop] = useState<Crop>();
-  const imgRef = useRef<HTMLImageElement>(null);
-  const { setCoverImage, setProfileImage } = useImageStore();
+  const {
+    profileImgSrc,
+    coverImgSrc,
+    profileCrop,
+    coverCrop,
+    setProfileImgSrc,
+    setCoverImgSrc,
+    setProfileCrop,
+    setCoverCrop,
+    setCoverImage,
+    setProfileImage,
+  } = useImageStore();
 
   // TODO プロフ画用の丸切り抜きに対応
   const setting = {
     cover: {
       aspect: 16 / 9,
-      setter: setCoverImage,
+      imgSrc: profileImgSrc,
+      completedCrop: profileCrop,
+      setImgSrc: setProfileImgSrc,
+      setCompletedCrop: setProfileCrop,
+      setImage: setCoverImage,
     },
     profile: {
       aspect: 1,
-      setter: setProfileImage,
+      imgSrc: coverImgSrc,
+      completedCrop: coverCrop,
+      setImgSrc: setCoverImgSrc,
+      setCompletedCrop: setCoverCrop,
+      setImage: setProfileImage,
     },
   } as const;
 
-  // TODO 切り抜きが更新されたらBase64にしてGlobalStateに保存
-  const { aspect, setter } = setting[type];
+  const {
+    aspect,
+    imgSrc,
+    completedCrop,
+    setImgSrc,
+    setCompletedCrop,
+    setImage,
+  } = setting[type];
+
+  const [crop, setCrop] = useState<Crop | undefined>(completedCrop);
+  const [isImgLoading, setIsImgLoading] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const onSelectFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
+    setIsImgLoading(true);
     setCrop(undefined); // Makes crop preview update between images.
     const reader = new FileReader();
     reader.addEventListener('load', () =>
       setImgSrc(reader.result?.toString() ?? ''),
     );
     reader.readAsDataURL(e.target.files[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onImageLoad = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
+      if (!isImgLoading) return;
+
       const { width, height } = e.currentTarget;
       setCrop(centerAspectCrop(width, height, aspect));
+      setIsImgLoading(false);
     },
-    [aspect],
+    [aspect, isImgLoading],
   );
 
   const handleCompleteCrop = (pixelCrop: PixelCrop): void => {
@@ -117,7 +146,8 @@ export function SelectImage({ buttonText, type }: Props) {
       pixelCrop.height * scaleY,
     );
 
-    setter(canvas.toDataURL('image/jpeg'));
+    setCompletedCrop(pixelCrop);
+    setImage(canvas.toDataURL('image/jpeg'));
   };
 
   return (

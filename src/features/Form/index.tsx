@@ -9,9 +9,9 @@ import { OverviewQuestionsGroup } from './OverviewQuestionsGroup';
 export function Form() {
   return (
     <Box display="grid" gap={3}>
+      <ImageGroup />
       <NameInputGroup />
       <OverviewQuestionsGroup />
-      <ImageGroup />
     </Box>
   );
 }
