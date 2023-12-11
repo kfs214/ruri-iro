@@ -25,5 +25,6 @@ export const Filled: Story = {
 export const OnlyName: Story = {
   args: {
     fullName: 'うしじまかずき',
+    preferredName: '',
   },
 };

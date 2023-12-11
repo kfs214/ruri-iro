@@ -17,8 +17,8 @@ type ItemProps = {
 
 type OverviewProps = {
   shownDOB: string;
-  occupation?: string;
-  location?: string;
+  occupation: string;
+  location: string;
 };
 
 function Item({ icon, children }: ItemProps) {

@@ -12,11 +12,11 @@ import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
 type OverviewQuestionsGroupProps = {
   dateOfBirth: DateOfBirthProps;
   occupation: {
-    value?: string;
+    value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   };
   location: {
-    value?: string;
+    value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   };
 };

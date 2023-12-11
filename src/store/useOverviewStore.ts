@@ -12,8 +12,8 @@ type DOBEditing = {
 
 export type OverviewState = {
   shownDOB: string;
-  occupation?: string;
-  location?: string;
+  occupation: string;
+  location: string;
   handleChangeIsCustomDOBEnabled: (e: ChangeEvent<HTMLInputElement>) => void;
   handleOnChangeCustomDOB: (e: ChangeEvent<HTMLInputElement>) => void;
   handleOnChangeDayjsDOB: (newValue: Dayjs | null) => void;
@@ -39,6 +39,8 @@ export const useOverviewStore = create<OverviewState>()(
     customDOB: '',
     dayjsDOB: null,
     shownDOB: '',
+    occupation: '',
+    location: '',
     handleChangeIsCustomDOBEnabled: (e) => {
       set({ isCustomDOBEnabled: e.target.checked });
       const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
