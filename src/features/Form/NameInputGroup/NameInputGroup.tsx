@@ -13,7 +13,7 @@ type NameInputGroupProps = {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   };
   preferredName: {
-    value?: string;
+    value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   };
 };

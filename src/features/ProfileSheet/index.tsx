@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { Name } from './Name';
-import { Overview } from './Overview';
+import { MainVisual } from './MainVisual';
 import { Preview } from './Preview';
 
 export function ProfileSheet() {
   return (
     <Preview>
-      <Name />
-      <Overview />
+      <MainVisual />
     </Preview>
   );
 }

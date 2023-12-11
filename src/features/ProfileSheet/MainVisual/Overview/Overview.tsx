@@ -17,15 +17,15 @@ type ItemProps = {
 
 type OverviewProps = {
   shownDOB: string;
-  occupation?: string;
-  location?: string;
+  occupation: string;
+  location: string;
 };
 
 function Item({ icon, children }: ItemProps) {
   return (
     <Box sx={{ display: 'flex' }}>
       {icon}
-      <Typography variant="subtitle1" component="span" align="center">
+      <Typography variant="subtitle1" component="span" align="left">
         {children}
       </Typography>
     </Box>
@@ -40,6 +40,7 @@ export function OverviewDOMComponent({
 }: OverviewProps) {
   return (
     // TODO 古いブラウザに対応。flex-gap使わない実装
+    // TODO 英字が連続した際の折り返し
     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
       {shownDOB && <Item icon={<CakeIcon />}>{shownDOB}</Item>}
       {occupation && <Item icon={<VillaIcon />}>{occupation}</Item>}

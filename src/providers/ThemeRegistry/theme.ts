@@ -32,6 +32,17 @@ const theme = createTheme({
   typography: {
     fontFamily: roboto.style.fontFamily,
   },
+  components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          h4: 'h2',
+          h5: 'h3',
+          h6: 'h4',
+        },
+      },
+    },
+  },
 });
 
 export default theme;
