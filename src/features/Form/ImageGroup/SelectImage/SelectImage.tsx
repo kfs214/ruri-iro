@@ -168,7 +168,6 @@ export function SelectImage({ buttonText, type }: Props) {
       </Box>
       {!!imgSrc && (
         <Box mt={1}>
-          {/* TODO CSSが当たっておらずCrop時の見た目が期待値と異なるのでサンプルを見る */}
           <ReactCrop
             crop={crop}
             onChange={(pixelCrop) => setCrop(pixelCrop)}

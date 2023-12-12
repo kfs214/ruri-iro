@@ -44,7 +44,7 @@ function Tags() {
   ));
 }
 
-// TODO 溶け込ます&&BackSpaceで最後の要素を消す
+// TODO BackSpaceで最後の要素を消す
 
 function TagForm() {
   const { tags, setTags } = useTagStore();
