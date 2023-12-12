@@ -40,7 +40,7 @@ export function Preview({ children }: Props) {
           <Box position="absolute" top={0} sx={{ height: '100%' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              style={{ display: 'block', width: 'auto', height: '100%' }}
+              style={{ display: 'block', width: '100%', height: '100%' }}
               src={base64url}
               alt="preview"
             />
