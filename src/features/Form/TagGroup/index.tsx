@@ -3,8 +3,9 @@ import { FormEvent, useCallback, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
-import { createTheme, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
+import { FlexUl } from '@/components';
 import { Tag, useTagStore } from '@/store/useTagStore';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
@@ -79,21 +80,12 @@ function TagForm() {
   );
 }
 
-const StyledUl = styled('ul')`
-  display: flex;
-  list-style: none;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 0;
-  gap: ${createTheme().spacing(1)};
-`;
-
 const StyledFormLi = styled('li')`
   min-width: 0;
   flex-grow: 1;
 `;
 
-export default function TagGroup() {
+export function TagGroup() {
   return (
     <QuestionsGroupWrapper groupName="あなたを表わすハッシュタグ">
       <Box
@@ -104,12 +96,12 @@ export default function TagGroup() {
           borderRadius: '4px',
         }}
       >
-        <StyledUl>
+        <FlexUl>
           <Tags />
           <StyledFormLi key="li">
             <TagForm />
           </StyledFormLi>
-        </StyledUl>
+        </FlexUl>
       </Box>
     </QuestionsGroupWrapper>
   );

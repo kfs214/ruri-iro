@@ -3,6 +3,7 @@ import { RefObject, useCallback, useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
 
 import { useNameStore, useOverviewStore, useImageStore } from '@/store';
+import { useTagStore } from '@/store/useTagStore';
 
 type ImageOptions = {
   share: {
@@ -35,6 +36,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
   const { shownDOB, occupation, location } = useOverviewStore();
   const { fullName, preferredName } = useNameStore();
   const { profileImage, coverImage } = useImageStore();
+  const { tags } = useTagStore();
 
   const [base64url, setBase64url] = useState('');
 
@@ -82,6 +84,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     preferredName,
     profileImage,
     coverImage,
+    tags,
   ]);
 
   return { base64url, handleShare };

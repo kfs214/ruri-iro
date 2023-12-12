@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { ImageGroup } from './ImageGroup';
 import { NameInputGroup } from './NameInputGroup';
 import { OverviewQuestionsGroup } from './OverviewQuestionsGroup';
-import TagGroup from './TagGroup';
+import { TagGroup } from './TagGroup';
 
 export function Form() {
   return (
