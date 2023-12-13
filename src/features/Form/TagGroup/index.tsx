@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
 import { FlexUl } from '@/components';
-import { Tag, useTagStore } from '@/store/useTagStore';
+import { Tag, useTagStore } from '@/store';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
 
@@ -45,7 +45,7 @@ function Tags() {
 }
 
 // TODO BackSpaceで最後の要素を消す
-
+// TODO divをクリックしたらinputにfocus
 function TagForm() {
   const { tags, setTags } = useTagStore();
   const textFieldRef = useRef<HTMLInputElement>(null);
