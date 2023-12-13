@@ -1,8 +1,15 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
+import { questions } from '@/const';
+
 type QuestionAnswerPair = {
   questionValue: string;
+  answer: string;
+};
+
+type ShownPair = {
+  questionLabel: string;
   answer: string;
 };
 
@@ -14,14 +21,15 @@ export type UpdateQuestionAnswerPair = (args: {
 type PersonalPerspectiveState = {
   questionAnswerPairs: QuestionAnswerPair[];
   updateQuestionAnswerPair: UpdateQuestionAnswerPair;
+  getShownPairs: () => ShownPair[];
 };
 
 export const usePersonalPerspectiveStore = create<PersonalPerspectiveState>()(
   devtools((set, get) => ({
     questionAnswerPairs: [
-      { questionValue: 'favoriteFood', answer: '' },
-      { questionValue: 'nonNegotiable', answer: '' },
-      { questionValue: 'favoritePlaceLived', answer: '' },
+      { questionValue: 'kinokoOrTakenoko', answer: '' },
+      { questionValue: 'futureDreams', answer: '' },
+      { questionValue: 'lifeChangingMoment', answer: '' },
     ],
     updateQuestionAnswerPair: ({ newPair, index }) => {
       const { questionAnswerPairs } = get();
@@ -29,6 +37,19 @@ export const usePersonalPerspectiveStore = create<PersonalPerspectiveState>()(
       newPairs[index] = newPair;
 
       set({ questionAnswerPairs: newPairs });
+    },
+    getShownPairs: () => {
+      const { questionAnswerPairs } = get();
+      return questionAnswerPairs
+        .filter(({ answer }) => answer)
+        .map(({ questionValue, answer }) => {
+          const { label } =
+            questions.find(({ value }) => value === questionValue) ?? {};
+          if (!label) return null;
+
+          return { questionLabel: label, answer };
+        })
+        .filter((e) => e) as ShownPair[];
     },
   })),
 );

@@ -8,7 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 
 import { questions } from '@/const';
-import { usePersonalPerspectiveStore } from '@/store/usePersonalPerspectiveStore';
+import { usePersonalPerspectiveStore } from '@/store';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
 
@@ -40,6 +40,7 @@ function QuestionAnswerPair({
     });
   };
 
+  // TODO 質問の枠線がラベルに重なる
   return (
     <Box display="grid" gap={2}>
       <FormControl fullWidth>
