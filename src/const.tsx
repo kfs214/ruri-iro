@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const metadata = {
   title: 'RUri-iro',
   description:
@@ -6,3 +5,27 @@ export const metadata = {
 };
 
 // TODO description読み込まれてなくない
+
+export const questions = [
+  { value: 'favoriteFood', label: '好きな食べ物' },
+  { value: 'nonNegotiable', label: 'これだけは譲れない' },
+  { value: 'favoritePlaceLived', label: '今まで住んだ中で一番好きな場所' },
+  { value: 'futureDreams', label: 'しょうらいのゆめ' },
+  { value: 'delegateToMe', label: '○○なら私にお任せ' },
+  { value: 'kinokoOrTakenoko', label: 'きのこ派？たけのこ派？' },
+  { value: 'lifeChangingMoment', label: '人生変わった瞬間' },
+  { value: 'interestObsession', label: '私はこの沼に落ちた' },
+  { value: 'hiddenAspect', label: '私って実は' },
+  { value: 'currentConcern', label: 'いま一番きになっていること' },
+  { value: 'foodAvoidance', label: '食べないもの' },
+  { value: 'favoriteFieldOfStudy', label: '好きな学問' },
+  { value: 'preferredExercise', label: '好きな運動' },
+  {
+    value: 'entertainmentPreferences',
+    label: 'エンタメ系で好きなもの・人・ジャンル',
+  },
+  { value: 'leisureActivities', label: '休日・余暇の過ごし方' },
+  { value: 'hometown', label: '出身' },
+  { value: 'drinksAlcohol', label: 'お酒飲む人？' },
+  { value: 'smokesCigarettes', label: 'タバコ吸う人？' },
+] as const;
