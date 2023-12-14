@@ -110,6 +110,8 @@ export function SelectImage({ buttonText, type }: Props) {
     (e: React.SyntheticEvent<HTMLImageElement>) => {
       if (!isImgLoading) return;
 
+      // 初期位置で切り取りする処理
+      // 再マウント時は実行しないのでisImgLoadingをフラグに早期リターン
       const { width, height } = e.currentTarget;
       setCrop(centerAspectCrop(width, height, aspect));
       setIsImgLoading(false);
