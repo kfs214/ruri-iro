@@ -69,18 +69,25 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     }
   }, [base64url, preferredName, fullName]);
 
-  // TODO 画像が更新されてもPreviewが再描画されない（Safari）
+  // TODO iOS safariではいまだに解消していない
+  // The image rendering issue in Safari was addressed by implementing a workaround found at:
+  // https://github.com/bubkoo/html-to-image/issues/361#issuecomment-1402537176
   useEffect(() => {
-    if (!ref.current) return;
+    (async () => {
+      if (!ref.current) return;
 
-    toPng(ref.current, { cacheBust: true })
-      .then(async (dataUrl) => {
-        setBase64url(dataUrl);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      });
+      // Invoking `toPng` multiple times for potential stability in Safari rendering
+      await toPng(ref.current, { cacheBust: true });
+      await toPng(ref.current, { cacheBust: true });
+      toPng(ref.current, { cacheBust: true })
+        .then(async (dataUrl) => {
+          setBase64url(dataUrl);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
+    })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
