@@ -64,18 +64,18 @@ export function SelectImage({ buttonText, type }: Props) {
   const setting = {
     cover: {
       aspect: 16 / 9,
-      imgSrc: profileImgSrc,
-      completedCrop: profileCrop,
-      setImgSrc: setProfileImgSrc,
-      setCompletedCrop: setProfileCrop,
-      setImage: setCoverImage,
-    },
-    profile: {
-      aspect: 1,
       imgSrc: coverImgSrc,
       completedCrop: coverCrop,
       setImgSrc: setCoverImgSrc,
       setCompletedCrop: setCoverCrop,
+      setImage: setCoverImage,
+    },
+    profile: {
+      aspect: 1,
+      imgSrc: profileImgSrc,
+      completedCrop: profileCrop,
+      setImgSrc: setProfileImgSrc,
+      setCompletedCrop: setProfileCrop,
       setImage: setProfileImage,
     },
   } as const;
