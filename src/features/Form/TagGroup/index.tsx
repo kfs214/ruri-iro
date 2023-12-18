@@ -23,6 +23,8 @@ function TagLi({ tag, onDelete }: TagLiProps) {
   );
 }
 
+let nextTagId = 0;
+
 function Tags() {
   const { tags, setTags } = useTagStore();
 
@@ -46,6 +48,7 @@ function Tags() {
 
 // TODO BackSpaceで最後の要素を消す
 // TODO divをクリックしたらinputにfocus
+// TODO onBlurで確定、1秒無操作でヒント「改行で確定」。1秒で自動確定でも
 function TagForm() {
   const { tags, setTags } = useTagStore();
   const textFieldRef = useRef<HTMLInputElement>(null);
@@ -59,8 +62,8 @@ function TagForm() {
       if (!value) return;
       if (tags.map(({ tag }) => tag).includes(value)) return;
 
-      // TODO iOS safariでcrypto.randomUUID()を呼び出せないので修正
-      setTags([...tags, { tag: value, tagId: crypto.randomUUID() }]);
+      setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
+      nextTagId += 1;
       textFieldRef.current.value = '';
     },
     [tags, setTags],
