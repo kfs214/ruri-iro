@@ -119,6 +119,9 @@ export function SelectImage({ buttonText, type }: Props) {
     [aspect, isImgLoading],
   );
 
+  // TODO 画像の品質を最適化
+  // TODO スクロール位置保持。プレビュー切り替え時
+  // TODO iOSシミュレータにおいて画像選択に失敗するときがあるので調査
   const handleCompleteCrop = (pixelCrop: PixelCrop): void => {
     if (!imgRef.current) throw new Error('No HTMLImageElement');
     const img = imgRef.current;
@@ -130,11 +133,10 @@ export function SelectImage({ buttonText, type }: Props) {
     const scaleX = img.naturalWidth / img.width;
     const scaleY = img.naturalHeight / img.height;
 
-    canvas.width = Math.floor(pixelCrop.width * scaleX * devicePixelRatio);
-    canvas.height = Math.floor(pixelCrop.height * scaleY * devicePixelRatio);
+    canvas.width = pixelCrop.width;
+    canvas.height = pixelCrop.height;
 
-    ctx.scale(devicePixelRatio, devicePixelRatio);
-    ctx.imageSmoothingQuality = 'high';
+    ctx.imageSmoothingQuality = 'low';
 
     ctx.drawImage(
       img,
@@ -144,8 +146,8 @@ export function SelectImage({ buttonText, type }: Props) {
       pixelCrop.height * scaleY,
       0,
       0,
-      pixelCrop.width * scaleX,
-      pixelCrop.height * scaleY,
+      pixelCrop.width,
+      pixelCrop.height,
     );
 
     setCompletedCrop(pixelCrop);

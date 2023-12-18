@@ -59,6 +59,7 @@ function TagForm() {
       if (!value) return;
       if (tags.map(({ tag }) => tag).includes(value)) return;
 
+      // TODO iOS safariでcrypto.randomUUID()を呼び出せないので修正
       setTags([...tags, { tag: value, tagId: crypto.randomUUID() }]);
       textFieldRef.current.value = '';
     },
