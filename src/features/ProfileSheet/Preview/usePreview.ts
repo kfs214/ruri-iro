@@ -71,16 +71,17 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
 
   // TODO 画像が更新されてもPreviewが再描画されない（Safari）
   useEffect(() => {
-    if (ref.current) {
-      toPng(ref.current, { cacheBust: true })
-        .then(async (dataUrl) => {
-          setBase64url(dataUrl);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-        });
-    }
+    if (!ref.current) return;
+
+    toPng(ref.current, { cacheBust: true })
+      .then(async (dataUrl) => {
+        setBase64url(dataUrl);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     shownDOB,
