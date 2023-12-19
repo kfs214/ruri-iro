@@ -69,7 +69,6 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     }
   }, [base64url, preferredName, fullName]);
 
-  // TODO iOS safariではいまだに解消していない
   // The image rendering issue in Safari was addressed by implementing a workaround found at:
   // https://github.com/bubkoo/html-to-image/issues/361#issuecomment-1402537176
   useEffect(() => {

@@ -14,6 +14,13 @@ type TagLiProps = {
   onDelete: (tagId: string) => void;
 } & Tag;
 
+let nextTagId = 0;
+
+const StyledFormLi = styled('li')`
+  min-width: 0;
+  flex-grow: 1;
+`;
+
 // TODO 長い場合は省略
 function TagLi({ tag, onDelete }: TagLiProps) {
   return (
@@ -22,8 +29,6 @@ function TagLi({ tag, onDelete }: TagLiProps) {
     </li>
   );
 }
-
-let nextTagId = 0;
 
 function Tags() {
   const { tags, setTags } = useTagStore();
@@ -70,24 +75,21 @@ function TagForm() {
   );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField
-        inputRef={textFieldRef}
-        name="tag"
-        variant="standard"
-        fullWidth
-        InputProps={{
-          disableUnderline: true,
-        }}
-      />
-    </form>
+    <StyledFormLi key="li">
+      <form onSubmit={handleSubmit}>
+        <TextField
+          inputRef={textFieldRef}
+          name="tag"
+          variant="standard"
+          fullWidth
+          InputProps={{
+            disableUnderline: true,
+          }}
+        />
+      </form>
+    </StyledFormLi>
   );
 }
-
-const StyledFormLi = styled('li')`
-  min-width: 0;
-  flex-grow: 1;
-`;
 
 export function TagGroup() {
   return (
@@ -102,9 +104,7 @@ export function TagGroup() {
       >
         <FlexUl>
           <Tags />
-          <StyledFormLi key="li">
-            <TagForm />
-          </StyledFormLi>
+          <TagForm />
         </FlexUl>
       </Box>
     </QuestionsGroupWrapper>
