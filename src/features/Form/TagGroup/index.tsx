@@ -1,9 +1,9 @@
-import { FormEvent, useCallback, useRef } from 'react';
+import { FormEvent, forwardRef, useCallback, useRef } from 'react';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 
 import { FlexUl } from '@/components';
 import { Tag, useTagStore } from '@/store';
@@ -52,59 +52,72 @@ function Tags() {
 }
 
 // TODO BackSpaceで最後の要素を消す
-// TODO divをクリックしたらinputにfocus
 // TODO onBlurで確定、1秒無操作でヒント「改行で確定」。1秒で自動確定でも
-function TagForm() {
+const TagForm = forwardRef<
+  HTMLInputElement,
+  { handleSubmit: (e: FormEvent<HTMLFormElement>) => void }
+>(({ handleSubmit }, ref) => (
+  <StyledFormLi key="li">
+    <form onSubmit={handleSubmit}>
+      <TextField
+        inputRef={ref}
+        name="tag"
+        variant="standard"
+        fullWidth
+        InputProps={{
+          disableUnderline: true,
+        }}
+      />
+    </form>
+  </StyledFormLi>
+));
+TagForm.displayName = 'TagForm';
+
+export function TagGroup() {
+  const theme = useTheme();
   const { tags, setTags } = useTagStore();
-  const textFieldRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!textFieldRef.current) return;
+      if (!inputRef.current) return;
 
-      const value = textFieldRef.current.value.trim();
+      const value = inputRef.current.value.trim();
       if (!value) return;
       if (tags.map(({ tag }) => tag).includes(value)) return;
 
       setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
       nextTagId += 1;
-      textFieldRef.current.value = '';
+      inputRef.current.value = '';
     },
     [tags, setTags],
   );
 
-  return (
-    <StyledFormLi key="li">
-      <form onSubmit={handleSubmit}>
-        <TextField
-          inputRef={textFieldRef}
-          name="tag"
-          variant="standard"
-          fullWidth
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-      </form>
-    </StyledFormLi>
-  );
-}
+  const handleClickTagsBox = () => {
+    inputRef.current?.focus();
+  };
 
-export function TagGroup() {
   return (
     <QuestionsGroupWrapper groupName="あなたを表わすハッシュタグ">
       <Box
+        onClick={handleClickTagsBox}
         p={1}
         sx={{
+          cursor: 'text',
           border: 1,
           borderColor: 'rgba(0,0,0,.2)',
           borderRadius: '4px',
+          ':focus-within': {
+            // TODO dark mode対応時は修正
+            border: 2,
+            borderColor: theme.palette.primary.light,
+          },
         }}
       >
         <FlexUl>
           <Tags />
-          <TagForm />
+          <TagForm handleSubmit={handleSubmit} ref={inputRef} />
         </FlexUl>
       </Box>
     </QuestionsGroupWrapper>
