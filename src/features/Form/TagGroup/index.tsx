@@ -94,6 +94,7 @@ export function TagGroup() {
     [tags, setTags],
   );
 
+  // TODO クリック対象がinputだった場合は何もしない
   const handleClickTagsBox = () => {
     inputRef.current?.focus();
   };
@@ -106,12 +107,13 @@ export function TagGroup() {
         sx={{
           cursor: 'text',
           border: 1,
-          borderColor: 'rgba(0,0,0,.2)',
+          borderColor: 'rgba(0,0,0,.23)',
           borderRadius: '4px',
           ':focus-within': {
             // TODO dark mode対応時は修正
             border: 2,
             borderColor: theme.palette.primary.light,
+            padding: `calc(${theme.spacing(1)} - 1px)`,
           },
         }}
       >
