@@ -13,7 +13,6 @@ type Props = {
   children: ReactNode;
 };
 
-// TODO SPレイアウト、画像と名前だけ入力の場合に縦横比が崩れる
 export function Preview({ children }: Props) {
   const previewRef = useRef<HTMLDivElement>(null);
   const { base64url, handleShare } = usePreview(previewRef);
@@ -27,7 +26,7 @@ export function Preview({ children }: Props) {
         </Button>
       </Box>
 
-      <Box position="relative" sx={{ mt: 2 }}>
+      <Box display="inline-block" position="relative" sx={{ mt: 2 }}>
         <Box sx={{ width: 320 }}>
           <Card ref={previewRef}>
             <CardContent>
@@ -38,7 +37,11 @@ export function Preview({ children }: Props) {
           </Card>
         </Box>
         {base64url && (
-          <Box position="absolute" top={0} sx={{ height: '100%' }}>
+          <Box
+            position="absolute"
+            top={0}
+            sx={{ width: '100%', height: '100%' }}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               style={{ display: 'block', width: '100%', height: '100%' }}
