@@ -1,4 +1,4 @@
-import { FormEvent, forwardRef, useCallback, useRef } from 'react';
+import { FormEvent, MouseEvent, forwardRef, useCallback, useRef } from 'react';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -94,15 +94,17 @@ export function TagGroup() {
     [tags, setTags],
   );
 
-  // TODO クリック対象がinputだった場合は何もしない
-  const handleClickTagsBox = () => {
+  const handleClickTagsBox = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (document.activeElement === inputRef.current) return;
+
     inputRef.current?.focus();
   };
 
   return (
     <QuestionsGroupWrapper groupName="あなたを表わすハッシュタグ">
       <Box
-        onClick={handleClickTagsBox}
+        onMouseDown={handleClickTagsBox}
         p={1}
         sx={{
           cursor: 'text',
