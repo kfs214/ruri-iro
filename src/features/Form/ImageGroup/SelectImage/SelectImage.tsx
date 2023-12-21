@@ -178,10 +178,15 @@ export function SelectImage({ buttonText, type }: Props) {
             onComplete={handleCompleteCrop}
             aspect={aspect}
           >
-            {/* TODO 画像のサイズ制御 */}
             {/* TODO width/heightを動的に取得してImageコンポーネントを使う */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="Crop me" src={imgSrc} ref={imgRef} onLoad={onImageLoad} />
+            <img
+              ref={imgRef}
+              src={imgSrc}
+              onLoad={onImageLoad}
+              style={{ maxHeight: '25vh' }}
+              alt="Crop me"
+            />
           </ReactCrop>
         </Box>
       )}
