@@ -13,6 +13,7 @@ type Props = {
   children: ReactNode;
 };
 
+// TODO SPレイアウト、画像と名前だけ入力の場合に縦横比が崩れる
 export function Preview({ children }: Props) {
   const previewRef = useRef<HTMLDivElement>(null);
   const { base64url, handleShare } = usePreview(previewRef);
