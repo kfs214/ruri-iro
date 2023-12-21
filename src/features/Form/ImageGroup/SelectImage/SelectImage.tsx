@@ -46,6 +46,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+// TODO hook切り出す
 export function SelectImage({ buttonText, type }: Props) {
   const {
     profileImgSrc,
@@ -64,6 +65,7 @@ export function SelectImage({ buttonText, type }: Props) {
   const setting = {
     cover: {
       aspect: 16 / 9,
+      renderedWidth: 320,
       imgSrc: coverImgSrc,
       completedCrop: coverCrop,
       setImgSrc: setCoverImgSrc,
@@ -72,6 +74,7 @@ export function SelectImage({ buttonText, type }: Props) {
     },
     profile: {
       aspect: 1,
+      renderedWidth: 128,
       imgSrc: profileImgSrc,
       completedCrop: profileCrop,
       setImgSrc: setProfileImgSrc,
@@ -82,6 +85,7 @@ export function SelectImage({ buttonText, type }: Props) {
 
   const {
     aspect,
+    renderedWidth,
     imgSrc,
     completedCrop,
     setImgSrc,
@@ -119,7 +123,6 @@ export function SelectImage({ buttonText, type }: Props) {
     [aspect, isImgLoading],
   );
 
-  // TODO 画像の品質を最適化
   // TODO スクロール位置保持。プレビュー切り替え時
   // TODO iOSシミュレータにおいて画像選択に失敗するときがあるので調査
   const handleCompleteCrop = (pixelCrop: PixelCrop): void => {
@@ -133,10 +136,10 @@ export function SelectImage({ buttonText, type }: Props) {
     const scaleX = img.naturalWidth / img.width;
     const scaleY = img.naturalHeight / img.height;
 
-    canvas.width = pixelCrop.width;
-    canvas.height = pixelCrop.height;
+    canvas.width = renderedWidth * devicePixelRatio;
+    canvas.height = (renderedWidth / aspect) * devicePixelRatio;
 
-    ctx.imageSmoothingQuality = 'low';
+    ctx.imageSmoothingQuality = 'high';
 
     ctx.drawImage(
       img,
@@ -146,8 +149,8 @@ export function SelectImage({ buttonText, type }: Props) {
       pixelCrop.height * scaleY,
       0,
       0,
-      pixelCrop.width,
-      pixelCrop.height,
+      canvas.width,
+      canvas.height,
     );
 
     setCompletedCrop(pixelCrop);
