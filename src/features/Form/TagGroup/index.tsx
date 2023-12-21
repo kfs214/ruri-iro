@@ -55,15 +55,17 @@ function Tags() {
 }
 
 // TODO BackSpaceで最後の要素を消す
-// TODO onBlurで確定、1秒無操作でヒント「改行で確定」。1秒で自動確定でも
 const TagForm = forwardRef<
   HTMLInputElement,
-  { handleSubmit: (e: FormEvent<HTMLFormElement>) => void }
+  { handleSubmit: (e?: FormEvent<HTMLFormElement>) => void }
 >(({ handleSubmit }, ref) => (
   <StyledFormLi key="li">
     <form onSubmit={handleSubmit}>
       <TextField
         inputRef={ref}
+        onBlur={() => {
+          handleSubmit();
+        }}
         name="tag"
         variant="standard"
         fullWidth
@@ -89,8 +91,8 @@ export function TagGroup() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+    (e?: FormEvent<HTMLFormElement>) => {
+      e?.preventDefault();
       if (!inputRef.current) return;
 
       const value = inputRef.current.value.trim();
