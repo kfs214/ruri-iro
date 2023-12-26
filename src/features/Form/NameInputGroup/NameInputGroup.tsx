@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent } from 'react';
+import React, { useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
@@ -8,21 +8,14 @@ import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
 import { useNameStore } from '@/store';
 
 type NameInputGroupProps = {
-  fullName: {
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  };
-  preferredName: {
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  };
+  fullName: Partial<typeof TextField>;
+  preferredName: Partial<typeof TextField>;
 };
 
 export function NameInputGroupDOMComponent({
   fullName,
   preferredName,
 }: NameInputGroupProps) {
-  // TODO お名前が空欄のときの振る舞い
   return (
     <QuestionsGroupWrapper groupName="お名前">
       <TextField
@@ -30,7 +23,6 @@ export function NameInputGroupDOMComponent({
         variant="outlined"
         fullWidth
         required
-        // error={!fullName.value}
         {...fullName}
       />
       <TextField
@@ -46,10 +38,25 @@ export function NameInputGroupDOMComponent({
 export function NameInputGroup() {
   const { fullName, onChangeFullName, preferredName, onChangePreferredName } =
     useNameStore();
+  const [hasFullNameError, setHasFullNameError] = useState(false);
+
+  const handleChangeFullName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasFullNameError(!e.target.value);
+    onChangeFullName(e);
+  };
+
+  const handleBlurFullName = (e: React.FocusEvent<HTMLInputElement>) => {
+    setHasFullNameError(!e.target.value);
+  };
 
   return (
     <NameInputGroupDOMComponent
-      fullName={{ value: fullName, onChange: onChangeFullName }}
+      fullName={{
+        value: fullName,
+        error: hasFullNameError,
+        onChange: handleChangeFullName,
+        onBlur: handleBlurFullName,
+      }}
       preferredName={{
         value: preferredName,
         onChange: onChangePreferredName,
