@@ -1,7 +1,10 @@
 import { FormEvent, MouseEvent, forwardRef, useCallback, useRef } from 'react';
 
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useTheme, styled } from '@mui/material/styles';
 
@@ -69,14 +72,14 @@ const TagForm = forwardRef<
         fullWidth
         InputProps={{
           disableUnderline: true,
-          // TODO iOS safariで、returnアイコン押下後に次のタグが入力できない
-          // endAdornment: (
-          //   <InputAdornment position="end">
-          //     <IconButton type="submit">
-          //       <KeyboardReturnIcon />
-          //     </IconButton>
-          //   </InputAdornment>
-          // ),
+          // TODO iOS safariで、returnアイコン押下後に次のタグが入力できないバージョンがある（16系）
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton type="submit">
+                <KeyboardReturnIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
       />
     </form>
