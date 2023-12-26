@@ -61,17 +61,7 @@ export function SelectImage({ buttonText, type }: Props) {
     setProfileImage,
   } = useImageStore();
 
-  // TODO プロフ画用の丸切り抜きに対応
   const setting = {
-    cover: {
-      aspect: 16 / 9,
-      renderedWidth: 320,
-      imgSrc: coverImgSrc,
-      completedCrop: coverCrop,
-      setImgSrc: setCoverImgSrc,
-      setCompletedCrop: setCoverCrop,
-      setImage: setCoverImage,
-    },
     profile: {
       aspect: 1,
       renderedWidth: 128,
@@ -80,6 +70,17 @@ export function SelectImage({ buttonText, type }: Props) {
       setImgSrc: setProfileImgSrc,
       setCompletedCrop: setProfileCrop,
       setImage: setProfileImage,
+      circularCrop: true,
+    },
+    cover: {
+      aspect: 16 / 9,
+      renderedWidth: 320,
+      imgSrc: coverImgSrc,
+      completedCrop: coverCrop,
+      setImgSrc: setCoverImgSrc,
+      setCompletedCrop: setCoverCrop,
+      setImage: setCoverImage,
+      circularCrop: false,
     },
   } as const;
 
@@ -91,6 +92,7 @@ export function SelectImage({ buttonText, type }: Props) {
     setImgSrc,
     setCompletedCrop,
     setImage,
+    circularCrop,
   } = setting[type];
 
   const [crop, setCrop] = useState<Crop | undefined>(completedCrop);
@@ -180,6 +182,7 @@ export function SelectImage({ buttonText, type }: Props) {
             onChange={(pixelCrop) => setCrop(pixelCrop)}
             onComplete={handleCompleteCrop}
             aspect={aspect}
+            circularCrop={circularCrop}
           >
             {/* TODO width/heightを動的に取得してImageコンポーネントを使う */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
