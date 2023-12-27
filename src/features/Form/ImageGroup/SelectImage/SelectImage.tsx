@@ -183,6 +183,7 @@ export function SelectImage({ buttonText, type }: Props) {
             onComplete={handleCompleteCrop}
             aspect={aspect}
             circularCrop={circularCrop}
+            ruleOfThirds
           >
             {/* TODO width/heightを動的に取得してImageコンポーネントを使う */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
