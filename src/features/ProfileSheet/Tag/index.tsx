@@ -6,6 +6,8 @@ import { useTagStore } from '@/store';
 export function Tag() {
   const { tags } = useTagStore();
 
+  if (tags.length === 0) return null;
+
   return (
     <Box>
       <Typography variant="h5">#わたし</Typography>

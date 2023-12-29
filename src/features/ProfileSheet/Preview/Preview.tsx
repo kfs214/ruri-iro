@@ -26,7 +26,7 @@ export function Preview({ children }: Props) {
         </Button>
       </Box>
 
-      <Box position="relative" sx={{ mt: 2 }}>
+      <Box display="inline-block" position="relative" sx={{ mt: 2 }}>
         <Box sx={{ width: 320 }}>
           <Card ref={previewRef}>
             <CardContent>
@@ -37,7 +37,11 @@ export function Preview({ children }: Props) {
           </Card>
         </Box>
         {base64url && (
-          <Box position="absolute" top={0} sx={{ height: '100%' }}>
+          <Box
+            position="absolute"
+            top={0}
+            sx={{ width: '100%', height: '100%' }}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               style={{ display: 'block', width: '100%', height: '100%' }}

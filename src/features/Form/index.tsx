@@ -11,8 +11,8 @@ import { TagGroup } from './TagGroup';
 export function Form() {
   return (
     <Box display="grid" gap={3}>
-      <ImageGroup />
       <NameInputGroup />
+      <ImageGroup />
       <OverviewQuestionsGroup />
       <PersonalPerspectivesGroup />
       <TagGroup />

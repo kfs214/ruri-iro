@@ -40,12 +40,15 @@ function QuestionAnswerPair({
     });
   };
 
-  // TODO 質問の枠線がラベルに重なる
   return (
     <Box display="grid" gap={2}>
       <FormControl fullWidth>
         <InputLabel>{`質問${index + 1}`}</InputLabel>
-        <Select value={questionValue} onChange={handleChangeQuestion}>
+        <Select
+          value={questionValue}
+          onChange={handleChangeQuestion}
+          label={`質問${index + 1}`}
+        >
           {questions.map(({ value, label }) => (
             <MenuItem key={value} value={value}>
               {label}
