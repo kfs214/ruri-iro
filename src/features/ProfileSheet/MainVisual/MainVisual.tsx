@@ -36,7 +36,7 @@ export function MainVisual() {
                 style={{ display: 'block' }}
               />
             </Box>
-            <Box pt={coverImage && 11}>
+            <Box pt={coverImage && 11} minWidth={0}>
               <Overview />
             </Box>
           </>

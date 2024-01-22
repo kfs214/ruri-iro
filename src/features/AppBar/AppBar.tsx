@@ -23,6 +23,7 @@ function TogglePreviewSwitch() {
         <Switch
           checked={showPreview}
           onChange={setShowPreview}
+          color="secondary"
           inputProps={{ 'aria-label': 'toggle-preview-switch' }}
         />
       }

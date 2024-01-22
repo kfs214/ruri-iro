@@ -23,9 +23,14 @@ type OverviewProps = {
 
 function Item({ icon, children }: ItemProps) {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', minWidth: 0 }}>
       {icon}
-      <Typography variant="subtitle1" component="span" align="left">
+      <Typography
+        variant="subtitle1"
+        component="span"
+        align="left"
+        minWidth={0}
+      >
         {children}
       </Typography>
     </Box>

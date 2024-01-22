@@ -46,6 +46,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+// TODO hook切り出す
 export function SelectImage({ buttonText, type }: Props) {
   const {
     profileImgSrc,
@@ -60,33 +61,38 @@ export function SelectImage({ buttonText, type }: Props) {
     setProfileImage,
   } = useImageStore();
 
-  // TODO プロフ画用の丸切り抜きに対応
   const setting = {
-    cover: {
-      aspect: 16 / 9,
+    profile: {
+      aspect: 1,
+      renderedWidth: 128,
       imgSrc: profileImgSrc,
       completedCrop: profileCrop,
       setImgSrc: setProfileImgSrc,
       setCompletedCrop: setProfileCrop,
-      setImage: setCoverImage,
+      setImage: setProfileImage,
+      circularCrop: true,
     },
-    profile: {
-      aspect: 1,
+    cover: {
+      aspect: 16 / 9,
+      renderedWidth: 320,
       imgSrc: coverImgSrc,
       completedCrop: coverCrop,
       setImgSrc: setCoverImgSrc,
       setCompletedCrop: setCoverCrop,
-      setImage: setProfileImage,
+      setImage: setCoverImage,
+      circularCrop: false,
     },
   } as const;
 
   const {
     aspect,
+    renderedWidth,
     imgSrc,
     completedCrop,
     setImgSrc,
     setCompletedCrop,
     setImage,
+    circularCrop,
   } = setting[type];
 
   const [crop, setCrop] = useState<Crop | undefined>(completedCrop);
@@ -110,6 +116,8 @@ export function SelectImage({ buttonText, type }: Props) {
     (e: React.SyntheticEvent<HTMLImageElement>) => {
       if (!isImgLoading) return;
 
+      // 初期位置で切り取りする処理
+      // 再マウント時は実行しないのでisImgLoadingをフラグに早期リターン
       const { width, height } = e.currentTarget;
       setCrop(centerAspectCrop(width, height, aspect));
       setIsImgLoading(false);
@@ -117,6 +125,8 @@ export function SelectImage({ buttonText, type }: Props) {
     [aspect, isImgLoading],
   );
 
+  // TODO スクロール位置保持。プレビュー切り替え時
+  // TODO iOSシミュレータにおいて画像選択に失敗するときがあるので調査
   const handleCompleteCrop = (pixelCrop: PixelCrop): void => {
     if (!imgRef.current) throw new Error('No HTMLImageElement');
     const img = imgRef.current;
@@ -128,10 +138,9 @@ export function SelectImage({ buttonText, type }: Props) {
     const scaleX = img.naturalWidth / img.width;
     const scaleY = img.naturalHeight / img.height;
 
-    canvas.width = Math.floor(pixelCrop.width * scaleX * devicePixelRatio);
-    canvas.height = Math.floor(pixelCrop.height * scaleY * devicePixelRatio);
+    canvas.width = renderedWidth * devicePixelRatio;
+    canvas.height = (renderedWidth / aspect) * devicePixelRatio;
 
-    ctx.scale(devicePixelRatio, devicePixelRatio);
     ctx.imageSmoothingQuality = 'high';
 
     ctx.drawImage(
@@ -142,8 +151,8 @@ export function SelectImage({ buttonText, type }: Props) {
       pixelCrop.height * scaleY,
       0,
       0,
-      pixelCrop.width * scaleX,
-      pixelCrop.height * scaleY,
+      canvas.width,
+      canvas.height,
     );
 
     setCompletedCrop(pixelCrop);
@@ -173,11 +182,18 @@ export function SelectImage({ buttonText, type }: Props) {
             onChange={(pixelCrop) => setCrop(pixelCrop)}
             onComplete={handleCompleteCrop}
             aspect={aspect}
+            circularCrop={circularCrop}
+            ruleOfThirds
           >
-            {/* TODO 画像のサイズ制御 */}
             {/* TODO width/heightを動的に取得してImageコンポーネントを使う */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="Crop me" src={imgSrc} ref={imgRef} onLoad={onImageLoad} />
+            <img
+              ref={imgRef}
+              src={imgSrc}
+              onLoad={onImageLoad}
+              style={{ maxHeight: '25vh' }}
+              alt="Crop me"
+            />
           </ReactCrop>
         </Box>
       )}
