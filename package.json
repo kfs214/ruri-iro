@@ -12,6 +12,9 @@
     "start": "next start",
     "prepare": "husky install"
   },
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "dependencies": {
     "@emotion/cache": "11.11.0",
     "@emotion/react": "11.11.1",
