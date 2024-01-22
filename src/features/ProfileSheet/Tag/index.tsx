@@ -13,7 +13,7 @@ export function Tag() {
       <Typography variant="h5">#わたし</Typography>
       <FlexUl>
         {tags.map(({ tag, tagId }) => (
-          <li key={tagId}>
+          <li key={tagId} style={{ minWidth: 0 }}>
             <Typography variant="body2">#{tag}</Typography>
           </li>
         ))}
