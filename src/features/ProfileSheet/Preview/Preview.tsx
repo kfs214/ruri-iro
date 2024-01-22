@@ -30,7 +30,7 @@ export function Preview({ children }: Props) {
         <Box sx={{ width: 320 }}>
           <Card ref={previewRef}>
             <CardContent>
-              <Box display="grid" gap={1}>
+              <Box display="grid" gridTemplateColumns="100%" gap={1}>
                 {children}
               </Box>
             </CardContent>

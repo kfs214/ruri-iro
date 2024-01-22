@@ -34,6 +34,11 @@ const theme = createTheme({
   },
   components: {
     MuiTypography: {
+      styleOverrides: {
+        root: {
+          overflowWrap: 'break-word',
+        },
+      },
       defaultProps: {
         variantMapping: {
           h4: 'h2',
