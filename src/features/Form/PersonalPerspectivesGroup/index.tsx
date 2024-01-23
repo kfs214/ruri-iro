@@ -40,6 +40,8 @@ function QuestionAnswerPair({
     });
   };
 
+  // TODO indexでexportするようにした方がファイル名で中身がわかりやすい
+  // TODO height: min-contentを各Gridに適用。自分より大きい要素があったときに伸びるので。その懸念がある箇所全て
   return (
     <Box display="grid" gap={2}>
       <FormControl fullWidth>

@@ -16,13 +16,16 @@ import { useAppStore } from '@/store';
 function TogglePreviewSwitch() {
   const { showPreview, setShowPreview } = useAppStore();
 
+  const handleChange = (_: unknown, checked: boolean) => {
+    setShowPreview(checked);
+  };
+
   return (
     <FormControlLabel
       control={
-        //  TODO 色が溶けるので修正
         <Switch
           checked={showPreview}
-          onChange={setShowPreview}
+          onChange={handleChange}
           color="secondary"
           inputProps={{ 'aria-label': 'toggle-preview-switch' }}
         />

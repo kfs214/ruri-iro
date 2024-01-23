@@ -7,10 +7,7 @@ import { devtools } from 'zustand/middleware';
 type AppState = {
   showPreview: boolean;
   formScrollPosition: number;
-  setShowPreview: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean,
-  ) => void;
+  setShowPreview: (checked: boolean) => void;
   setFormScrollPosition: (scrollY: number) => void;
 };
 
@@ -18,7 +15,7 @@ export const useAppStore = create<AppState>()(
   devtools((set) => ({
     showPreview: false,
     formScrollPosition: 0,
-    setShowPreview: (e, checked) => {
+    setShowPreview: (checked) => {
       set({
         showPreview: checked,
       });
