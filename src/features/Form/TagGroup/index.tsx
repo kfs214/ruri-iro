@@ -27,7 +27,7 @@ const StyledFormLi = styled('li')`
 // TODO 長い場合は省略
 function TagLi({ tag, onDelete }: TagLiProps) {
   return (
-    <li>
+    <li style={{ overflow: 'hidden' }}>
       <Chip label={tag} onDelete={onDelete} />
     </li>
   );
