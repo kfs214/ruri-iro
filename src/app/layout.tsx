@@ -18,7 +18,7 @@ export default function RootLayout({
           <Box
             component="main"
             sx={{
-              mt: ['48px', '56px', '64px'],
+              mt: ['56px', '64px'],
               p: 3,
             }}
           >

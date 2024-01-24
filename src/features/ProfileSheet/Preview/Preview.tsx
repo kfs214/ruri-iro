@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
+import { TogglePreviewButton } from '@/components';
+import { useLayout } from '@/hooks';
+import { useNameStore } from '@/store';
+
 import { usePreview } from './usePreview';
 
 type Props = {
@@ -14,20 +18,44 @@ type Props = {
 };
 
 export function Preview({ children }: Props) {
+  const { isPC } = useLayout();
+  const { fullName } = useNameStore();
   const previewRef = useRef<HTMLDivElement>(null);
   const { base64url, handleShare } = usePreview(previewRef);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 2,
+        gridTemplateColumns: '320px',
+        height: 'min-content',
+        position: 'sticky',
+        top: '88px',
+      }}
+    >
       {/* TODO シェアボタンをアイコンに */}
-      <Box>
-        <Button onClick={handleShare} variant="outlined">
-          Share
-        </Button>
+      {/* TODO シェアボタンの活性条件を詰める */}
+      <Box sx={{ display: 'flex' }}>
+        <Box>
+          <Button
+            onClick={handleShare}
+            variant="contained"
+            disabled={!fullName}
+          >
+            Share
+          </Button>
+        </Box>
+
+        {!isPC && (
+          <Box sx={{ ml: 1 }}>
+            <TogglePreviewButton />
+          </Box>
+        )}
       </Box>
 
-      <Box display="inline-block" position="relative" sx={{ mt: 2 }}>
-        <Box sx={{ width: 320 }}>
+      <Box display="inline-block" position="relative">
+        <Box>
           <Card ref={previewRef}>
             <CardContent>
               <Box display="grid" gridTemplateColumns="100%" gap={1}>

@@ -10,10 +10,19 @@ function QuestionAnswerPair({
   questionLabel: string;
   answer: string;
 }) {
+  const answerLines = answer.trim().split(/\r?\n/);
+
   return (
     <Box>
       <Typography variant="h5">{questionLabel}</Typography>
-      <Typography variant="body1">{answer}</Typography>
+      <Typography variant="body1" whiteSpace="pre-line">
+        {answerLines.map((answerLine) => (
+          <>
+            {answerLine}
+            <br />
+          </>
+        ))}
+      </Typography>
     </Box>
   );
 }
