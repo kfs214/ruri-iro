@@ -30,6 +30,8 @@ export function Preview({ children }: Props) {
         gap: 2,
         gridTemplateColumns: '320px',
         height: 'min-content',
+        position: 'sticky',
+        top: '88px',
       }}
     >
       {/* TODO シェアボタンをアイコンに */}
