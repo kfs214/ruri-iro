@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent';
 
 import { TogglePreviewButton } from '@/components';
 import { useLayout } from '@/hooks';
+import { useNameStore } from '@/store';
 
 import { usePreview } from './usePreview';
 
@@ -17,9 +18,10 @@ type Props = {
 };
 
 export function Preview({ children }: Props) {
+  const { isPC } = useLayout();
+  const { fullName } = useNameStore();
   const previewRef = useRef<HTMLDivElement>(null);
   const { base64url, handleShare } = usePreview(previewRef);
-  const { isPC } = useLayout();
 
   return (
     <Box
@@ -31,11 +33,23 @@ export function Preview({ children }: Props) {
       }}
     >
       {/* TODO シェアボタンをアイコンに */}
-      {/* TODO Backもここに */}
-      <Box>
-        <Button onClick={handleShare} variant="outlined">
-          Share
-        </Button>
+      {/* TODO シェアボタンの活性条件を詰める */}
+      <Box sx={{ display: 'flex' }}>
+        <Box>
+          <Button
+            onClick={handleShare}
+            variant="contained"
+            disabled={!fullName}
+          >
+            Share
+          </Button>
+        </Box>
+
+        {!isPC && (
+          <Box sx={{ ml: 1 }}>
+            <TogglePreviewButton />
+          </Box>
+        )}
       </Box>
 
       <Box display="inline-block" position="relative">
@@ -63,12 +77,6 @@ export function Preview({ children }: Props) {
           </Box>
         )}
       </Box>
-
-      {!isPC && (
-        <Box>
-          <TogglePreviewButton />
-        </Box>
-      )}
     </Box>
   );
 }
