@@ -62,6 +62,8 @@ function QuestionAnswerPair({
         label={`回答${index + 1}`}
         variant="outlined"
         fullWidth
+        multiline
+        rows={3}
         value={answer}
         onChange={handleChangeAnswer}
       />
