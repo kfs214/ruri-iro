@@ -61,7 +61,10 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     const imageOptions = {
       share: {
         title: `${userName}さんの自己紹介シート[ruri-iro]`,
-        text: '自己紹介シートをシェアしよう！',
+        text: `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
+        
+#こういうものです で自己紹介シートを作成してシェアしよう！
+${window.location.href}`,
       },
       fileName: `${userName}さんの自己紹介シート_ruri-iro.png`,
     };
