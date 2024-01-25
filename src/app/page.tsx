@@ -13,9 +13,14 @@ export default function HomePage() {
   const { isPC } = useLayout();
   const { showPreview } = useAppStore();
 
-  // TODO 1 columnでもgapが効くので修正
   return (
-    <Box display="grid" gridTemplateColumns="1fr auto" gap={2}>
+    <Box
+      display="grid"
+      gridAutoFlow="column"
+      gridTemplateColumns="1fr"
+      gridAutoColumns="auto"
+      gap={2}
+    >
       {(isPC || !showPreview) && <Form />}
       {(isPC || showPreview) && <ProfileSheet />}
     </Box>
