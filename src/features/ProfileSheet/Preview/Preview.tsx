@@ -58,7 +58,7 @@ export function Preview({ children }: Props) {
         <Box>
           <Card ref={previewRef}>
             <CardContent>
-              <Box display="grid" gridTemplateColumns="100%" gap={1}>
+              <Box display="grid" gridTemplateColumns="minmax(0,1fr)" gap={1}>
                 {children}
               </Box>
             </CardContent>
