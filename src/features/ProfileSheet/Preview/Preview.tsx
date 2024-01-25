@@ -5,7 +5,6 @@ import { useRef, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 
 import { TogglePreviewButton } from '@/components';
 import { useLayout } from '@/hooks';
@@ -56,12 +55,8 @@ export function Preview({ children }: Props) {
 
       <Box display="inline-block" position="relative">
         <Box>
-          <Card ref={previewRef}>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns="minmax(0,1fr)" gap={1}>
-                {children}
-              </Box>
-            </CardContent>
+          <Card ref={previewRef} sx={{ pb: 4 }}>
+            {children}
           </Card>
         </Box>
         {base64url && (
