@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 import Typography from '@mui/material/Typography';
 
@@ -34,6 +34,10 @@ export function NameDOMComponent({ fullName, preferredName }: Props) {
 
 // TODO オートコンプリート
 export function Name() {
+  useEffect(() => {
+    useNameStore.persist.rehydrate();
+  }, []);
+
   const { fullName, preferredName } = useNameStore();
 
   return <NameDOMComponent fullName={fullName} preferredName={preferredName} />;
