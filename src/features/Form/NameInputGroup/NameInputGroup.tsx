@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
@@ -35,7 +35,12 @@ export function NameInputGroupDOMComponent({
   );
 }
 
+// TODO オートコンプリート
 export function NameInputGroup() {
+  useEffect(() => {
+    useNameStore.persist.rehydrate();
+  }, []);
+
   const { fullName, onChangeFullName, preferredName, onChangePreferredName } =
     useNameStore();
   const [hasFullNameError, setHasFullNameError] = useState(false);
