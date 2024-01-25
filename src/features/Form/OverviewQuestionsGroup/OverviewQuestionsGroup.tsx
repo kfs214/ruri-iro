@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 
@@ -46,6 +46,11 @@ export function OverviewQuestionsGroupDOMComponent({
 }
 
 export function OverviewQuestionsGroup() {
+  // TODO 誕生日がDateの場合はエラーになる。IndexDB検討
+  useEffect(() => {
+    // useOverviewStore.persist.rehydrate();
+  }, []);
+
   const {
     isCustomDOBEnabled,
     handleChangeIsCustomDOBEnabled,

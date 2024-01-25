@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
@@ -72,6 +72,10 @@ function QuestionAnswerPair({
 }
 
 export function PersonalPerspectivesGroup() {
+  useEffect(() => {
+    usePersonalPerspectiveStore.persist.rehydrate();
+  }, []);
+
   const { questionAnswerPairs } = usePersonalPerspectiveStore();
 
   return (

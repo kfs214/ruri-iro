@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 import { questions } from '@/const';
 
@@ -25,31 +25,39 @@ type PersonalPerspectiveState = {
 };
 
 export const usePersonalPerspectiveStore = create<PersonalPerspectiveState>()(
-  devtools((set, get) => ({
-    questionAnswerPairs: [
-      { questionValue: 'kinokoOrTakenoko', answer: '' },
-      { questionValue: 'futureDreams', answer: '' },
-      { questionValue: 'lifeChangingMoment', answer: '' },
-    ],
-    updateQuestionAnswerPair: ({ newPair, index }) => {
-      const { questionAnswerPairs } = get();
-      const newPairs = [...questionAnswerPairs];
-      newPairs[index] = newPair;
+  devtools(
+    persist(
+      (set, get) => ({
+        questionAnswerPairs: [
+          { questionValue: 'kinokoOrTakenoko', answer: '' },
+          { questionValue: 'futureDreams', answer: '' },
+          { questionValue: 'lifeChangingMoment', answer: '' },
+        ],
+        updateQuestionAnswerPair: ({ newPair, index }) => {
+          const { questionAnswerPairs } = get();
+          const newPairs = [...questionAnswerPairs];
+          newPairs[index] = newPair;
 
-      set({ questionAnswerPairs: newPairs });
-    },
-    getShownPairs: () => {
-      const { questionAnswerPairs } = get();
-      return questionAnswerPairs
-        .filter(({ answer }) => answer)
-        .map(({ questionValue, answer }) => {
-          const { label } =
-            questions.find(({ value }) => value === questionValue) ?? {};
-          if (!label) return null;
+          set({ questionAnswerPairs: newPairs });
+        },
+        getShownPairs: () => {
+          const { questionAnswerPairs } = get();
+          return questionAnswerPairs
+            .filter(({ answer }) => answer)
+            .map(({ questionValue, answer }) => {
+              const { label } =
+                questions.find(({ value }) => value === questionValue) ?? {};
+              if (!label) return null;
 
-          return { questionLabel: label, answer };
-        })
-        .filter((e) => e) as ShownPair[];
-    },
-  })),
+              return { questionLabel: label, answer };
+            })
+            .filter((e) => e) as ShownPair[];
+        },
+      }),
+      {
+        name: 'personal-perspective-storage',
+        skipHydration: true,
+      },
+    ),
+  ),
 );
