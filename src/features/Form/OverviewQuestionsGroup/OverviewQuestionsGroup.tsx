@@ -46,9 +46,8 @@ export function OverviewQuestionsGroupDOMComponent({
 }
 
 export function OverviewQuestionsGroup() {
-  // TODO 誕生日がDateの場合はエラーになる。IndexDB検討
   useEffect(() => {
-    // useOverviewStore.persist.rehydrate();
+    useOverviewStore.persist.rehydrate();
   }, []);
 
   const {

@@ -1,8 +1,8 @@
 import { ChangeEvent } from 'react';
 
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
 type DOBEditing = {
   isCustomDOBEnabled: boolean;
@@ -32,6 +32,15 @@ function formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB }: DOBEditing) {
 
   return '';
 }
+
+const storage = createJSONStorage<OverviewState>(() => localStorage, {
+  reviver: (key, value) => {
+    if (key === 'dayjsDOB' && value) {
+      return dayjs(value as string);
+    }
+    return value;
+  },
+});
 
 export const useOverviewStore = create<OverviewState>()(
   devtools(
@@ -79,6 +88,7 @@ export const useOverviewStore = create<OverviewState>()(
       {
         name: 'overview-storage',
         skipHydration: true,
+        storage,
       },
     ),
   ),
