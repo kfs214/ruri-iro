@@ -37,6 +37,7 @@ export function NameInputGroupDOMComponent({
 
 // TODO オートコンプリート
 export function NameInputGroup() {
+  // TODO rehydrateここなのか？
   useEffect(() => {
     useNameStore.persist.rehydrate();
   }, []);

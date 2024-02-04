@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Box from '@mui/material/Box';
@@ -48,6 +48,7 @@ const VisuallyHiddenInput = styled('input')({
 
 // TODO hook切り出す
 export function SelectImage({ buttonText, type }: Props) {
+  // TODO 両方取って必要なのだけ抜き出すのいかがなものか
   const {
     profileImgSrc,
     coverImgSrc,
@@ -98,6 +99,14 @@ export function SelectImage({ buttonText, type }: Props) {
   const [crop, setCrop] = useState<Crop | undefined>(completedCrop);
   const [isImgLoading, setIsImgLoading] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    useImageStore.persist.rehydrate();
+  }, []);
+
+  useEffect(() => {
+    setCrop(completedCrop);
+  }, [completedCrop]);
 
   const onSelectFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
