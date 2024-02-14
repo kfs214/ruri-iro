@@ -1,4 +1,11 @@
-import { FormEvent, MouseEvent, forwardRef, useCallback, useRef } from 'react';
+import {
+  FormEvent,
+  MouseEvent,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Box from '@mui/material/Box';
@@ -27,7 +34,7 @@ const StyledFormLi = styled('li')`
 // TODO 長い場合は省略
 function TagLi({ tag, onDelete }: TagLiProps) {
   return (
-    <li>
+    <li style={{ overflow: 'hidden' }}>
       <Chip label={tag} onDelete={onDelete} />
     </li>
   );
@@ -88,8 +95,11 @@ const TagForm = forwardRef<
 TagForm.displayName = 'TagForm';
 
 export function TagGroup() {
-  const theme = useTheme();
+  useEffect(() => {
+    useTagStore.persist.rehydrate();
+  }, []);
   const { tags, setTags } = useTagStore();
+  const theme = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(

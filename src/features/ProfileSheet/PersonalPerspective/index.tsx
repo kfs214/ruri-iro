@@ -31,7 +31,7 @@ export function PersonalPerspective() {
   const { getShownPairs } = usePersonalPerspectiveStore();
 
   return (
-    <Box display="grid" gridTemplateColumns="100%" gap={1}>
+    <Box display="grid" gridTemplateColumns="minmax(0,1fr)" gap={1}>
       {getShownPairs().map(({ questionLabel, answer }) => (
         <QuestionAnswerPair
           key={questionLabel}

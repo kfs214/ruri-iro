@@ -1,6 +1,12 @@
+import { get, set, del } from 'idb-keyval';
 import { Crop } from 'react-image-crop';
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import {
+  StateStorage,
+  createJSONStorage,
+  devtools,
+  persist,
+} from 'zustand/middleware';
 
 type ImageState = {
   profileImgSrc: string;
@@ -17,29 +23,51 @@ type ImageState = {
   setCoverImage: (newSrc: string) => void;
 };
 
+const storage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> =>
+    (await get(name)) || null,
+  setItem: async (name: string, value: string): Promise<void> => {
+    await set(name, value);
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await del(name);
+  },
+};
+
+// TODO 保存頻度抑制
+
 export const useImageStore = create<ImageState>()(
-  devtools((set) => ({
-    profileImgSrc: '',
-    coverImgSrc: '',
-    profileImage: '',
-    coverImage: '',
-    setProfileImgSrc: (newSrc) => {
-      set({ profileImgSrc: newSrc });
-    },
-    setCoverImgSrc: (newSrc) => {
-      set({ coverImgSrc: newSrc });
-    },
-    setProfileCrop: (newCrop) => {
-      set({ profileCrop: newCrop });
-    },
-    setCoverCrop: (newCrop) => {
-      set({ coverCrop: newCrop });
-    },
-    setProfileImage: (newSrc) => {
-      set({ profileImage: newSrc });
-    },
-    setCoverImage: (newSrc) => {
-      set({ coverImage: newSrc });
-    },
-  })),
+  devtools(
+    persist(
+      (setState) => ({
+        profileImgSrc: '',
+        coverImgSrc: '',
+        profileImage: '',
+        coverImage: '',
+        setProfileImgSrc: (newSrc) => {
+          setState({ profileImgSrc: newSrc });
+        },
+        setCoverImgSrc: (newSrc) => {
+          setState({ coverImgSrc: newSrc });
+        },
+        setProfileCrop: (newCrop) => {
+          setState({ profileCrop: newCrop });
+        },
+        setCoverCrop: (newCrop) => {
+          setState({ coverCrop: newCrop });
+        },
+        setProfileImage: (newSrc) => {
+          setState({ profileImage: newSrc });
+        },
+        setCoverImage: (newSrc) => {
+          setState({ coverImage: newSrc });
+        },
+      }),
+      {
+        name: 'image-storage',
+        storage: createJSONStorage(() => storage),
+        skipHydration: true,
+      },
+    ),
+  ),
 );

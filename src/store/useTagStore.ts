@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 export type Tag = {
   tag: string;
@@ -12,8 +12,16 @@ export type TagState = {
 };
 
 export const useTagStore = create<TagState>()(
-  devtools((set) => ({
-    tags: [],
-    setTags: (newTags) => set({ tags: newTags }),
-  })),
+  devtools(
+    persist(
+      (set) => ({
+        tags: [],
+        setTags: (newTags) => set({ tags: newTags }),
+      }),
+      {
+        name: 'tag-storage',
+        skipHydration: true,
+      },
+    ),
+  ),
 );

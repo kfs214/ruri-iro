@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 export type NameState = {
   fullName: string;
@@ -11,10 +11,18 @@ export type NameState = {
 };
 
 export const useNameStore = create<NameState>()(
-  devtools((set) => ({
-    fullName: '',
-    preferredName: '',
-    onChangeFullName: (e) => set({ fullName: e.target.value }),
-    onChangePreferredName: (e) => set({ preferredName: e.target.value }),
-  })),
+  devtools(
+    persist(
+      (set) => ({
+        fullName: '',
+        preferredName: '',
+        onChangeFullName: (e) => set({ fullName: e.target.value }),
+        onChangePreferredName: (e) => set({ preferredName: e.target.value }),
+      }),
+      {
+        name: 'name-storage',
+        skipHydration: true,
+      },
+    ),
+  ),
 );

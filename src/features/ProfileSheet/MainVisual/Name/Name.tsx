@@ -32,7 +32,6 @@ export function NameDOMComponent({ fullName, preferredName }: Props) {
   );
 }
 
-// TODO オートコンプリート
 export function Name() {
   const { fullName, preferredName } = useNameStore();
 

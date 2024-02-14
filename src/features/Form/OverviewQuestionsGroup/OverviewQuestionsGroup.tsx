@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 
@@ -46,6 +46,10 @@ export function OverviewQuestionsGroupDOMComponent({
 }
 
 export function OverviewQuestionsGroup() {
+  useEffect(() => {
+    useOverviewStore.persist.rehydrate();
+  }, []);
+
   const {
     isCustomDOBEnabled,
     handleChangeIsCustomDOBEnabled,

@@ -18,6 +18,8 @@ type ImageOptions = {
   fileName: string;
 };
 
+const FILENAME_USER_NAME_MAX_LENGTH = 10;
+
 // eslint-disable-next-line consistent-return
 async function base64toFile(base64url: string, options: ImageOptions) {
   try {
@@ -36,6 +38,14 @@ function saveImage(dataUrl: string, options: ImageOptions) {
   link.click();
 }
 
+function composeUserName(userName: string) {
+  if (userName.length <= FILENAME_USER_NAME_MAX_LENGTH) {
+    return userName;
+  }
+
+  return `${userName.substring(0, FILENAME_USER_NAME_MAX_LENGTH - 1)}…`;
+}
+
 export function usePreview(ref: RefObject<HTMLDivElement>) {
   // TODO 更新を検知するselector
   const { shownDOB, occupation, location } = useOverviewStore();
@@ -47,11 +57,14 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
   const [base64url, setBase64url] = useState('');
 
   const handleShare = useCallback(async () => {
-    const userName = preferredName || fullName;
+    const userName = composeUserName(preferredName || fullName);
     const imageOptions = {
       share: {
         title: `${userName}さんの自己紹介シート[ruri-iro]`,
-        text: '自己紹介シートをシェアしよう！',
+        text: `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
+        
+#こういうものです で自己紹介シートを作成してシェアしよう！
+${window.location.href}`,
       },
       fileName: `${userName}さんの自己紹介シート_ruri-iro.png`,
     };
