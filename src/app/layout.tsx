@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <noscript>
           <iframe
             title="gtm noscript"
-            src="https://www.googletagmanager.com/ns.html?id=GTM-K3QCGV6G"
+            src={`https://www.googletagmanager.com/ns.html?id=${process.env.GTM_ID}`}
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
