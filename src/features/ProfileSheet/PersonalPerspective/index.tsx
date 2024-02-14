@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -16,12 +18,12 @@ function QuestionAnswerPair({
     <Box>
       <Typography variant="h5">{questionLabel}</Typography>
       <Typography variant="body1" whiteSpace="pre-line">
-        {/* TODO Each child in a list should have a unique "key" prop. */}
-        {answerLines.map((answerLine) => (
-          <>
+        {answerLines.map((answerLine, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <React.Fragment key={index}>
             {answerLine}
             <br />
-          </>
+          </React.Fragment>
         ))}
       </Typography>
     </Box>

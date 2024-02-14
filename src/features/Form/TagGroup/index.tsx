@@ -50,7 +50,7 @@ function Tags() {
     [tags, setTags],
   );
 
-  // TODO keyの警告が出る
+  // TODO keyの警告が出る. latestTagId永続化
   return tags.map((tag) => (
     <TagLi
       onDelete={() => {
