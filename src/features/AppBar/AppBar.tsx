@@ -13,13 +13,15 @@ import { metadata } from '@/const';
 import { useDataLayer, useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
+// TODO 連打するとエラー出る
+// Uncaught (in promise) TypeError: Cannot read properties of null (reading 'ownerDocument')
 function TogglePreviewSwitch() {
   const { showPreview, setShowPreview } = useAppStore();
-  const dataLayer = useDataLayer();
+  const dataLayer = useDataLayer({ componentName: 'AppBar' });
 
   const handleChange = (_: unknown, checked: boolean) => {
     setShowPreview(checked);
-    dataLayer.push({ event: 'AppBar-togglePreviewSwitch', checked });
+    dataLayer.pushEvent('togglePreviewSwitch', { checked });
   };
 
   return (
