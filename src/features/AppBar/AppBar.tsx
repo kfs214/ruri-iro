@@ -10,14 +10,16 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
 import { metadata } from '@/const';
-import { useLayout } from '@/hooks';
+import { useDataLayer, useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
 function TogglePreviewSwitch() {
   const { showPreview, setShowPreview } = useAppStore();
+  const dataLayer = useDataLayer();
 
   const handleChange = (_: unknown, checked: boolean) => {
     setShowPreview(checked);
+    dataLayer.push({ event: 'AppBar-togglePreviewSwitch', checked });
   };
 
   return (
