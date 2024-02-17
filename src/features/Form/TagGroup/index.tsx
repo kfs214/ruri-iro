@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import { useTheme, styled } from '@mui/material/styles';
 
 import { FlexUl } from '@/components';
+import { useDataLayer } from '@/hooks';
 import { Tag, useTagStore } from '@/store';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
@@ -65,15 +66,13 @@ function Tags() {
 // TODO BackSpaceで最後の要素を消す
 const TagForm = forwardRef<
   HTMLInputElement,
-  { handleSubmit: (e?: FormEvent<HTMLFormElement>) => void }
->(({ handleSubmit }, ref) => (
+  { onSubmit: (e?: FormEvent<HTMLFormElement>) => void; onBlur: () => void }
+>(({ onSubmit, onBlur }, ref) => (
   <StyledFormLi key="li">
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <TextField
         inputRef={ref}
-        onBlur={() => {
-          handleSubmit();
-        }}
+        onBlur={onBlur}
         name="tag"
         variant="standard"
         fullWidth
@@ -95,12 +94,15 @@ const TagForm = forwardRef<
 TagForm.displayName = 'TagForm';
 
 export function TagGroup() {
-  useEffect(() => {
-    useTagStore.persist.rehydrate();
-  }, []);
   const { tags, setTags } = useTagStore();
   const theme = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
+  const dataLayer = useDataLayer({ componentName: 'TagGroup' });
+
+  useEffect(() => {
+    useTagStore.persist.rehydrate();
+    // TODO rehydrateしたらnextTagIdも復元
+  }, []);
 
   const handleSubmit = useCallback(
     (e?: FormEvent<HTMLFormElement>) => {
@@ -114,9 +116,23 @@ export function TagGroup() {
       setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
       nextTagId += 1;
       inputRef.current.value = '';
+
+      // TODO enter / アイコン / blur 見分け
+      dataLayer.pushEvent('submitTag', {
+        latestTagLength: value.length,
+      });
     },
-    [tags, setTags],
+    [tags, setTags, dataLayer],
   );
+
+  const handleBlur = useCallback(() => {
+    handleSubmit();
+
+    // TODO 最新が追加される前の数になっている
+    dataLayer.pushEvent('blurTagGroup', {
+      tagsLength: tags.length,
+    });
+  }, [dataLayer, handleSubmit, tags.length]);
 
   const handleClickTagsBox = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -145,7 +161,7 @@ export function TagGroup() {
       >
         <FlexUl>
           <Tags />
-          <TagForm handleSubmit={handleSubmit} ref={inputRef} />
+          <TagForm onSubmit={handleSubmit} onBlur={handleBlur} ref={inputRef} />
         </FlexUl>
       </Box>
     </QuestionsGroupWrapper>

@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 
 import { questions } from '@/const';
+import { useDataLayer } from '@/hooks';
 import { usePersonalPerspectiveStore } from '@/store';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
@@ -23,6 +24,10 @@ function QuestionAnswerPair({
 }) {
   const { updateQuestionAnswerPair } = usePersonalPerspectiveStore();
 
+  const dataLayer = useDataLayer({
+    componentName: 'PersonalPerspectivesGroup',
+  });
+
   // TODO 質問と回答の組み合わせを保持するか検討
   const handleChangeQuestion = (e: SelectChangeEvent) => {
     const { value } = e.target;
@@ -30,6 +35,8 @@ function QuestionAnswerPair({
       index,
       newPair: { questionValue: value, answer: '' },
     });
+
+    dataLayer.pushEvent('changeQuestion', { questionValue: value });
   };
 
   const handleChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +45,9 @@ function QuestionAnswerPair({
       index,
       newPair: { questionValue, answer: value },
     });
+
+    // TODO この時の問いもモニタリング送信
+    dataLayer.pushEvent('changeAnswer', { answerValueLength: value.length });
   };
 
   // TODO indexでexportするようにした方がファイル名で中身がわかりやすい
@@ -72,11 +82,11 @@ function QuestionAnswerPair({
 }
 
 export function PersonalPerspectivesGroup() {
+  const { questionAnswerPairs } = usePersonalPerspectiveStore();
+
   useEffect(() => {
     usePersonalPerspectiveStore.persist.rehydrate();
   }, []);
-
-  const { questionAnswerPairs } = usePersonalPerspectiveStore();
 
   return (
     <QuestionsGroupWrapper groupName="三問三答">

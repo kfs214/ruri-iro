@@ -10,6 +10,7 @@ type DOBEditing = {
   dayjsDOB: Dayjs | null;
 };
 
+// TODO Storeは値の保持に専念すべきであり、onChangeのハンドラから値のみ渡すようにすべきでは
 export type OverviewState = {
   shownDOB: string;
   occupation: string;

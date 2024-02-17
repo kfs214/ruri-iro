@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
+import { useDataLayer } from '@/hooks';
 import { useNameStore } from '@/store';
 
 type NameInputGroupProps = {
@@ -37,14 +38,15 @@ export function NameInputGroupDOMComponent({
 
 // TODO オートコンプリート
 export function NameInputGroup() {
+  const { fullName, onChangeFullName, preferredName, onChangePreferredName } =
+    useNameStore();
+  const [hasFullNameError, setHasFullNameError] = useState(false);
+  const dataLayer = useDataLayer({ componentName: 'NameInputGroup' });
+
   // TODO rehydrateここなのか？
   useEffect(() => {
     useNameStore.persist.rehydrate();
   }, []);
-
-  const { fullName, onChangeFullName, preferredName, onChangePreferredName } =
-    useNameStore();
-  const [hasFullNameError, setHasFullNameError] = useState(false);
 
   const handleChangeFullName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHasFullNameError(!e.target.value);
@@ -53,6 +55,15 @@ export function NameInputGroup() {
 
   const handleBlurFullName = (e: React.FocusEvent<HTMLInputElement>) => {
     setHasFullNameError(!e.target.value);
+    dataLayer.pushEvent('blurFullName', {
+      fullNameLength: e.target.value.length,
+    });
+  };
+
+  const handleBlurPreferredName = (e: React.FocusEvent<HTMLInputElement>) => {
+    dataLayer.pushEvent('blurPreferredName', {
+      preferredNameLength: e.target.value.length,
+    });
   };
 
   return (
@@ -66,6 +77,7 @@ export function NameInputGroup() {
       preferredName={{
         value: preferredName,
         onChange: onChangePreferredName,
+        onBlur: handleBlurPreferredName,
       }}
     />
   );

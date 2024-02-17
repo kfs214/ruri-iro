@@ -7,6 +7,8 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 
+import { useDataLayer } from '@/hooks';
+
 type CustomDOBProps = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -34,6 +36,19 @@ export function DateOfBirth(props: DateOfBirthProps) {
     dayjsDOB,
   } = props;
 
+  const dataLayer = useDataLayer({ componentName: 'DateOfBirth' });
+
+  const handleBlurCustomDOB = () => {
+    dataLayer.pushEvent('blurCustomDOB', {
+      customDOBLength: customDOB.value.length,
+    });
+  };
+
+  const handleChangeDayjsDOB = (newValue: Dayjs | null): void => {
+    dayjsDOB.onChange(newValue);
+    dataLayer.pushEvent('changeDayjsDOB');
+  };
+
   return (
     <Box>
       {isCustomDOBEnabled && (
@@ -42,6 +57,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
           variant="outlined"
           value={customDOB.value}
           onChange={customDOB.onChange}
+          onBlur={handleBlurCustomDOB}
           fullWidth
         />
       )}
@@ -49,7 +65,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
         <DatePicker
           label={label}
           value={dayjsDOB.value}
-          onChange={dayjsDOB.onChange}
+          onChange={handleChangeDayjsDOB}
           slotProps={{
             textField: {
               fullWidth: true,
@@ -62,6 +78,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
           control={
             <Checkbox
               checked={isCustomDOBEnabled}
+              // TODO モニタリング
               onChange={handleChangeIsCustomDOBEnabled}
             />
           }

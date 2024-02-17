@@ -17,6 +17,7 @@ export function Form() {
   const scrollY = useRef(0);
   const { isPC } = useLayout();
 
+  // TODO Show Preview / スクロール / Backでスクロール位置が連動してしまう
   const updateScroll = () => {
     scrollY.current = window.scrollY;
   };
