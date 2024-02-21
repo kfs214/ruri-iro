@@ -2,6 +2,7 @@ import { RefObject, useCallback, useEffect, useState } from 'react';
 
 import { toPng } from 'html-to-image';
 
+import { useDataLayer } from '@/hooks';
 import {
   useNameStore,
   useOverviewStore,
@@ -56,6 +57,10 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
 
   const [base64url, setBase64url] = useState('');
 
+  const dataLayer = useDataLayer({
+    componentName: 'Preview',
+  });
+
   const handleShare = useCallback(async () => {
     const userName = composeUserName(preferredName || fullName);
     const imageOptions = {
@@ -69,6 +74,8 @@ ${window.location.href}`,
       fileName: `${userName}さんの自己紹介シート_ruri-iro.png`,
     };
 
+    dataLayer.pushEvent('clickShare');
+
     const file = await base64toFile(base64url, imageOptions);
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator
@@ -77,10 +84,13 @@ ${window.location.href}`,
           files: [file],
         })
         .catch(() => {});
+
+      dataLayer.pushEvent('canShare');
     } else {
       saveImage(base64url, imageOptions);
+      dataLayer.pushEvent('saveImage');
     }
-  }, [base64url, preferredName, fullName]);
+  }, [base64url, preferredName, fullName, dataLayer]);
 
   // The image rendering issue in Safari was addressed by implementing a workaround found at:
   // https://github.com/bubkoo/html-to-image/issues/361#issuecomment-1402537176

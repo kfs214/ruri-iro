@@ -110,6 +110,11 @@ export function SelectImage({ buttonText, type }: Props) {
     setCrop(completedCrop);
   }, [completedCrop]);
 
+  // TODO 2回ずつ呼ばれる
+  const handleClickSelectFile = () => {
+    dataLayer.pushEvent('clickSelectFile', { selectImageType: type });
+  };
+
   // TODO 画像を再選択したら選択範囲が消える問題。IndexedDBからの読み出しの場合？
   const onSelectFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -122,8 +127,7 @@ export function SelectImage({ buttonText, type }: Props) {
     );
     reader.readAsDataURL(e.target.files[0]);
 
-    // TODO ファイル選択窓は出したけれどキャンセルした場合を集計したい
-    dataLayer.pushEvent('selectFile', { type });
+    dataLayer.pushEvent('selectFile', { selectImageType: type });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -174,7 +178,7 @@ export function SelectImage({ buttonText, type }: Props) {
     setImage(canvas.toDataURL('image/jpeg'));
 
     // TODO Rehydrateで呼ばれている可能性があるので確認
-    dataLayer.pushEvent('completeCrop', { type });
+    dataLayer.pushEvent('completeCrop', { selectImageType: type });
   };
 
   return (
@@ -184,6 +188,7 @@ export function SelectImage({ buttonText, type }: Props) {
           component="label"
           variant="contained"
           startIcon={<AddPhotoAlternateIcon />}
+          onClick={handleClickSelectFile}
         >
           {buttonText}
           <VisuallyHiddenInput

@@ -19,9 +19,12 @@ function TogglePreviewSwitch() {
   const { showPreview, setShowPreview } = useAppStore();
   const dataLayer = useDataLayer({ componentName: 'AppBar' });
 
+  // TODO GTM設定をスプシとGASで管理
   const handleChange = (_: unknown, checked: boolean) => {
     setShowPreview(checked);
-    dataLayer.pushEvent('togglePreviewSwitch', { checked });
+    dataLayer.pushEvent('togglePreviewSwitch', {
+      togglePreviewSwitchChecked: checked,
+    });
   };
 
   return (

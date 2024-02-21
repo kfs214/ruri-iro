@@ -28,6 +28,10 @@ function QuestionAnswerPair({
     componentName: 'PersonalPerspectivesGroup',
   });
 
+  const handleClickQuestionSelect = () => {
+    dataLayer.pushEvent('clickQuestionSelect', { question: questionValue });
+  };
+
   // TODO 質問と回答の組み合わせを保持するか検討
   const handleChangeQuestion = (e: SelectChangeEvent) => {
     const { value } = e.target;
@@ -36,7 +40,7 @@ function QuestionAnswerPair({
       newPair: { questionValue: value, answer: '' },
     });
 
-    dataLayer.pushEvent('changeQuestion', { questionValue: value });
+    dataLayer.pushEvent('changeQuestion', { question: value });
   };
 
   const handleChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,9 +49,13 @@ function QuestionAnswerPair({
       index,
       newPair: { questionValue, answer: value },
     });
+  };
 
-    // TODO この時の問いもモニタリング送信
-    dataLayer.pushEvent('changeAnswer', { answerValueLength: value.length });
+  const handleBlurAnswer = () => {
+    dataLayer.pushEvent('blurAnswer', {
+      answerValueLength: answer.length,
+      question: questionValue,
+    });
   };
 
   // TODO indexでexportするようにした方がファイル名で中身がわかりやすい
@@ -58,6 +66,7 @@ function QuestionAnswerPair({
         <InputLabel>{`質問${index + 1}`}</InputLabel>
         <Select
           value={questionValue}
+          onClick={handleClickQuestionSelect}
           onChange={handleChangeQuestion}
           label={`質問${index + 1}`}
         >
@@ -76,6 +85,7 @@ function QuestionAnswerPair({
         rows={3}
         value={answer}
         onChange={handleChangeAnswer}
+        onBlur={handleBlurAnswer}
       />
     </Box>
   );
