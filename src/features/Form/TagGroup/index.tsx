@@ -106,11 +106,11 @@ export function TagGroup() {
 
     const value = inputRef.current.value.trim();
     if (!value) {
-      dataLayer.pushEvent('tag value is empty');
+      dataLayer.pushEvent('tagValueIsEmpty');
       return 0;
     }
     if (tags.map(({ tag }) => tag).includes(value)) {
-      dataLayer.pushEvent('tag already exists');
+      dataLayer.pushEvent('tagAlreadyExists');
       return 0;
     }
 
