@@ -83,13 +83,13 @@ export function OverviewQuestionsGroup() {
     setLocation(e.target.value);
   };
 
-  const onBlurOccupation = () => {
+  const handleBlurOccupation = () => {
     dataLayer.pushEvent('blurOccupation', {
       occupationLength: occupation.length,
     });
   };
 
-  const onBlurLocation = () => {
+  const handleBlurLocation = () => {
     dataLayer.pushEvent('blurLocation', {
       locationLength: location.length,
     });
@@ -107,12 +107,12 @@ export function OverviewQuestionsGroup() {
       occupation={{
         value: occupation,
         onChange: handleChangeOccupation,
-        onBlur: onBlurOccupation,
+        onBlur: handleBlurOccupation,
       }}
       location={{
         value: location,
         onChange: handleChangeLocation,
-        onBlur: onBlurLocation,
+        onBlur: handleBlurLocation,
       }}
     />
   );

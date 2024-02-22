@@ -44,6 +44,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
     });
   };
 
+  // TODO モニタリグの定義箇所がバラけている
   const handleChangeDayjsDOB = (value: Dayjs | null): void => {
     dayjsDOB.onChange(value);
     dataLayer.pushEvent('changeDayjsDOB');
@@ -78,7 +79,6 @@ export function DateOfBirth(props: DateOfBirthProps) {
           control={
             <Checkbox
               checked={isCustomDOBEnabled}
-              // TODO モニタリング
               onChange={handleChangeIsCustomDOBEnabled}
             />
           }
