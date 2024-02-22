@@ -3,6 +3,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Script from 'next/script';
 
+import { WebVitals } from '@/components/WebVitals';
 import { AppBar } from '@/features/AppBar';
 import { AppProvider } from '@/providers/app';
 
@@ -34,6 +35,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
+        <WebVitals />
         <AppProvider>
           <AppBar />
           <Box
