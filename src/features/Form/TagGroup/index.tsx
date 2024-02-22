@@ -66,8 +66,12 @@ function Tags() {
 // TODO BackSpaceで最後の要素を消す
 const TagForm = forwardRef<
   HTMLInputElement,
-  { onSubmit: (e?: FormEvent<HTMLFormElement>) => void; onBlur: () => void }
->(({ onSubmit, onBlur }, ref) => (
+  {
+    onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    onBlur: () => void;
+    onClickKeyboardReturnIcon: () => void;
+  }
+>(({ onSubmit, onBlur, onClickKeyboardReturnIcon }, ref) => (
   <StyledFormLi key="li">
     <form onSubmit={onSubmit}>
       <TextField
@@ -81,7 +85,7 @@ const TagForm = forwardRef<
           // TODO iOS safariで、returnアイコン押下後に次のタグが入力できないバージョンがある（16系）
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton type="submit">
+              <IconButton onClick={onClickKeyboardReturnIcon}>
                 <KeyboardReturnIcon />
               </IconButton>
             </InputAdornment>
@@ -104,35 +108,56 @@ export function TagGroup() {
     // TODO rehydrateしたらnextTagIdも復元
   }, []);
 
-  const handleSubmit = useCallback(
-    (e?: FormEvent<HTMLFormElement>) => {
-      e?.preventDefault();
-      if (!inputRef.current) return;
+  /**
+   * Appends a tag to the existing list and returns the number of tags added (0 or 1).
+   *
+   * @returns {number} - Number of tags added (0 or 1).
+   */
+  const appendTag = (): number => {
+    if (!inputRef.current) return 0;
 
-      const value = inputRef.current.value.trim();
-      if (!value) return;
-      if (tags.map(({ tag }) => tag).includes(value)) return;
+    const value = inputRef.current.value.trim();
+    if (!value) {
+      dataLayer.pushEvent('tag value is empty');
+      return 0;
+    }
+    if (tags.map(({ tag }) => tag).includes(value)) {
+      dataLayer.pushEvent('tag already exists');
+      return 0;
+    }
 
-      setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
-      nextTagId += 1;
-      inputRef.current.value = '';
+    setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
+    nextTagId += 1;
+    inputRef.current.value = '';
 
-      // TODO enter / アイコン / blur 見分け
-      dataLayer.pushEvent('submitTag', {
-        latestTagLength: value.length,
-      });
-    },
-    [tags, setTags, dataLayer],
-  );
+    dataLayer.pushEvent('appendTag', { latestTagLength: value.length });
+    return 1;
+  };
 
-  const handleBlur = useCallback(() => {
-    handleSubmit();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    appendTag();
+    dataLayer.pushEvent('submit');
+  };
 
-    // TODO 最新が追加される前の数になっている
+  const handleClickKeyboardReturnIcon = () => {
+    appendTag();
+    dataLayer.pushEvent('clickKeyboardReturnIcon');
+  };
+
+  const handleBlur = () => {
+    const addedTagLength = appendTag();
+
     dataLayer.pushEvent('blurTagGroup', {
-      tagsLength: tags.length,
+      tagsLength: tags.length + addedTagLength,
     });
-  }, [dataLayer, handleSubmit, tags.length]);
+  };
+
+  /**
+   * Monitoring paradigm for tag appending.
+   * appendTag + early return
+   *   = submit(like on keypress Enter) + clickKeyboardReturnIcon + blurTagGroup + others
+   */
 
   const handleClickTagsBox = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -161,7 +186,12 @@ export function TagGroup() {
       >
         <FlexUl>
           <Tags />
-          <TagForm onSubmit={handleSubmit} onBlur={handleBlur} ref={inputRef} />
+          <TagForm
+            onSubmit={handleSubmit}
+            onBlur={handleBlur}
+            onClickKeyboardReturnIcon={handleClickKeyboardReturnIcon}
+            ref={inputRef}
+          />
         </FlexUl>
       </Box>
     </QuestionsGroupWrapper>
