@@ -25,8 +25,6 @@ type TagLiProps = {
   onDelete: (tagId: string) => void;
 } & Tag;
 
-let nextTagId = 0;
-
 const StyledFormLi = styled('li')`
   min-width: 0;
   flex-grow: 1;
@@ -105,7 +103,6 @@ export function TagGroup() {
 
   useEffect(() => {
     useTagStore.persist.rehydrate();
-    // TODO rehydrateしたらnextTagIdも復元
   }, []);
 
   /**
@@ -126,8 +123,7 @@ export function TagGroup() {
       return 0;
     }
 
-    setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
-    nextTagId += 1;
+    setTags([...tags, { tag: value, tagId: window.crypto.randomUUID() }]);
     inputRef.current.value = '';
 
     dataLayer.pushEvent('appendTag', { latestTagLength: value.length });
