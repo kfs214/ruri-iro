@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 
 import { questions } from '@/const';
+import { useDataLayer } from '@/hooks';
 import { usePersonalPerspectiveStore } from '@/store';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
@@ -23,6 +24,14 @@ function QuestionAnswerPair({
 }) {
   const { updateQuestionAnswerPair } = usePersonalPerspectiveStore();
 
+  const dataLayer = useDataLayer({
+    componentName: 'PersonalPerspectivesGroup',
+  });
+
+  const handleClickQuestionSelect = () => {
+    dataLayer.pushEvent('clickQuestionSelect', { question: questionValue });
+  };
+
   // TODO 質問と回答の組み合わせを保持するか検討
   const handleChangeQuestion = (e: SelectChangeEvent) => {
     const { value } = e.target;
@@ -30,6 +39,8 @@ function QuestionAnswerPair({
       index,
       newPair: { questionValue: value, answer: '' },
     });
+
+    dataLayer.pushEvent('changeQuestion', { question: value });
   };
 
   const handleChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +48,13 @@ function QuestionAnswerPair({
     updateQuestionAnswerPair({
       index,
       newPair: { questionValue, answer: value },
+    });
+  };
+
+  const handleBlurAnswer = () => {
+    dataLayer.pushEvent('blurAnswer', {
+      answerValueLength: answer.length,
+      question: questionValue,
     });
   };
 
@@ -48,6 +66,7 @@ function QuestionAnswerPair({
         <InputLabel>{`質問${index + 1}`}</InputLabel>
         <Select
           value={questionValue}
+          onClick={handleClickQuestionSelect}
           onChange={handleChangeQuestion}
           label={`質問${index + 1}`}
         >
@@ -66,17 +85,18 @@ function QuestionAnswerPair({
         rows={3}
         value={answer}
         onChange={handleChangeAnswer}
+        onBlur={handleBlurAnswer}
       />
     </Box>
   );
 }
 
 export function PersonalPerspectivesGroup() {
+  const { questionAnswerPairs } = usePersonalPerspectiveStore();
+
   useEffect(() => {
     usePersonalPerspectiveStore.persist.rehydrate();
   }, []);
-
-  const { questionAnswerPairs } = usePersonalPerspectiveStore();
 
   return (
     <QuestionsGroupWrapper groupName="三問三答">

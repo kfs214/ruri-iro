@@ -1,24 +1,20 @@
 'use client';
 
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, ComponentProps, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
+import { Dayjs } from 'dayjs';
 
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
+import { useDataLayer } from '@/hooks';
 import { useOverviewStore } from '@/store';
 
 import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
 
 type OverviewQuestionsGroupProps = {
   dateOfBirth: DateOfBirthProps;
-  occupation: {
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  };
-  location: {
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  };
+  occupation: ComponentProps<typeof TextField>;
+  location: ComponentProps<typeof TextField>;
 };
 
 export function OverviewQuestionsGroupDOMComponent({
@@ -46,22 +42,58 @@ export function OverviewQuestionsGroupDOMComponent({
 }
 
 export function OverviewQuestionsGroup() {
+  const dataLayer = useDataLayer({
+    componentName: 'OverviewQuestionsGroup',
+  });
+
   useEffect(() => {
     useOverviewStore.persist.rehydrate();
   }, []);
 
   const {
     isCustomDOBEnabled,
-    handleChangeIsCustomDOBEnabled,
     customDOB,
-    handleOnChangeCustomDOB,
     dayjsDOB,
-    handleOnChangeDayjsDOB,
     occupation,
-    onChangeOccupation,
     location,
-    onChangeLocation,
+    setIsCustomDOBEnabled,
+    setCustomDOB,
+    setDayjsDOB,
+    setOccupation,
+    setLocation,
   } = useOverviewStore();
+
+  const handleChangeIsCustomDOBEnabled = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsCustomDOBEnabled(e.target.checked);
+    dataLayer.pushEvent('changeIsCustomDOBEnabled', {
+      isCustomDOBEnabled: e.target.checked,
+    });
+  };
+
+  const handleChangeCustomDOB = (e: ChangeEvent<HTMLInputElement>) => {
+    setCustomDOB(e.target.value);
+  };
+  const handleChangeDayjsDOB = (value: Dayjs | null) => {
+    setDayjsDOB(value);
+  };
+  const handleChangeOccupation = (e: ChangeEvent<HTMLInputElement>) => {
+    setOccupation(e.target.value);
+  };
+  const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
+  };
+
+  const handleBlurOccupation = () => {
+    dataLayer.pushEvent('blurOccupation', {
+      occupationLength: occupation.length,
+    });
+  };
+
+  const handleBlurLocation = () => {
+    dataLayer.pushEvent('blurLocation', {
+      locationLength: location.length,
+    });
+  };
 
   return (
     <OverviewQuestionsGroupDOMComponent
@@ -69,11 +101,19 @@ export function OverviewQuestionsGroup() {
         label: 'お誕生日',
         isCustomDOBEnabled,
         handleChangeIsCustomDOBEnabled,
-        customDOB: { value: customDOB, onChange: handleOnChangeCustomDOB },
-        dayjsDOB: { value: dayjsDOB, onChange: handleOnChangeDayjsDOB },
+        customDOB: { value: customDOB, onChange: handleChangeCustomDOB },
+        dayjsDOB: { value: dayjsDOB, onChange: handleChangeDayjsDOB },
       }}
-      occupation={{ value: occupation, onChange: onChangeOccupation }}
-      location={{ value: location, onChange: onChangeLocation }}
+      occupation={{
+        value: occupation,
+        onChange: handleChangeOccupation,
+        onBlur: handleBlurOccupation,
+      }}
+      location={{
+        value: location,
+        onChange: handleChangeLocation,
+        onBlur: handleBlurLocation,
+      }}
     />
   );
 }

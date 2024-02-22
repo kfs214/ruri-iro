@@ -1,11 +1,4 @@
-import {
-  FormEvent,
-  MouseEvent,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
+import { FormEvent, MouseEvent, forwardRef, useEffect, useRef } from 'react';
 
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Box from '@mui/material/Box';
@@ -16,15 +9,14 @@ import TextField from '@mui/material/TextField';
 import { useTheme, styled } from '@mui/material/styles';
 
 import { FlexUl } from '@/components';
+import { useDataLayer } from '@/hooks';
 import { Tag, useTagStore } from '@/store';
 
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
 
 type TagLiProps = {
-  onDelete: (tagId: string) => void;
+  onDelete: () => void;
 } & Tag;
-
-let nextTagId = 0;
 
 const StyledFormLi = styled('li')`
   min-width: 0;
@@ -42,19 +34,17 @@ function TagLi({ tag, onDelete }: TagLiProps) {
 
 function Tags() {
   const { tags, setTags } = useTagStore();
+  const dataLayer = useDataLayer({ componentName: 'TagGroup' });
 
-  const handleDelete = useCallback(
-    (deletedTagId: string) => {
-      setTags(tags.filter(({ tagId }) => tagId !== deletedTagId));
-    },
-    [tags, setTags],
-  );
+  const handleDelete = (tag: Tag) => {
+    setTags(tags.filter(({ tagId }) => tagId !== tag.tagId));
+    dataLayer.pushEvent('deleteTag', { deletedTagValueLength: tag.tag.length });
+  };
 
-  // TODO keyの警告が出る
   return tags.map((tag) => (
     <TagLi
       onDelete={() => {
-        handleDelete(tag.tagId);
+        handleDelete(tag);
       }}
       key={tag.tagId}
       {...tag}
@@ -65,15 +55,17 @@ function Tags() {
 // TODO BackSpaceで最後の要素を消す
 const TagForm = forwardRef<
   HTMLInputElement,
-  { handleSubmit: (e?: FormEvent<HTMLFormElement>) => void }
->(({ handleSubmit }, ref) => (
+  {
+    onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    onBlur: () => void;
+    onClickKeyboardReturnIcon: () => void;
+  }
+>(({ onSubmit, onBlur, onClickKeyboardReturnIcon }, ref) => (
   <StyledFormLi key="li">
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <TextField
         inputRef={ref}
-        onBlur={() => {
-          handleSubmit();
-        }}
+        onBlur={onBlur}
         name="tag"
         variant="standard"
         fullWidth
@@ -82,7 +74,7 @@ const TagForm = forwardRef<
           // TODO iOS safariで、returnアイコン押下後に次のタグが入力できないバージョンがある（16系）
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton type="submit">
+              <IconButton onClick={onClickKeyboardReturnIcon}>
                 <KeyboardReturnIcon />
               </IconButton>
             </InputAdornment>
@@ -95,28 +87,64 @@ const TagForm = forwardRef<
 TagForm.displayName = 'TagForm';
 
 export function TagGroup() {
-  useEffect(() => {
-    useTagStore.persist.rehydrate();
-  }, []);
   const { tags, setTags } = useTagStore();
   const theme = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
+  const dataLayer = useDataLayer({ componentName: 'TagGroup' });
 
-  const handleSubmit = useCallback(
-    (e?: FormEvent<HTMLFormElement>) => {
-      e?.preventDefault();
-      if (!inputRef.current) return;
+  useEffect(() => {
+    useTagStore.persist.rehydrate();
+  }, []);
 
-      const value = inputRef.current.value.trim();
-      if (!value) return;
-      if (tags.map(({ tag }) => tag).includes(value)) return;
+  /**
+   * Appends a tag to the existing list and returns the number of tags added (0 or 1).
+   *
+   * @returns {number} - Number of tags added (0 or 1).
+   */
+  const appendTag = (): number => {
+    if (!inputRef.current) return 0;
 
-      setTags([...tags, { tag: value, tagId: `${nextTagId}` }]);
-      nextTagId += 1;
-      inputRef.current.value = '';
-    },
-    [tags, setTags],
-  );
+    const value = inputRef.current.value.trim();
+    if (!value) {
+      dataLayer.pushEvent('tagValueIsEmpty');
+      return 0;
+    }
+    if (tags.map(({ tag }) => tag).includes(value)) {
+      dataLayer.pushEvent('tagAlreadyExists');
+      return 0;
+    }
+
+    setTags([...tags, { tag: value, tagId: window.crypto.randomUUID() }]);
+    inputRef.current.value = '';
+
+    dataLayer.pushEvent('appendTag', { latestTagLength: value.length });
+    return 1;
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    appendTag();
+    dataLayer.pushEvent('submitTag');
+  };
+
+  const handleClickKeyboardReturnIcon = () => {
+    appendTag();
+    dataLayer.pushEvent('clickKeyboardReturnIcon');
+  };
+
+  const handleBlur = () => {
+    const addedTagLength = appendTag();
+
+    dataLayer.pushEvent('blurTagGroup', {
+      tagsLength: tags.length + addedTagLength,
+    });
+  };
+
+  /**
+   * Monitoring paradigm for tag appending.
+   * appendTag + early return
+   *   = submit(like on keypress Enter) + clickKeyboardReturnIcon + blurTagGroup + others
+   */
 
   const handleClickTagsBox = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -145,7 +173,12 @@ export function TagGroup() {
       >
         <FlexUl>
           <Tags />
-          <TagForm handleSubmit={handleSubmit} ref={inputRef} />
+          <TagForm
+            onSubmit={handleSubmit}
+            onBlur={handleBlur}
+            onClickKeyboardReturnIcon={handleClickKeyboardReturnIcon}
+            ref={inputRef}
+          />
         </FlexUl>
       </Box>
     </QuestionsGroupWrapper>

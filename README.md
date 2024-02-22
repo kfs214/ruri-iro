@@ -2,6 +2,20 @@
 
 RUri-iro simplifies the creation of customized profile sheets. Users can effortlessly generate personalized profiles by completing a user-friendly form. This includes adding a photo and responding to selected questions, resulting in unique and tailored profile sheets.
 
+## Table of Contents
+
+- [RUri-iro: Personalized Profile Sheets Generator](#ruri-iro-personalized-profile-sheets-generator)
+  - [Table of Contents](#table-of-contents)
+  - [Project Details](#project-details)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Environment Variables](#environment-variables)
+    - [Local Development](#local-development)
+      - [Example:](#example)
+    - [AWS Amplify Environment](#aws-amplify-environment)
+  - [Build](#build)
+  - [Deploy with AWS Amplify](#deploy-with-aws-amplify)
+
 ## Project Details
 
 This application is built with [Next.js](https://nextjs.org/) and was bootstrapped using [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). Material UI has been incorporated for enhanced design components.
@@ -23,6 +37,29 @@ npm run dev
 ```
 
 Access the application at [http://localhost:3000](http://localhost:3000) in your preferred browser.
+
+## Environment Variables
+
+The project includes specific environment variable(s) for
+
+- Google Tag Manager
+
+A dummy value is initially set for development within the `.env` file. If you need to modify or override any environment variable(s), follow the instructions provided below.
+
+### Local Development
+
+For local development, customize or override the environment variable(s) by creating a `.env.local` file in the project root.
+
+#### Example:
+
+```env
+# Google Tag Manager
+GTM_ID=GTM-XXXXXX
+```
+
+### AWS Amplify Environment
+
+When working with AWS Amplify, refer to the official documentation on [Environment variables - AWS Amplify Hosting | Set environment variables](https://docs.aws.amazon.com/amplify/latest/userguide/environment-variables.html#setting-env-vars) for instructions on configuring environment variables specific to your Amplify environment.
 
 ## Build
 

@@ -10,14 +10,21 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
 import { metadata } from '@/const';
-import { useLayout } from '@/hooks';
+import { useDataLayer, useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
+// TODO 連打するとエラー出る
+// Uncaught (in promise) TypeError: Cannot read properties of null (reading 'ownerDocument')
 function TogglePreviewSwitch() {
   const { showPreview, setShowPreview } = useAppStore();
+  const dataLayer = useDataLayer({ componentName: 'AppBar' });
 
+  // TODO GTM設定をスプシとGASで管理
   const handleChange = (_: unknown, checked: boolean) => {
     setShowPreview(checked);
+    dataLayer.pushEvent('togglePreviewSwitch', {
+      togglePreviewSwitchChecked: checked,
+    });
   };
 
   return (

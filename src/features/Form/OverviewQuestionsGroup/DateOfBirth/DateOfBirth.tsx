@@ -7,6 +7,8 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 
+import { useDataLayer } from '@/hooks';
+
 type CustomDOBProps = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -14,7 +16,7 @@ type CustomDOBProps = {
 
 type DayjsDOBProps = {
   value: Dayjs | null;
-  onChange: (newValue: Dayjs | null) => void;
+  onChange: (value: Dayjs | null) => void;
 };
 
 export type DateOfBirthProps = {
@@ -34,6 +36,20 @@ export function DateOfBirth(props: DateOfBirthProps) {
     dayjsDOB,
   } = props;
 
+  const dataLayer = useDataLayer({ componentName: 'DateOfBirth' });
+
+  const handleBlurCustomDOB = () => {
+    dataLayer.pushEvent('blurCustomDOB', {
+      customDOBLength: customDOB.value.length,
+    });
+  };
+
+  // TODO モニタリグの定義箇所がバラけている
+  const handleChangeDayjsDOB = (value: Dayjs | null): void => {
+    dayjsDOB.onChange(value);
+    dataLayer.pushEvent('changeDayjsDOB');
+  };
+
   return (
     <Box>
       {isCustomDOBEnabled && (
@@ -42,6 +58,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
           variant="outlined"
           value={customDOB.value}
           onChange={customDOB.onChange}
+          onBlur={handleBlurCustomDOB}
           fullWidth
         />
       )}
@@ -49,7 +66,7 @@ export function DateOfBirth(props: DateOfBirthProps) {
         <DatePicker
           label={label}
           value={dayjsDOB.value}
-          onChange={dayjsDOB.onChange}
+          onChange={handleChangeDayjsDOB}
           slotProps={{
             textField: {
               fullWidth: true,

@@ -11,6 +11,7 @@ import ReactCrop, {
   PixelCrop,
 } from 'react-image-crop';
 
+import { useDataLayer } from '@/hooks';
 import { useImageStore } from '@/store';
 
 import 'react-image-crop/dist/ReactCrop.css';
@@ -99,6 +100,7 @@ export function SelectImage({ buttonText, type }: Props) {
   const [crop, setCrop] = useState<Crop | undefined>(completedCrop);
   const [isImgLoading, setIsImgLoading] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+  const dataLayer = useDataLayer({ componentName: 'SelectImage' });
 
   useEffect(() => {
     useImageStore.persist.rehydrate();
@@ -108,6 +110,12 @@ export function SelectImage({ buttonText, type }: Props) {
     setCrop(completedCrop);
   }, [completedCrop]);
 
+  // TODO 2回ずつ呼ばれる
+  const handleClickSelectFile = () => {
+    dataLayer.pushEvent('clickSelectFile', { selectImageType: type });
+  };
+
+  // TODO 画像を再選択したら選択範囲が消える問題。IndexedDBからの読み出しの場合？
   const onSelectFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
@@ -118,6 +126,8 @@ export function SelectImage({ buttonText, type }: Props) {
       setImgSrc(reader.result?.toString() ?? ''),
     );
     reader.readAsDataURL(e.target.files[0]);
+
+    dataLayer.pushEvent('selectFile', { selectImageType: type });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -166,6 +176,9 @@ export function SelectImage({ buttonText, type }: Props) {
 
     setCompletedCrop(pixelCrop);
     setImage(canvas.toDataURL('image/jpeg'));
+
+    // TODO Rehydrateで呼ばれている可能性があるので確認
+    dataLayer.pushEvent('completeCrop', { selectImageType: type });
   };
 
   return (
@@ -175,6 +188,7 @@ export function SelectImage({ buttonText, type }: Props) {
           component="label"
           variant="contained"
           startIcon={<AddPhotoAlternateIcon />}
+          onClick={handleClickSelectFile}
         >
           {buttonText}
           <VisuallyHiddenInput
