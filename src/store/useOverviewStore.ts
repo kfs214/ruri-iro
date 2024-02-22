@@ -1,5 +1,3 @@
-import { ChangeEvent } from 'react';
-
 import dayjs, { Dayjs } from 'dayjs';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
@@ -10,16 +8,15 @@ type DOBEditing = {
   dayjsDOB: Dayjs | null;
 };
 
-// TODO Storeは値の保持に専念すべきであり、onChangeのハンドラから値のみ渡すようにすべきでは
 export type OverviewState = {
   shownDOB: string;
   occupation: string;
   location: string;
-  handleChangeIsCustomDOBEnabled: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleOnChangeCustomDOB: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleOnChangeDayjsDOB: (newValue: Dayjs | null) => void;
-  onChangeOccupation: (e: ChangeEvent<HTMLInputElement>) => void;
-  onChangeLocation: (e: ChangeEvent<HTMLInputElement>) => void;
+  setIsCustomDOBEnabled: (value: boolean) => void;
+  setCustomDOB: (value: string) => void;
+  setDayjsDOB: (value: Dayjs | null) => void;
+  setOccupation: (value: string) => void;
+  setLocation: (value: string) => void;
 } & DOBEditing;
 
 function formatDOB({ isCustomDOBEnabled, customDOB, dayjsDOB }: DOBEditing) {
@@ -53,8 +50,8 @@ export const useOverviewStore = create<OverviewState>()(
         shownDOB: '',
         occupation: '',
         location: '',
-        handleChangeIsCustomDOBEnabled: (e) => {
-          set({ isCustomDOBEnabled: e.target.checked });
+        setIsCustomDOBEnabled: (value) => {
+          set({ isCustomDOBEnabled: value });
           const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
           const shownDOB = formatDOB({
             isCustomDOBEnabled,
@@ -63,8 +60,8 @@ export const useOverviewStore = create<OverviewState>()(
           });
           set({ shownDOB });
         },
-        handleOnChangeCustomDOB: (e) => {
-          set({ customDOB: e.target.value });
+        setCustomDOB: (value) => {
+          set({ customDOB: value });
           const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
           const shownDOB = formatDOB({
             isCustomDOBEnabled,
@@ -73,8 +70,8 @@ export const useOverviewStore = create<OverviewState>()(
           });
           set({ shownDOB });
         },
-        handleOnChangeDayjsDOB: (newValue) => {
-          set({ dayjsDOB: newValue });
+        setDayjsDOB: (value) => {
+          set({ dayjsDOB: value });
           const { isCustomDOBEnabled, customDOB, dayjsDOB } = get();
           const shownDOB = formatDOB({
             isCustomDOBEnabled,
@@ -83,8 +80,8 @@ export const useOverviewStore = create<OverviewState>()(
           });
           set({ shownDOB });
         },
-        onChangeOccupation: (e) => set({ occupation: e.target.value }),
-        onChangeLocation: (e) => set({ location: e.target.value }),
+        setOccupation: (value) => set({ occupation: value }),
+        setLocation: (value) => set({ location: value }),
       }),
       {
         name: 'overview-storage',

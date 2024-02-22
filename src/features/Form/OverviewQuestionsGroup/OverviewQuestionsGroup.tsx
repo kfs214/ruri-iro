@@ -3,6 +3,7 @@
 import React, { ChangeEvent, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
 
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
 import { useOverviewStore } from '@/store';
@@ -52,16 +53,33 @@ export function OverviewQuestionsGroup() {
 
   const {
     isCustomDOBEnabled,
-    handleChangeIsCustomDOBEnabled,
     customDOB,
-    handleOnChangeCustomDOB,
     dayjsDOB,
-    handleOnChangeDayjsDOB,
     occupation,
-    onChangeOccupation,
     location,
-    onChangeLocation,
+    setIsCustomDOBEnabled,
+    setCustomDOB,
+    setDayjsDOB,
+    setOccupation,
+    setLocation,
   } = useOverviewStore();
+
+  const handleChangeIsCustomDOBEnabled = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsCustomDOBEnabled(e.target.checked);
+  };
+
+  const handleChangeCustomDOB = (e: ChangeEvent<HTMLInputElement>) => {
+    setCustomDOB(e.target.value);
+  };
+  const handleChangeDayjsDOB = (newValue: dayjs.Dayjs | null) => {
+    setDayjsDOB(newValue);
+  };
+  const handleChangeOccupation = (e: ChangeEvent<HTMLInputElement>) => {
+    setOccupation(e.target.value);
+  };
+  const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
+  };
 
   return (
     <OverviewQuestionsGroupDOMComponent
@@ -69,12 +87,12 @@ export function OverviewQuestionsGroup() {
         label: 'お誕生日',
         isCustomDOBEnabled,
         handleChangeIsCustomDOBEnabled,
-        customDOB: { value: customDOB, onChange: handleOnChangeCustomDOB },
-        dayjsDOB: { value: dayjsDOB, onChange: handleOnChangeDayjsDOB },
+        customDOB: { value: customDOB, onChange: handleChangeCustomDOB },
+        dayjsDOB: { value: dayjsDOB, onChange: handleChangeDayjsDOB },
       }}
       // TODO モニタリング
-      occupation={{ value: occupation, onChange: onChangeOccupation }}
-      location={{ value: location, onChange: onChangeLocation }}
+      occupation={{ value: occupation, onChange: handleChangeOccupation }}
+      location={{ value: location, onChange: handleChangeLocation }}
     />
   );
 }
