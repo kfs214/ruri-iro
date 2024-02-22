@@ -1,11 +1,4 @@
-import {
-  FormEvent,
-  MouseEvent,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
+import { FormEvent, MouseEvent, forwardRef, useEffect, useRef } from 'react';
 
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Box from '@mui/material/Box';
@@ -22,7 +15,7 @@ import { Tag, useTagStore } from '@/store';
 import { QuestionsGroupWrapper } from '../QuestionsGroupWrapper';
 
 type TagLiProps = {
-  onDelete: (tagId: string) => void;
+  onDelete: () => void;
 } & Tag;
 
 const StyledFormLi = styled('li')`
@@ -41,19 +34,17 @@ function TagLi({ tag, onDelete }: TagLiProps) {
 
 function Tags() {
   const { tags, setTags } = useTagStore();
+  const dataLayer = useDataLayer({ componentName: 'TagGroup' });
 
-  const handleDelete = useCallback(
-    (deletedTagId: string) => {
-      setTags(tags.filter(({ tagId }) => tagId !== deletedTagId));
-    },
-    [tags, setTags],
-  );
+  const handleDelete = (tag: Tag) => {
+    setTags(tags.filter(({ tagId }) => tagId !== tag.tagId));
+    dataLayer.pushEvent('deleteTag', { deletedTagValueLength: tag.tag.length });
+  };
 
-  // TODO keyの警告が出る. latestTagId永続化
   return tags.map((tag) => (
     <TagLi
       onDelete={() => {
-        handleDelete(tag.tagId);
+        handleDelete(tag);
       }}
       key={tag.tagId}
       {...tag}
