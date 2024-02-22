@@ -16,7 +16,7 @@ type CustomDOBProps = {
 
 type DayjsDOBProps = {
   value: Dayjs | null;
-  onChange: (newValue: Dayjs | null) => void;
+  onChange: (value: Dayjs | null) => void;
 };
 
 export type DateOfBirthProps = {
@@ -44,8 +44,8 @@ export function DateOfBirth(props: DateOfBirthProps) {
     });
   };
 
-  const handleChangeDayjsDOB = (newValue: Dayjs | null): void => {
-    dayjsDOB.onChange(newValue);
+  const handleChangeDayjsDOB = (value: Dayjs | null): void => {
+    dayjsDOB.onChange(value);
     dataLayer.pushEvent('changeDayjsDOB');
   };
 

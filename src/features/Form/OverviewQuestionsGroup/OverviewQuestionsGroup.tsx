@@ -3,7 +3,7 @@
 import React, { ChangeEvent, ComponentProps, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
-import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
 import { useDataLayer } from '@/hooks';
@@ -73,8 +73,8 @@ export function OverviewQuestionsGroup() {
   const handleChangeCustomDOB = (e: ChangeEvent<HTMLInputElement>) => {
     setCustomDOB(e.target.value);
   };
-  const handleChangeDayjsDOB = (newValue: dayjs.Dayjs | null) => {
-    setDayjsDOB(newValue);
+  const handleChangeDayjsDOB = (value: Dayjs | null) => {
+    setDayjsDOB(value);
   };
   const handleChangeOccupation = (e: ChangeEvent<HTMLInputElement>) => {
     setOccupation(e.target.value);
