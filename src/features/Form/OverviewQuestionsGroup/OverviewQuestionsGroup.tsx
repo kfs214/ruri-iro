@@ -1,25 +1,20 @@
 'use client';
 
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, ComponentProps, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
+import { useDataLayer } from '@/hooks';
 import { useOverviewStore } from '@/store';
 
 import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
 
 type OverviewQuestionsGroupProps = {
   dateOfBirth: DateOfBirthProps;
-  occupation: {
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  };
-  location: {
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  };
+  occupation: ComponentProps<typeof TextField>;
+  location: ComponentProps<typeof TextField>;
 };
 
 export function OverviewQuestionsGroupDOMComponent({
@@ -47,6 +42,10 @@ export function OverviewQuestionsGroupDOMComponent({
 }
 
 export function OverviewQuestionsGroup() {
+  const dataLayer = useDataLayer({
+    componentName: 'OverviewQuestionsGroup',
+  });
+
   useEffect(() => {
     useOverviewStore.persist.rehydrate();
   }, []);
@@ -66,6 +65,9 @@ export function OverviewQuestionsGroup() {
 
   const handleChangeIsCustomDOBEnabled = (e: ChangeEvent<HTMLInputElement>) => {
     setIsCustomDOBEnabled(e.target.checked);
+    dataLayer.pushEvent('changeIsCustomDOBEnabled', {
+      isCustomDOBEnabled: e.target.checked,
+    });
   };
 
   const handleChangeCustomDOB = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +83,18 @@ export function OverviewQuestionsGroup() {
     setLocation(e.target.value);
   };
 
+  const onBlurOccupation = () => {
+    dataLayer.pushEvent('blurOccupation', {
+      occupationLength: occupation.length,
+    });
+  };
+
+  const onBlurLocation = () => {
+    dataLayer.pushEvent('blurLocation', {
+      locationLength: location.length,
+    });
+  };
+
   return (
     <OverviewQuestionsGroupDOMComponent
       dateOfBirth={{
@@ -90,9 +104,16 @@ export function OverviewQuestionsGroup() {
         customDOB: { value: customDOB, onChange: handleChangeCustomDOB },
         dayjsDOB: { value: dayjsDOB, onChange: handleChangeDayjsDOB },
       }}
-      // TODO モニタリング
-      occupation={{ value: occupation, onChange: handleChangeOccupation }}
-      location={{ value: location, onChange: handleChangeLocation }}
+      occupation={{
+        value: occupation,
+        onChange: handleChangeOccupation,
+        onBlur: onBlurOccupation,
+      }}
+      location={{
+        value: location,
+        onChange: handleChangeLocation,
+        onBlur: onBlurLocation,
+      }}
     />
   );
 }
