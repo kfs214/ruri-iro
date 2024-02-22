@@ -124,7 +124,7 @@ export function TagGroup() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     appendTag();
-    dataLayer.pushEvent('submit');
+    dataLayer.pushEvent('submitTag');
   };
 
   const handleClickKeyboardReturnIcon = () => {
