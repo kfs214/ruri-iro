@@ -4,6 +4,7 @@ import { useReportWebVitals } from 'next/web-vitals';
 
 import { useDataLayer } from '@/hooks';
 
+// TODO AppProviderから呼ぶ
 export function WebVitals() {
   const dataLayer = useDataLayer({ componentName: 'WebVitals' });
   useReportWebVitals((metric) => {
