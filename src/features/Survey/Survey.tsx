@@ -1,26 +1,21 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Typography } from '@mui/material';
 import Link from 'next/link';
 
-import { useSurveyStore } from '@/store/useSurveyStore';
+import { useSurvey } from './useSurvey';
 
 export function Survey() {
-  const { setScrollSurveyIntoView } = useSurveyStore();
   const surveyRef = useRef<HTMLParagraphElement>(null);
-
-  const scrollSurveyIntoView = useCallback(() => {
-    if (!surveyRef?.current) return;
-    surveyRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [surveyRef]);
+  const { setSurveyRef } = useSurvey();
 
   useEffect(() => {
-    setScrollSurveyIntoView(scrollSurveyIntoView);
+    setSurveyRef(surveyRef);
 
     return () => {
-      setScrollSurveyIntoView(undefined);
+      setSurveyRef(undefined);
     };
-  }, [scrollSurveyIntoView, setScrollSurveyIntoView]);
+  }, [setSurveyRef]);
 
   return (
     <>

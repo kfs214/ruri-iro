@@ -2,6 +2,7 @@ import { RefObject, useCallback, useEffect, useState } from 'react';
 
 import { toPng } from 'html-to-image';
 
+import { useSurvey } from '@/features/Survey';
 import { useDataLayer } from '@/hooks';
 import {
   useNameStore,
@@ -10,7 +11,6 @@ import {
   useTagStore,
   usePersonalPerspectiveStore,
 } from '@/store';
-import { useSurveyStore } from '@/store/useSurveyStore';
 
 type ImageOptions = {
   share: {
@@ -55,7 +55,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
   const { profileImage, coverImage } = useImageStore();
   const { tags } = useTagStore();
   const { questionAnswerPairs } = usePersonalPerspectiveStore();
-  const { scrollSurveyIntoView } = useSurveyStore();
+  const { scrollSurveyIntoView } = useSurvey();
 
   const [base64url, setBase64url] = useState('');
 
