@@ -27,7 +27,7 @@ const StyledFormLi = styled('li')`
 function TagLi({ tag, onDelete }: TagLiProps) {
   return (
     <li style={{ overflow: 'hidden' }}>
-      <Chip label={tag} onDelete={onDelete} />
+      <Chip label={`#${tag}`} onDelete={onDelete} />
     </li>
   );
 }
@@ -70,6 +70,7 @@ const TagForm = forwardRef<
         variant="standard"
         fullWidth
         InputProps={{
+          startAdornment: '#',
           disableUnderline: true,
           // TODO iOS safariで、returnアイコン押下後に次のタグが入力できないバージョンがある（16系）
           endAdornment: (
