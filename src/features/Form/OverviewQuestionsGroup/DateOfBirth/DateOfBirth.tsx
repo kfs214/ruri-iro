@@ -78,11 +78,11 @@ export function DateOfBirth(props: DateOfBirthProps) {
         <FormControlLabel
           control={
             <Checkbox
-              checked={isCustomDOBEnabled}
+              checked={!isCustomDOBEnabled}
               onChange={handleChangeIsCustomDOBEnabled}
             />
           }
-          label="お誕生日を自由記述で設定する"
+          label="お誕生日をカレンダーから設定する"
         />
       </Box>
     </Box>

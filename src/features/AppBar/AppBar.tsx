@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
-import { metadata } from '@/const';
+import { aboutApp } from '@/const';
 import { useDataLayer, useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
@@ -56,7 +56,7 @@ export function AppBar() {
           ml={1}
           sx={{ flexGrow: 1, color: 'white', fontWeight: 'bold' }}
         >
-          {metadata.title}
+          {aboutApp.title}
         </Typography>
         {!isPC && <TogglePreviewSwitch />}
       </Toolbar>
