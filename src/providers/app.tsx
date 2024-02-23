@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
+import { WebVitals } from '@/components';
 import { useDataLayer } from '@/hooks';
 import ThemeRegistry from '@/providers/ThemeRegistry/ThemeRegistry';
 
@@ -45,6 +46,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
+      <WebVitals />
       <ThemeRegistry>{children}</ThemeRegistry>
     </LocalizationProvider>
   );
