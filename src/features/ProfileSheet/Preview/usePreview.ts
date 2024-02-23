@@ -95,7 +95,7 @@ ${window.location.href}`,
 
     /* Survey Begin */
     setTimeout(() => {
-      if (scrollSurveyIntoView) scrollSurveyIntoView();
+      scrollSurveyIntoView();
     }, 1000);
     /* Survey End */
   }, [preferredName, fullName, dataLayer, base64url, scrollSurveyIntoView]);
