@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { Typography } from '@mui/material';
 import Link from 'next/link';
@@ -6,16 +6,21 @@ import Link from 'next/link';
 import { useSurveyStore } from '@/store/useSurveyStore';
 
 export function Survey() {
-  const { setRef } = useSurveyStore();
+  const { setScrollSurveyIntoView } = useSurveyStore();
   const surveyRef = useRef<HTMLParagraphElement>(null);
 
+  const scrollSurveyIntoView = useCallback(() => {
+    if (!surveyRef?.current) return;
+    surveyRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [surveyRef]);
+
   useEffect(() => {
-    setRef(surveyRef);
+    setScrollSurveyIntoView(scrollSurveyIntoView);
 
     return () => {
-      setRef(undefined);
+      setScrollSurveyIntoView(undefined);
     };
-  }, [setRef]);
+  }, [scrollSurveyIntoView, setScrollSurveyIntoView]);
 
   return (
     <>
