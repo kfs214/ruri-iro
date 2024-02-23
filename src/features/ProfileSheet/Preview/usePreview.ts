@@ -67,13 +67,13 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     const userName = composeUserName(preferredName || fullName);
     const imageOptions = {
       share: {
-        title: `${userName}さんの自己紹介シート[ruri-iro]`,
+        title: `${userName}さんの自己紹介シート[こういうものです]`,
         text: `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
         
 #こういうものです で自己紹介シートを作成してシェアしよう！
 ${window.location.href}`,
       },
-      fileName: `${userName}さんの自己紹介シート_ruri-iro.png`,
+      fileName: `${userName}さんの自己紹介シート_こういうものです.png`,
     };
 
     dataLayer.pushEvent('clickShare');

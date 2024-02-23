@@ -1,10 +1,8 @@
-export const metadata = {
-  title: 'RUri-iro',
+export const aboutApp = {
+  title: 'こういうものです。',
   description:
     'Generate personalized Profile Sheets with ease by completing a user-friendly form, featuring your photo and responses to selected questions.',
 };
-
-// TODO description読み込まれてなくない
 
 export const questions = [
   { value: 'kinokoOrTakenoko', label: 'きのこ派？たけのこ派？' },

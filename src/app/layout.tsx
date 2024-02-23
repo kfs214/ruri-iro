@@ -3,8 +3,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Script from 'next/script';
 
+import { aboutApp } from '@/const';
 import { AppBar } from '@/features/AppBar';
 import { AppProvider } from '@/providers/app';
+
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  ...aboutApp,
+};
 
 export default function RootLayout({
   children,
