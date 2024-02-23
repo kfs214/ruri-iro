@@ -15,6 +15,16 @@ type AppProviderProps = {
   children: React.ReactNode;
 };
 
+function parseErrorMessage(error: unknown) {
+  if (typeof error !== 'object') return error;
+  if (!error) return error;
+
+  if (JSON.stringify(error) !== '{}') return JSON.stringify(error);
+  if (error.toString) return error.toString();
+
+  return 'failed to parse error message';
+}
+
 export function AppProvider({ children }: AppProviderProps) {
   const dataLayer = useDataLayer({ componentName: 'AppProvider' });
 
@@ -24,16 +34,20 @@ export function AppProvider({ children }: AppProviderProps) {
     const originalConsoleError = window.console.error;
     function onUnhandledRejection({ reason }: { reason: unknown }) {
       dataLayer.pushEvent('unhandledPromiseRejection', {
-        errorMessage: reason,
+        errorMessage: parseErrorMessage(reason),
       });
     }
     function onError({ error }: { error: unknown }) {
-      dataLayer.pushEvent('uncaughtException', { errorMessage: error });
+      dataLayer.pushEvent('uncaughtException', {
+        errorMessage: parseErrorMessage(error),
+      });
     }
 
     window.console.error = (...error) => {
       originalConsoleError(...error);
-      dataLayer.pushEvent('consoleError', { errorMessage: error });
+      dataLayer.pushEvent('consoleError', {
+        errorMessage: parseErrorMessage(error),
+      });
     };
     window.addEventListener('unhandledrejection', onUnhandledRejection);
     window.addEventListener('error', onError);
