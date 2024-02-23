@@ -44,7 +44,7 @@ export const useOverviewStore = create<OverviewState>()(
   devtools(
     persist(
       (set, get) => ({
-        isCustomDOBEnabled: false,
+        isCustomDOBEnabled: true,
         customDOB: '',
         dayjsDOB: null,
         shownDOB: '',

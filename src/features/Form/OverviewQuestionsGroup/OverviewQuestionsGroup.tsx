@@ -63,8 +63,10 @@ export function OverviewQuestionsGroup() {
     setLocation,
   } = useOverviewStore();
 
+  // 本来は変数名を見直した方が良いが、
+  // GTM設定も変える必要があることと、チェックボックス自体を無くしたいので暫定対応
   const handleChangeIsCustomDOBEnabled = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsCustomDOBEnabled(e.target.checked);
+    setIsCustomDOBEnabled(!e.target.checked);
     dataLayer.pushEvent('changeIsCustomDOBEnabled', {
       isCustomDOBEnabled: e.target.checked,
     });
