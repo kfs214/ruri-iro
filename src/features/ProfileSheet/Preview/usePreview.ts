@@ -10,6 +10,7 @@ import {
   useTagStore,
   usePersonalPerspectiveStore,
 } from '@/store';
+import { useSurveyStore } from '@/store/useSurveyStore';
 
 type ImageOptions = {
   share: {
@@ -54,6 +55,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
   const { profileImage, coverImage } = useImageStore();
   const { tags } = useTagStore();
   const { questionAnswerPairs } = usePersonalPerspectiveStore();
+  const { scrollSurveyIntoView } = useSurveyStore();
 
   const [base64url, setBase64url] = useState('');
 
@@ -90,7 +92,13 @@ ${window.location.href}`,
       saveImage(base64url, imageOptions);
       dataLayer.pushEvent('saveImage');
     }
-  }, [base64url, preferredName, fullName, dataLayer]);
+
+    /* Survey Begin */
+    setTimeout(() => {
+      scrollSurveyIntoView();
+    }, 1000);
+    /* Survey End */
+  }, [preferredName, fullName, dataLayer, base64url, scrollSurveyIntoView]);
 
   // The image rendering issue in Safari was addressed by implementing a workaround found at:
   // https://github.com/bubkoo/html-to-image/issues/361#issuecomment-1402537176
