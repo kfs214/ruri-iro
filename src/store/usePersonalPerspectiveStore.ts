@@ -59,5 +59,6 @@ export const usePersonalPerspectiveStore = create<PersonalPerspectiveState>()(
         skipHydration: true,
       },
     ),
+    { name: 'PersonalPerspectiveStore' },
   ),
 );

@@ -9,9 +9,12 @@ type SurveyState = {
 };
 
 export const useSurveyStore = create<SurveyState>()(
-  devtools((set) => ({
-    setSurveyRef: (surveyRef) => {
-      set({ surveyRef });
-    },
-  })),
+  devtools(
+    (set) => ({
+      setSurveyRef: (surveyRef) => {
+        set({ surveyRef });
+      },
+    }),
+    { name: 'SurveyStore' },
+  ),
 );

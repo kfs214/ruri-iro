@@ -69,5 +69,6 @@ export const useImageStore = create<ImageState>()(
         skipHydration: true,
       },
     ),
+    { name: 'ImageStore' },
   ),
 );
