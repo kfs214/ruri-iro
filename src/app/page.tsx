@@ -13,7 +13,7 @@ export default function HomePage() {
   const { showPreview } = useAppStore();
 
   return (
-    <Box display="grid" gap={3} gridTemplateColumns="minmax(0,1fr)">
+    <>
       <Box
         display="grid"
         gridAutoFlow="column"
@@ -26,10 +26,10 @@ export default function HomePage() {
       </Box>
 
       {/* Survey Begin */}
-      <Box>
+      <Box sx={{ mt: 10 }}>
         <Survey />
       </Box>
       {/* Survey End */}
-    </Box>
+    </>
   );
 }

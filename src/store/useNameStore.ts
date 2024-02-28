@@ -24,5 +24,6 @@ export const useNameStore = create<NameState>()(
         skipHydration: true,
       },
     ),
+    { name: 'NameStore' },
   ),
 );
