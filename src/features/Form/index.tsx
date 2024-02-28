@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 import Box from '@mui/material/Box';
 
@@ -17,18 +17,18 @@ export function Form() {
   const scrollY = useRef(0);
   const { isPC } = useLayout();
 
-  // TODO Show Preview / スクロール / Backでスクロール位置が連動してしまう
-  const updateScroll = () => {
+  // TODO Show Preview / Backでスクロール位置が少し変わる
+  function updateScroll() {
     scrollY.current = window.scrollY;
-  };
+  }
 
-  useEffect(() => {
-    window.scrollTo(0, formScrollPosition);
+  useLayoutEffect(() => {
     window.addEventListener('scroll', updateScroll);
+    window.scrollTo(0, formScrollPosition);
 
     return () => {
-      setFormScrollPosition(scrollY.current);
       window.removeEventListener('scroll', updateScroll);
+      setFormScrollPosition(scrollY.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
