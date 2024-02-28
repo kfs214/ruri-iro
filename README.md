@@ -2,9 +2,8 @@
 
 RUri-iro simplifies the creation of customized profile sheets. Users can effortlessly generate personalized profiles by completing a user-friendly form. This includes adding a photo and responding to selected questions, resulting in unique and tailored profile sheets.
 
-## Table of Contents
+## Table of Contents<!-- omit in toc -->
 
-- [Table of Contents](#table-of-contents)
 - [Project Details](#project-details)
 - [Installation](#installation)
 - [Usage](#usage)

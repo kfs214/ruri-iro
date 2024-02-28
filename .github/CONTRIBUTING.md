@@ -4,9 +4,8 @@ Thank you for investing your time in contributing to our project! Any contributi
 
 In this guide, you'll find an overview of the contribution workflow for opening issues and creating pull requests.
 
-## Table of Contents
+## Table of Contents<!-- omit in toc -->
 
-- [Table of Contents](#table-of-contents)
 - [New Contributor Guide](#new-contributor-guide)
 - [Issues](#issues)
   - [Reproducing a Reported Bug](#reproducing-a-reported-bug)
