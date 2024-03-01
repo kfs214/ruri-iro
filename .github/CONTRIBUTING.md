@@ -20,7 +20,7 @@ In this guide, you'll find an overview of the contribution workflow for opening 
 
 ## New Contributor Guide
 
-To gain an understanding of the project, please read the [README](../README.md) file.
+To gain an understanding of the project, please read the [README](../README.md) file and [wiki](https://github.com/kfs214/ruri-iro/wiki).
 
 ## Issues
 
