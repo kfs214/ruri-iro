@@ -53,6 +53,8 @@
         "newlines-between": "always"
       }
     ],
+    // TODO refactor code and activate
+    // "func-style": ["warn", "declaration"],
     "@typescript-eslint/no-unused-vars": "warn",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off"

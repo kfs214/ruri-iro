@@ -1,13 +1,14 @@
 module.exports = {
-  // Type check TypeScript files
-  '**/*.(ts|tsx)': () => 'npx tsc --noEmit',
-
-  // Lint & Prettify TS and JS files
-  '**/*.(ts|tsx|js)': (filenames) => [
-    `eslint --fix ${filenames.join(' ')}`,
-    `prettier --write ${filenames.join(' ')}`,
+  // Type check and Lint TypeScript files
+  '**/*.(ts|tsx)': (filenames) => [
+    'npx tsc --noEmit',
+    `eslint --max-warnings=0 --fix ${filenames.join(' ')}`,
   ],
 
-  // Prettify only Markdown and JSON files
-  '**/*.(md|json)': (filenames) => `prettier --write ${filenames.join(' ')}`,
+  // Lint JS files
+  '**/*.(js)': (filenames) => `eslint --fix ${filenames.join(' ')}`,
+
+  // Prettify TS, JS, Markdown and JSON files
+  '**/*.(ts|tsx|js|json|md)': (filenames) =>
+    `prettier --write ${filenames.join(' ')}`,
 };
