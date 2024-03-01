@@ -40,7 +40,10 @@ Contribute by providing additional information to existing issues.
 
 Pull Requests are the way concrete changes are made to the code and documentation in this repository, including this document.
 
-### [Fork a Repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+### Fork a Repository
+
+To start, fork a repository and begin working on your changes.  
+For more information, refer to [Fork a Repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
 
 ### Branches
 
