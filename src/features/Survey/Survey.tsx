@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 
 import { useSurvey } from './useSurvey';
@@ -18,7 +18,7 @@ export function Survey() {
   }, [setSurveyRef]);
 
   return (
-    <>
+    <Box sx={{ color: 'rgba(0, 0, 0, 0.7)' }}>
       <Typography ref={surveyRef}>
         いかがでしたか？お困りごとはありませんか？
       </Typography>
@@ -30,6 +30,6 @@ export function Survey() {
       >
         Google Formsで回答する
       </Link>
-    </>
+    </Box>
   );
 }

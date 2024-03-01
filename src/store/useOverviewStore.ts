@@ -89,5 +89,6 @@ export const useOverviewStore = create<OverviewState>()(
         storage,
       },
     ),
+    { name: 'OverviewStore' },
   ),
 );

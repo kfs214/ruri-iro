@@ -65,13 +65,16 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
 
   const handleShare = useCallback(async () => {
     const userName = composeUserName(preferredName || fullName);
+    const sharedUrl = new URL(window.location.href);
+    sharedUrl.searchParams.set('openExternalBrowser', '1');
+
     const imageOptions = {
       share: {
         title: `${userName}さんの自己紹介シート[こういうものです]`,
         text: `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
         
 #こういうものです で自己紹介シートを作成してシェアしよう！
-${window.location.href}`,
+${sharedUrl.toString()}`,
       },
       fileName: `${userName}さんの自己紹介シート_こういうものです.png`,
     };

@@ -23,5 +23,6 @@ export const useTagStore = create<TagState>()(
         skipHydration: true,
       },
     ),
+    { name: 'TagStore' },
   ),
 );

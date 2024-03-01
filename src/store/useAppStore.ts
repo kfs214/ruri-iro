@@ -12,16 +12,19 @@ type AppState = {
 };
 
 export const useAppStore = create<AppState>()(
-  devtools((set) => ({
-    showPreview: false,
-    formScrollPosition: 0,
-    setShowPreview: (checked) => {
-      set({
-        showPreview: checked,
-      });
-    },
-    setFormScrollPosition: (scrollY) => {
-      set({ formScrollPosition: scrollY });
-    },
-  })),
+  devtools(
+    (set) => ({
+      showPreview: false,
+      formScrollPosition: 0,
+      setShowPreview: (checked) => {
+        set({
+          showPreview: checked,
+        });
+      },
+      setFormScrollPosition: (scrollY) => {
+        set({ formScrollPosition: scrollY });
+      },
+    }),
+    { name: 'AppStore' },
+  ),
 );
