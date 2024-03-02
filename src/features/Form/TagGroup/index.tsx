@@ -62,20 +62,27 @@ const TagForm = forwardRef<
   }
 >(({ onSubmit, onBlur, onClickKeyboardReturnIcon }, ref) => (
   <StyledFormLi key="li">
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} aria-label="tag-form">
       <TextField
         inputRef={ref}
         onBlur={onBlur}
         name="tag"
         variant="standard"
         fullWidth
+        inputProps={{
+          'aria-label': 'tag-input',
+        }}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
         InputProps={{
           startAdornment: '#',
           disableUnderline: true,
           // TODO iOS safariで、returnアイコン押下後に次のタグが入力できないバージョンがある（16系）
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={onClickKeyboardReturnIcon}>
+              <IconButton
+                onClick={onClickKeyboardReturnIcon}
+                aria-label="add-tag-button"
+              >
                 <KeyboardReturnIcon />
               </IconButton>
             </InputAdornment>
