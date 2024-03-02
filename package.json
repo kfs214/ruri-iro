@@ -10,7 +10,8 @@
     "lint": "next lint --fix",
     "build": "next build",
     "start": "next start",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "npx playwright test"
   },
   "engines": {
     "node": ">=18.17.0"
@@ -32,9 +33,7 @@
     "zustand": "4.4.6"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^8.57.0",
-    "@playwright/test": "^1.42.0",
+    "@playwright/test": "1.42.0",
     "@storybook/addon-essentials": "7.5.3",
     "@storybook/addon-interactions": "7.5.3",
     "@storybook/addon-links": "7.5.3",
