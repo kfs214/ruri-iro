@@ -95,12 +95,12 @@ test.describe('TagGroup', () => {
   });
 
   // TODO write tests
-  test.describe('can edit after page reload', () => {
+  test.describe.skip('can edit after page reload', () => {
     test('tags are persisted', async () => {});
     test('can add tags after reloading', async () => {});
     test('can delete tags after reloading', async () => {});
     test('add (a, b, c, d, e) -> delete (b) -> reload -> delete (d) -> add (f, g) -> delete (c, f)', async () => {});
   });
 
-  test.describe('monitoring', () => {});
+  test.describe.skip('monitoring', () => {});
 });
