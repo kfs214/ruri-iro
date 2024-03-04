@@ -14,6 +14,9 @@ test.describe('TagGroup', () => {
   });
 
   test.describe('can add tag', () => {
+    // TODO write test
+    test('Focus on input when parent div is clicked ', async () => {});
+
     test('Enter', async ({ page }) => {
       const tagInput = await page.getByRole('textbox', { name: 'tag-input' });
       await tagInput.click();
