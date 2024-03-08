@@ -48,6 +48,25 @@ function composeUserName(userName: string) {
   return `${userName.substring(0, FILENAME_USER_NAME_MAX_LENGTH - 1)}…`;
 }
 
+function composeImageOptions(name: string) {
+  const userName = composeUserName(name);
+
+  const sharedUrl = new URL(window.location.href);
+  sharedUrl.searchParams.set('openExternalBrowser', '1');
+  const imageOptions = {
+    share: {
+      title: `${userName}さんの自己紹介シート[こういうものです]`,
+      text: `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
+        
+#こういうものです で自己紹介シートを作成してシェアしよう！
+${sharedUrl.toString()}`,
+    },
+    fileName: `${userName}さんの自己紹介シート_こういうものです.png`,
+  };
+
+  return imageOptions;
+}
+
 export function usePreview(ref: RefObject<HTMLDivElement>) {
   // TODO 更新を検知するselector
   const { shownDOB, occupation, location } = useOverviewStore();
@@ -63,22 +82,21 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
     componentName: 'Preview',
   });
 
+  const imageOptions = composeImageOptions(preferredName || fullName);
+
+  const handleDownload = useCallback(async () => {
+    dataLayer.pushEvent('clickDownload');
+
+    saveImage(base64url, imageOptions);
+
+    /* Survey Begin */
+    setTimeout(() => {
+      scrollSurveyIntoView();
+    }, 1000);
+    /* Survey End */
+  }, [dataLayer, base64url, imageOptions, scrollSurveyIntoView]);
+
   const handleShare = useCallback(async () => {
-    const userName = composeUserName(preferredName || fullName);
-    const sharedUrl = new URL(window.location.href);
-    sharedUrl.searchParams.set('openExternalBrowser', '1');
-
-    const imageOptions = {
-      share: {
-        title: `${userName}さんの自己紹介シート[こういうものです]`,
-        text: `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
-        
-#こういうものです で自己紹介シートを作成してシェアしよう！
-${sharedUrl.toString()}`,
-      },
-      fileName: `${userName}さんの自己紹介シート_こういうものです.png`,
-    };
-
     dataLayer.pushEvent('clickShare');
 
     const file = await base64toFile(base64url, imageOptions);
@@ -92,7 +110,7 @@ ${sharedUrl.toString()}`,
 
       dataLayer.pushEvent('canShare');
     } else {
-      saveImage(base64url, imageOptions);
+      handleDownload();
       dataLayer.pushEvent('saveImage');
     }
 
@@ -101,7 +119,13 @@ ${sharedUrl.toString()}`,
       scrollSurveyIntoView();
     }, 1000);
     /* Survey End */
-  }, [preferredName, fullName, dataLayer, base64url, scrollSurveyIntoView]);
+  }, [
+    dataLayer,
+    base64url,
+    imageOptions,
+    handleDownload,
+    scrollSurveyIntoView,
+  ]);
 
   // The image rendering issue in Safari was addressed by implementing a workaround found at:
   // https://github.com/bubkoo/html-to-image/issues/361#issuecomment-1402537176
@@ -135,5 +159,5 @@ ${sharedUrl.toString()}`,
     questionAnswerPairs,
   ]);
 
-  return { base64url, handleShare };
+  return { base64url, handleShare, handleDownload };
 }

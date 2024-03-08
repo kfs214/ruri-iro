@@ -20,7 +20,7 @@ export function Preview({ children }: Props) {
   const { isPC } = useLayout();
   const { fullName } = useNameStore();
   const previewRef = useRef<HTMLDivElement>(null);
-  const { base64url, handleShare } = usePreview(previewRef);
+  const { base64url, handleShare, handleDownload } = usePreview(previewRef);
 
   return (
     <Box
@@ -36,13 +36,22 @@ export function Preview({ children }: Props) {
       {/* TODO シェアボタンをアイコンに */}
       {/* TODO シェアボタンの活性条件を詰める */}
       <Box sx={{ display: 'flex' }}>
-        <Box>
+        <Box sx={{ display: 'grid', gridAutoFlow: 'column', gap: 1 }}>
+          {!!navigator.canShare && (
+            <Button
+              onClick={handleShare}
+              variant="contained"
+              disabled={!fullName}
+            >
+              Share
+            </Button>
+          )}
           <Button
-            onClick={handleShare}
-            variant="contained"
+            onClick={handleDownload}
+            variant="outlined"
             disabled={!fullName}
           >
-            Share
+            Download
           </Button>
         </Box>
 
