@@ -110,5 +110,5 @@ export function useShare() {
     scrollSurveyIntoView,
   ]);
 
-  return { handleDownload, handleShare };
+  return { fullName, handleDownload, handleShare };
 }

@@ -17,7 +17,7 @@ function Share() {
   /* TODO シェアボタンをアイコンに */
   /* TODO シェアボタンの活性条件を詰める */
 
-  const { handleDownload, handleShare } = useShare();
+  const { fullName, handleDownload, handleShare } = useShare();
 
   const dataLayer = useDataLayer({
     componentName: 'Footer',
@@ -38,7 +38,7 @@ function Share() {
       <Button
         onClick={handleClickDownload}
         variant="outlined"
-        // disabled={!fullName}
+        disabled={!fullName}
       >
         Download
       </Button>
@@ -47,7 +47,7 @@ function Share() {
         <Button
           onClick={handleClickShare}
           variant="contained"
-          // disabled={!fullName}
+          disabled={!fullName}
         >
           Share
         </Button>
