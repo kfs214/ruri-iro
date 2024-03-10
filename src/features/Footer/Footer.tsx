@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useCallback } from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,18 +8,35 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 
 import { SwitchPreviewButton } from '@/components';
-import { useLayout } from '@/hooks';
+import { useDataLayer, useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
-function ShareDownload() {
+import { useShare } from './useShare';
+
+function Share() {
   /* TODO シェアボタンをアイコンに */
   /* TODO シェアボタンの活性条件を詰める */
-  // TODO イベントハンドラ等適用
+
+  const { handleDownload, handleShare } = useShare();
+
+  const dataLayer = useDataLayer({
+    componentName: 'Footer',
+  });
+
+  const handleClickDownload = useCallback(() => {
+    dataLayer.pushEvent('clickDownload');
+    handleDownload();
+  }, [dataLayer, handleDownload]);
+
+  const handleClickShare = useCallback(() => {
+    dataLayer.pushEvent('clickShare');
+    handleShare();
+  }, [dataLayer, handleShare]);
 
   return (
     <>
       <Button
-        // onClick={handleDownload}
+        onClick={handleClickDownload}
         variant="outlined"
         // disabled={!fullName}
       >
@@ -28,7 +45,7 @@ function ShareDownload() {
 
       {!!navigator.canShare && (
         <Button
-          // onClick={handleShare}
+          onClick={handleClickShare}
           variant="contained"
           // disabled={!fullName}
         >
@@ -58,7 +75,7 @@ export function Footer() {
 
         {/* Footer - Right */}
         <Box sx={{ display: 'grid', gap: 1, gridAutoFlow: 'column' }}>
-          {(isPC || showPreview) && <ShareDownload />}
+          {(isPC || showPreview) && <Share />}
           {!isPC && !showPreview && (
             <SwitchPreviewButton variant="showPreview" />
           )}

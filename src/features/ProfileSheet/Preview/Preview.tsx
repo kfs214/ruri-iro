@@ -13,7 +13,7 @@ type Props = {
 
 export function Preview({ children }: Props) {
   const previewRef = useRef<HTMLDivElement>(null);
-  const { base64url } = usePreview(previewRef);
+  const { profileSheetBase64Url } = usePreview(previewRef);
 
   return (
     <Box
@@ -32,7 +32,7 @@ export function Preview({ children }: Props) {
             {children}
           </Card>
         </Box>
-        {base64url && (
+        {profileSheetBase64Url && (
           <Box
             position="absolute"
             top={0}
@@ -41,7 +41,7 @@ export function Preview({ children }: Props) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               style={{ display: 'block', width: '100%', height: '100%' }}
-              src={base64url}
+              src={profileSheetBase64Url}
               alt="preview"
             />
           </Box>
