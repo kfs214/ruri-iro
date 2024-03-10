@@ -3,12 +3,7 @@
 import { useRef, ReactNode } from 'react';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-
-import { TogglePreviewButton } from '@/components';
-import { useLayout } from '@/hooks';
-import { useNameStore } from '@/store';
 
 import { usePreview } from './usePreview';
 
@@ -17,10 +12,8 @@ type Props = {
 };
 
 export function Preview({ children }: Props) {
-  const { isPC } = useLayout();
-  const { fullName } = useNameStore();
   const previewRef = useRef<HTMLDivElement>(null);
-  const { base64url, handleShare, handleDownload } = usePreview(previewRef);
+  const { base64url } = usePreview(previewRef);
 
   return (
     <Box
@@ -33,35 +26,6 @@ export function Preview({ children }: Props) {
         top: '88px',
       }}
     >
-      {/* TODO シェアボタンをアイコンに */}
-      {/* TODO シェアボタンの活性条件を詰める */}
-      <Box sx={{ display: 'flex' }}>
-        <Box sx={{ display: 'grid', gridAutoFlow: 'column', gap: 1 }}>
-          {!!navigator.canShare && (
-            <Button
-              onClick={handleShare}
-              variant="contained"
-              disabled={!fullName}
-            >
-              Share
-            </Button>
-          )}
-          <Button
-            onClick={handleDownload}
-            variant="outlined"
-            disabled={!fullName}
-          >
-            Download
-          </Button>
-        </Box>
-
-        {!isPC && (
-          <Box sx={{ ml: 1 }}>
-            <TogglePreviewButton />
-          </Box>
-        )}
-      </Box>
-
       <Box display="inline-block" position="relative">
         <Box>
           <Card ref={previewRef} sx={{ pb: 4 }}>

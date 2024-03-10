@@ -1,3 +1,3 @@
 export * from './FlexUl';
-export * from './TogglePreviewButton';
+export * from './SwitchPreviewButton';
 export * from './WebVitals';
