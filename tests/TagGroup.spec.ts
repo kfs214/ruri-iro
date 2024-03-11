@@ -24,7 +24,11 @@ test.describe('TagGroup', () => {
       await expect(page.getByText('test-tag-enter')).not.toBeVisible();
       await tagInput.fill('test-tag-enter');
       await tagInput.press('Enter');
-      await expect(page.getByText('test-tag-enter')).toHaveCount(2);
+      await expect(
+        page
+          .getByText('あなたを表わすハッシュタグ#')
+          .getByText('test-tag-enter'),
+      ).toBeVisible();
     });
 
     test('Icon', async ({ page }) => {
@@ -35,7 +39,11 @@ test.describe('TagGroup', () => {
       await expect(page.getByText('test-tag-icon')).not.toBeVisible();
       await tagInput.fill('test-tag-icon');
       await page.getByRole('button', { name: 'add-tag-button' }).click();
-      await expect(page.getByText('test-tag-icon')).toHaveCount(2);
+      await expect(
+        page
+          .getByText('あなたを表わすハッシュタグ#')
+          .getByText('test-tag-icon'),
+      ).toBeVisible();
     });
 
     test('Blur', async ({ page }) => {
@@ -46,13 +54,18 @@ test.describe('TagGroup', () => {
       await expect(page.getByText('test-tag-blur')).not.toBeVisible();
       await tagInput.fill('test-tag-blur');
       await tagInput.blur();
-      await expect(page.getByText('test-tag-blur')).toHaveCount(2);
+      await expect(
+        page
+          .getByText('あなたを表わすハッシュタグ#')
+          .getByText('test-tag-blur'),
+      ).toBeVisible();
     });
   });
 
   test.describe('can delete tag', () => {
     test('should delete only expected tags', async ({ page }) => {
-      const tagInput = await page.getByRole('textbox', {
+      const tagFormContainer = page.getByText('あなたを表わすハッシュタグ#');
+      const tagInput = page.getByRole('textbox', {
         name: 'tag-input',
       });
 
@@ -67,33 +80,33 @@ test.describe('TagGroup', () => {
       await tagInput.fill('test-tag-5');
       await tagInput.press('Enter');
 
-      await expect(page.getByText('test-tag-1')).toHaveCount(2);
-      await expect(page.getByText('test-tag-2')).toHaveCount(2);
-      await expect(page.getByText('test-tag-3')).toHaveCount(2);
-      await expect(page.getByText('test-tag-4')).toHaveCount(2);
-      await expect(page.getByText('test-tag-5')).toHaveCount(2);
+      await expect(tagFormContainer.getByText('test-tag-1')).toBeVisible();
+      await expect(tagFormContainer.getByText('test-tag-2')).toBeVisible();
+      await expect(tagFormContainer.getByText('test-tag-3')).toBeVisible();
+      await expect(tagFormContainer.getByText('test-tag-4')).toBeVisible();
+      await expect(tagFormContainer.getByText('test-tag-5')).toBeVisible();
 
       await page
         .getByRole('button', { name: '#test-tag-2' })
         .getByTestId('CancelIcon')
         .click();
 
-      await expect(page.getByText('test-tag-1')).toHaveCount(2);
+      await expect(tagFormContainer.getByText('test-tag-1')).toBeVisible();
       await expect(page.getByText('test-tag-2')).not.toBeVisible();
-      await expect(page.getByText('test-tag-3')).toHaveCount(2);
-      await expect(page.getByText('test-tag-4')).toHaveCount(2);
-      await expect(page.getByText('test-tag-5')).toHaveCount(2);
+      await expect(tagFormContainer.getByText('test-tag-3')).toBeVisible();
+      await expect(tagFormContainer.getByText('test-tag-4')).toBeVisible();
+      await expect(tagFormContainer.getByText('test-tag-5')).toBeVisible();
 
       await page
         .getByRole('button', { name: '#test-tag-4' })
         .getByTestId('CancelIcon')
         .click();
 
-      await expect(page.getByText('test-tag-1')).toHaveCount(2);
+      await expect(tagFormContainer.getByText('test-tag-1')).toBeVisible();
       await expect(page.getByText('test-tag-2')).not.toBeVisible();
-      await expect(page.getByText('test-tag-3')).toHaveCount(2);
+      await expect(tagFormContainer.getByText('test-tag-3')).toBeVisible();
       await expect(page.getByText('test-tag-4')).not.toBeVisible();
-      await expect(page.getByText('test-tag-5')).toHaveCount(2);
+      await expect(tagFormContainer.getByText('test-tag-5')).toBeVisible();
     });
   });
 
