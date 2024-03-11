@@ -20,8 +20,12 @@
     "project": "./tsconfig.json"
   },
   "rules": {
-    "import/prefer-default-export": "off",
+    "no-void": ["error", { "allowAsStatement": true }],
     "unused-imports/no-unused-imports": "warn",
+    // TODO refactor code and activate
+    // "func-style": ["warn", "declaration"],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-floating-promises": "warn",
     "import/order": [
       "warn",
       {
@@ -53,9 +57,7 @@
         "newlines-between": "always"
       }
     ],
-    // TODO refactor code and activate
-    // "func-style": ["warn", "declaration"],
-    "@typescript-eslint/no-unused-vars": "warn",
+    "import/prefer-default-export": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off"
   }

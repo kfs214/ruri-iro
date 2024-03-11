@@ -23,7 +23,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
   // The image rendering issue in Safari was addressed by implementing a workaround found at:
   // https://github.com/bubkoo/html-to-image/issues/361#issuecomment-1402537176
   useEffect(() => {
-    (async () => {
+    void (async () => {
       if (!ref.current) return;
 
       // Invoking `toPng` multiple times for potential stability in Safari rendering

@@ -71,7 +71,7 @@ export function useShare() {
 
   const imageOptions = composeImageOptions(preferredName || fullName);
 
-  const handleDownload = useCallback(async () => {
+  const handleDownload = useCallback(() => {
     saveImage(profileSheetBase64Url, imageOptions);
 
     /* Survey Begin */

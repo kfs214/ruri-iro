@@ -30,7 +30,7 @@ function Share() {
 
   const handleClickShare = useCallback(() => {
     dataLayer.pushEvent('clickShare');
-    handleShare();
+    void handleShare();
   }, [dataLayer, handleShare]);
 
   return (

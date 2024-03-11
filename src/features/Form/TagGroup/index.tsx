@@ -101,7 +101,7 @@ export function TagGroup() {
   const dataLayer = useDataLayer({ componentName: 'TagGroup' });
 
   useEffect(() => {
-    useTagStore.persist.rehydrate();
+    void useTagStore.persist.rehydrate();
   }, []);
 
   /**
