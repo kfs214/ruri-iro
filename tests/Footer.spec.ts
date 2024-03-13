@@ -213,16 +213,80 @@ test.describe('Footer', () => {
       });
     });
 
-    // TODO jestで戻り値を見る。またはwindow objectをspy
-    test.describe('Share button', () => {
-      test.describe('navigator.canShare', () => {
+    test.describe('works correctly', () => {
+      test.describe('download', () => {
+        test.describe('preferred name is empty', () => {
+          test('10 characters', async ({ page }) => {
+            await page.getByLabel('お名前 *').click();
+            await page.getByLabel('お名前 *').fill('0123456789');
+            const downloadPromise = page.waitForEvent('download');
+            await page.getByRole('button', { name: 'Download' }).click();
+
+            await expect((await downloadPromise).suggestedFilename()).toBe(
+              '0123456789さんの自己紹介シート_こういうものです.png',
+            );
+          });
+
+          test('longer than 10 characters', async ({ page }) => {
+            await page.getByLabel('お名前 *').click();
+            await page.getByLabel('お名前 *').fill('01234567890123');
+            const downloadPromise = page.waitForEvent('download');
+            await page.getByRole('button', { name: 'Download' }).click();
+
+            await expect((await downloadPromise).suggestedFilename()).toBe(
+              '012345678…さんの自己紹介シート_こういうものです.png',
+            );
+          });
+        });
+
+        test.describe('preferred name is filled', () => {
+          test('10 characters', async ({ page }) => {
+            await page.getByLabel('お名前 *').click();
+            await page.getByLabel('お名前 *').fill('test-full-name');
+            await page.getByLabel('なんて呼ばれてる？？').click();
+            await page.getByLabel('なんて呼ばれてる？？').fill('0123456789');
+            const downloadPromise = page.waitForEvent('download');
+            await page.getByRole('button', { name: 'Download' }).click();
+
+            await expect((await downloadPromise).suggestedFilename()).toBe(
+              '0123456789さんの自己紹介シート_こういうものです.png',
+            );
+          });
+
+          test('longer than 10 characters', async ({ page }) => {
+            await page.getByLabel('お名前 *').click();
+            await page.getByLabel('お名前 *').fill('test-full-name');
+            await page.getByLabel('なんて呼ばれてる？？').click();
+            await page
+              .getByLabel('なんて呼ばれてる？？')
+              .fill('01234567890123');
+            const downloadPromise = page.waitForEvent('download');
+            await page.getByRole('button', { name: 'Download' }).click();
+
+            await expect((await downloadPromise).suggestedFilename()).toBe(
+              '012345678…さんの自己紹介シート_こういうものです.png',
+            );
+          });
+        });
+      });
+    });
+
+    test.describe('share', () => {
+      test('!navigator.canShare', () => {
+        // shareボタンが表示されない
+      });
+      test('!navigator.canShare(...)', () => {
+        // fallbackでdownload
+        // オプションは確認済み
+      });
+      test.describe('navigator.canShare(...)', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const EXPECTED_SHARING_TEXT = `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
         
 #こういうものです で自己紹介シートを作成してシェアしよう！
 <BASE_URL>?openExternalBrowser=1`;
 
-        test('browser native share UI is called', () => {});
+        test('navigator.share is called', () => {});
 
         test.describe('sharing title', () => {
           test.describe('preferred name is empty', () => {
@@ -245,19 +309,6 @@ test.describe('Footer', () => {
 
           test.describe('with another searchParam', () => {
             test('has correct sharing text with ?openExternalBrowser=1 and other searchParams', () => {});
-          });
-        });
-      });
-      test.describe('!navigator.canShare', () => {
-        test('png image is downloaded', () => {});
-
-        test.describe('downloaded filename', () => {
-          test.describe('preferred name is empty', () => {
-            test('filename: <fullName>さんの自己紹介シート_こういうものです.png', () => {});
-          });
-
-          test.describe('preferred name is filled', () => {
-            test('filename: <preferredName>さんの自己紹介シート_こういうものです.png', () => {});
           });
         });
       });
