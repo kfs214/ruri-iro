@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 
-import { useSurvey } from '@/features/Survey';
 import { useDataLayer } from '@/hooks';
 import { useNameStore } from '@/store';
 import { usePreviewStore } from '@/store/usePreviewStore';
@@ -63,7 +62,6 @@ ${sharedUrl.toString()}`,
 export function useShare() {
   const { fullName, preferredName } = useNameStore();
   const { profileSheetBase64Url } = usePreviewStore();
-  const { scrollSurveyIntoView } = useSurvey();
 
   const dataLayer = useDataLayer({
     componentName: 'Footer',
@@ -73,13 +71,7 @@ export function useShare() {
 
   const handleDownload = useCallback(() => {
     saveImage(profileSheetBase64Url, imageOptions);
-
-    /* Survey Begin */
-    setTimeout(() => {
-      scrollSurveyIntoView();
-    }, 1000);
-    /* Survey End */
-  }, [profileSheetBase64Url, imageOptions, scrollSurveyIntoView]);
+  }, [profileSheetBase64Url, imageOptions]);
 
   const handleShare = useCallback(async () => {
     const file = await base64toFile(profileSheetBase64Url, imageOptions);
@@ -96,19 +88,7 @@ export function useShare() {
       handleDownload();
       dataLayer.pushEvent('handleShare-saveImage');
     }
-
-    /* Survey Begin */
-    setTimeout(() => {
-      scrollSurveyIntoView();
-    }, 1000);
-    /* Survey End */
-  }, [
-    dataLayer,
-    profileSheetBase64Url,
-    imageOptions,
-    handleDownload,
-    scrollSurveyIntoView,
-  ]);
+  }, [dataLayer, profileSheetBase64Url, imageOptions, handleDownload]);
 
   return { fullName, handleDownload, handleShare };
 }
