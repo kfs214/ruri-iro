@@ -4,7 +4,6 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-// TODO write tests
 test.describe('AppBar', () => {
   test('has heading', async ({ page }) => {
     await expect(
@@ -25,6 +24,4 @@ test.describe('AppBar', () => {
       expect(await formPromise).toBeTruthy();
     });
   });
-
-  test.describe('monitoring', () => {});
 });

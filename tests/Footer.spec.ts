@@ -4,7 +4,6 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-// TODO write tests
 test.describe('Footer', () => {
   test.describe('preview / back', () => {
     test('hidden in PC layout', async ({ page }) => {
@@ -307,6 +306,7 @@ test.describe('Footer', () => {
         });
       });
 
+      // TODO write tests
       test.describe('share', () => {
         test('!navigator.canShare', () => {
           // shareボタンが表示されない
