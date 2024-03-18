@@ -219,22 +219,41 @@ test.describe('Footer', () => {
           test('10 characters', async ({ page }) => {
             await page.getByLabel('お名前 *').click();
             await page.getByLabel('お名前 *').fill('0123456789');
+
+            if ((page.viewportSize()?.width ?? 0) < 900) {
+              await page
+                .getByRole('button', {
+                  name: 'SHOW PREVIEW',
+                })
+                .click();
+            }
+
             const downloadPromise = page.waitForEvent('download');
             await page.getByRole('button', { name: 'Download' }).click();
 
-            await expect((await downloadPromise).suggestedFilename()).toBe(
-              '0123456789さんの自己紹介シート_こういうものです.png',
+            // Workaround for failure caused by Unicode combining characters
+            expect((await downloadPromise).suggestedFilename()).toMatch(
+              /0123456789さんの自己紹介シート_こういうもの(で|で)す.png/,
             );
           });
 
           test('longer than 10 characters', async ({ page }) => {
             await page.getByLabel('お名前 *').click();
             await page.getByLabel('お名前 *').fill('01234567890123');
+
+            if ((page.viewportSize()?.width ?? 0) < 900) {
+              await page
+                .getByRole('button', {
+                  name: 'SHOW PREVIEW',
+                })
+                .click();
+            }
+
             const downloadPromise = page.waitForEvent('download');
             await page.getByRole('button', { name: 'Download' }).click();
 
-            await expect((await downloadPromise).suggestedFilename()).toBe(
-              '012345678…さんの自己紹介シート_こういうものです.png',
+            expect((await downloadPromise).suggestedFilename()).toMatch(
+              /012345678…さんの自己紹介シート_こういうもの(で|で)す.png/,
             );
           });
         });
@@ -245,11 +264,20 @@ test.describe('Footer', () => {
             await page.getByLabel('お名前 *').fill('test-full-name');
             await page.getByLabel('なんて呼ばれてる？？').click();
             await page.getByLabel('なんて呼ばれてる？？').fill('0123456789');
+
+            if ((page.viewportSize()?.width ?? 0) < 900) {
+              await page
+                .getByRole('button', {
+                  name: 'SHOW PREVIEW',
+                })
+                .click();
+            }
+
             const downloadPromise = page.waitForEvent('download');
             await page.getByRole('button', { name: 'Download' }).click();
 
-            await expect((await downloadPromise).suggestedFilename()).toBe(
-              '0123456789さんの自己紹介シート_こういうものです.png',
+            expect((await downloadPromise).suggestedFilename()).toMatch(
+              /0123456789さんの自己紹介シート_こういうもの(で|で)す.png/,
             );
           });
 
@@ -260,55 +288,64 @@ test.describe('Footer', () => {
             await page
               .getByLabel('なんて呼ばれてる？？')
               .fill('01234567890123');
+
+            if ((page.viewportSize()?.width ?? 0) < 900) {
+              await page
+                .getByRole('button', {
+                  name: 'SHOW PREVIEW',
+                })
+                .click();
+            }
+
             const downloadPromise = page.waitForEvent('download');
             await page.getByRole('button', { name: 'Download' }).click();
 
-            await expect((await downloadPromise).suggestedFilename()).toBe(
-              '012345678…さんの自己紹介シート_こういうものです.png',
+            expect((await downloadPromise).suggestedFilename()).toMatch(
+              /012345678…さんの自己紹介シート_こういうもの(で|で)す.png/,
             );
           });
         });
       });
-    });
 
-    test.describe('share', () => {
-      test('!navigator.canShare', () => {
-        // shareボタンが表示されない
-      });
-      test('!navigator.canShare(...)', () => {
-        // fallbackでdownload
-        // オプションは確認済み
-      });
-      test.describe('navigator.canShare(...)', () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const EXPECTED_SHARING_TEXT = `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
+      test.describe('share', () => {
+        test('!navigator.canShare', () => {
+          // shareボタンが表示されない
+        });
+        test('!navigator.canShare(...)', () => {
+          // fallbackでdownload
+          // オプションは確認済み
+        });
+        test.describe('navigator.canShare(...)', () => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const EXPECTED_SHARING_TEXT = `こういうものです。自己紹介シートをお送りします。よろしくお願いいたします。
         
 #こういうものです で自己紹介シートを作成してシェアしよう！
 <BASE_URL>?openExternalBrowser=1`;
 
-        test('navigator.share is called', () => {});
+          test('navigator.share is called', () => {});
 
-        test.describe('sharing title', () => {
-          test.describe('preferred name is empty', () => {
-            test('has sharing title: <fullName>さんの自己紹介シート[こういうものです]', () => {});
+          test.describe('sharing title', () => {
+            test.describe('preferred name is empty', () => {
+              test('has sharing title: <fullName>さんの自己紹介シート[こういうものです]', () => {});
+            });
+
+            test.describe('preferred name is filled', () => {
+              test('has sharing title: <preferredName>さんの自己紹介シート[こういうものです]', () => {});
+            });
           });
 
-          test.describe('preferred name is filled', () => {
-            test('has sharing title: <preferredName>さんの自己紹介シート[こういうものです]', () => {});
-          });
-        });
+          test.describe('sharing text', () => {
+            test.describe('without any searchParams', () => {
+              test('has correct sharing text with ?openExternalBrowser=1', () => {});
+            });
 
-        test.describe('sharing text', () => {
-          test.describe('without any searchParams', () => {
-            test('has correct sharing text with ?openExternalBrowser=1', () => {});
-          });
+            test.describe('with ?openExternalBrowser=1', () => {
+              test('has correct sharing text with ?openExternalBrowser=1 without duplicate', () => {});
+            });
 
-          test.describe('with ?openExternalBrowser=1', () => {
-            test('has correct sharing text with ?openExternalBrowser=1 without duplicate', () => {});
-          });
-
-          test.describe('with another searchParam', () => {
-            test('has correct sharing text with ?openExternalBrowser=1 and other searchParams', () => {});
+            test.describe('with another searchParam', () => {
+              test('has correct sharing text with ?openExternalBrowser=1 and other searchParams', () => {});
+            });
           });
         });
       });
