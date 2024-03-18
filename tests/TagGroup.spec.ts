@@ -18,7 +18,7 @@ test.describe('TagGroup', () => {
     test('Focus on input when parent div is clicked ', async () => {});
 
     test('Enter', async ({ page }) => {
-      const tagInput = await page.getByRole('textbox', { name: 'tag-input' });
+      const tagInput = page.getByRole('textbox', { name: 'tag-input' });
       await tagInput.click();
 
       await expect(page.getByText('test-tag-enter')).not.toBeVisible();
@@ -32,7 +32,7 @@ test.describe('TagGroup', () => {
     });
 
     test('Icon', async ({ page }) => {
-      const tagInput = await page.getByRole('textbox', {
+      const tagInput = page.getByRole('textbox', {
         name: 'tag-input',
       });
 
@@ -47,7 +47,7 @@ test.describe('TagGroup', () => {
     });
 
     test('Blur', async ({ page }) => {
-      const tagInput = await page.getByRole('textbox', {
+      const tagInput = page.getByRole('textbox', {
         name: 'tag-input',
       });
 
