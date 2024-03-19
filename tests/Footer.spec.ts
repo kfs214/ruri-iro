@@ -81,7 +81,7 @@ test.describe('Footer', () => {
         test('share', async ({ page }) => {
           // TODO 共通化できないか検討
           if ((page.viewportSize()?.width ?? 0) < 900) return;
-          if (!(await page.evaluate(() => navigator.canShare))) return;
+          if (await page.evaluate(() => !navigator.canShare)) return;
 
           await expect(
             page.getByRole('button', {
@@ -130,7 +130,7 @@ test.describe('Footer', () => {
 
           test('share', async ({ page }) => {
             if ((page.viewportSize()?.width ?? 0) >= 900) return;
-            if (!(await page.evaluate(() => navigator.canShare))) return;
+            if (await page.evaluate(() => !navigator.canShare)) return;
 
             const showPreviewButton = page.getByRole('button', {
               name: 'SHOW PREVIEW',
@@ -146,7 +146,7 @@ test.describe('Footer', () => {
             await expect(shareButton).toBeVisible();
 
             await backButton.click();
-            await expect(shareButton).not.toBeEnabled();
+            await expect(shareButton).not.toBeVisible();
           });
         });
       });
@@ -182,7 +182,7 @@ test.describe('Footer', () => {
         });
 
         test('share', async ({ page }) => {
-          if (!(await page.evaluate(() => navigator.canShare))) return;
+          if (await page.evaluate(() => !navigator.canShare)) return;
 
           const showPreviewButton = page.getByRole('button', {
             name: 'SHOW PREVIEW',
