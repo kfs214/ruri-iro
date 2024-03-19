@@ -103,7 +103,7 @@ export function SelectImage({ buttonText, type }: Props) {
   const dataLayer = useDataLayer({ componentName: 'SelectImage' });
 
   useEffect(() => {
-    useImageStore.persist.rehydrate();
+    void useImageStore.persist.rehydrate();
   }, []);
 
   useEffect(() => {

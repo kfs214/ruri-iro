@@ -2,8 +2,6 @@ import { useLayoutEffect, useRef } from 'react';
 
 import Box from '@mui/material/Box';
 
-import { TogglePreviewButton } from '@/components';
-import { useLayout } from '@/hooks';
 import { useAppStore } from '@/store';
 
 import { ImageGroup } from './ImageGroup';
@@ -15,7 +13,6 @@ import { TagGroup } from './TagGroup';
 export function Form() {
   const { formScrollPosition, setFormScrollPosition } = useAppStore();
   const scrollY = useRef(0);
-  const { isPC } = useLayout();
 
   // TODO Show Preview / Backでスクロール位置が少し変わる
   function updateScroll() {
@@ -40,12 +37,6 @@ export function Form() {
       <OverviewQuestionsGroup />
       <PersonalPerspectivesGroup />
       <TagGroup />
-      {/* TODO Boxの統一性 */}
-      {!isPC && (
-        <Box>
-          <TogglePreviewButton />
-        </Box>
-      )}
     </Box>
   );
 }

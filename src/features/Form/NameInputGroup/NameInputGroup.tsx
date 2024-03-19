@@ -45,7 +45,7 @@ export function NameInputGroup() {
 
   // TODO rehydrateここなのか？
   useEffect(() => {
-    useNameStore.persist.rehydrate();
+    void useNameStore.persist.rehydrate();
   }, []);
 
   const handleChangeFullName = (e: React.ChangeEvent<HTMLInputElement>) => {

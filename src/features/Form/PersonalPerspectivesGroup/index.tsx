@@ -95,7 +95,7 @@ export function PersonalPerspectivesGroup() {
   const { questionAnswerPairs } = usePersonalPerspectiveStore();
 
   useEffect(() => {
-    usePersonalPerspectiveStore.persist.rehydrate();
+    void usePersonalPerspectiveStore.persist.rehydrate();
   }, []);
 
   return (

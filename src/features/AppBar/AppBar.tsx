@@ -2,49 +2,17 @@
 
 import React from 'react';
 
+import ForumIcon from '@mui/icons-material/Forum';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import MUIAppBar from '@mui/material/AppBar';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+import Link from '@mui/material/Link';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
 import { aboutApp } from '@/const';
-import { useDataLayer, useLayout } from '@/hooks';
-import { useAppStore } from '@/store';
-
-// TODO 連打するとエラー出る
-// Uncaught (in promise) TypeError: Cannot read properties of null (reading 'ownerDocument')
-function TogglePreviewSwitch() {
-  const { showPreview, setShowPreview } = useAppStore();
-  const dataLayer = useDataLayer({ componentName: 'AppBar' });
-
-  // TODO GTM設定をスプシとGASで管理
-  const handleChange = (_: unknown, checked: boolean) => {
-    setShowPreview(checked);
-    dataLayer.pushEvent('togglePreviewSwitch', {
-      togglePreviewSwitchChecked: checked,
-    });
-  };
-
-  return (
-    <FormControlLabel
-      control={
-        <Switch
-          checked={showPreview}
-          onChange={handleChange}
-          color="secondary"
-          inputProps={{ 'aria-label': 'toggle-preview-switch' }}
-        />
-      }
-      label="👀"
-    />
-  );
-}
 
 export function AppBar() {
-  const { isPC } = useLayout();
-
   return (
     <MUIAppBar position="fixed" sx={{ zIndex: 2000 }}>
       <Toolbar>
@@ -58,7 +26,24 @@ export function AppBar() {
         >
           {aboutApp.title}
         </Typography>
-        {!isPC && <TogglePreviewSwitch />}
+
+        {/* TODO 上下中央揃え */}
+        <Link
+          color="inherit"
+          target="_blank"
+          rel="noopener"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSd6ChVKkE6XWLKNpB6eLrrNQgxtw6Ppv75dUz_l4x-E-RnFTg/viewform?usp=sf_link"
+        >
+          <ForumIcon fontSize="large" />
+        </Link>
+        <Link
+          color="inherit"
+          target="_blank"
+          rel="noopener"
+          href="https://github.com/kfs214/ruri-iro"
+        >
+          <GitHubIcon fontSize="large" sx={{ ml: 1 }} />
+        </Link>
       </Toolbar>
     </MUIAppBar>
   );

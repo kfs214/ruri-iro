@@ -5,6 +5,7 @@ import Script from 'next/script';
 
 import { aboutApp } from '@/const';
 import { AppBar } from '@/features/AppBar';
+import { Footer } from '@/features/Footer';
 import { AppProvider } from '@/providers/app';
 
 import type { Metadata } from 'next';
@@ -47,11 +48,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             component="main"
             sx={{
               mt: ['56px', '64px'],
+              mb: ['56px', '64px'],
               p: 3,
             }}
           >
             {children}
           </Box>
+          <Footer />
         </AppProvider>
       </body>
     </html>

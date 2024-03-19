@@ -47,7 +47,7 @@ export function OverviewQuestionsGroup() {
   });
 
   useEffect(() => {
-    useOverviewStore.persist.rehydrate();
+    void useOverviewStore.persist.rehydrate();
   }, []);
 
   const {

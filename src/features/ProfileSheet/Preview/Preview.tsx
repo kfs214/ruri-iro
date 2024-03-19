@@ -3,12 +3,7 @@
 import { useRef, ReactNode } from 'react';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-
-import { TogglePreviewButton } from '@/components';
-import { useLayout } from '@/hooks';
-import { useNameStore } from '@/store';
 
 import { usePreview } from './usePreview';
 
@@ -17,10 +12,8 @@ type Props = {
 };
 
 export function Preview({ children }: Props) {
-  const { isPC } = useLayout();
-  const { fullName } = useNameStore();
   const previewRef = useRef<HTMLDivElement>(null);
-  const { base64url, handleShare } = usePreview(previewRef);
+  const { profileSheetBase64Url } = usePreview(previewRef);
 
   return (
     <Box
@@ -33,33 +26,13 @@ export function Preview({ children }: Props) {
         top: '88px',
       }}
     >
-      {/* TODO シェアボタンをアイコンに */}
-      {/* TODO シェアボタンの活性条件を詰める */}
-      <Box sx={{ display: 'flex' }}>
-        <Box>
-          <Button
-            onClick={handleShare}
-            variant="contained"
-            disabled={!fullName}
-          >
-            Share
-          </Button>
-        </Box>
-
-        {!isPC && (
-          <Box sx={{ ml: 1 }}>
-            <TogglePreviewButton />
-          </Box>
-        )}
-      </Box>
-
       <Box display="inline-block" position="relative">
         <Box>
           <Card ref={previewRef} sx={{ pb: 4 }}>
             {children}
           </Card>
         </Box>
-        {base64url && (
+        {profileSheetBase64Url && (
           <Box
             position="absolute"
             top={0}
@@ -68,7 +41,7 @@ export function Preview({ children }: Props) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               style={{ display: 'block', width: '100%', height: '100%' }}
-              src={base64url}
+              src={profileSheetBase64Url}
               alt="preview"
             />
           </Box>
