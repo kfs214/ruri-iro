@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, useCallback, useState } from 'react';
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import EventIcon from '@mui/icons-material/Event';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -60,6 +60,8 @@ export function DatePicker({
     },
     [onChange],
   );
+
+  // TODO 変更がない場合も閉じる
   const handleAcceptDate = useCallback(
     (value: Dayjs | null) => {
       if (value) {
@@ -70,7 +72,6 @@ export function DatePicker({
     },
     [onChange],
   );
-  // TODO autofill
   return (
     <>
       <TextField
@@ -81,10 +82,12 @@ export function DatePicker({
           endAdornment: (
             <InputAdornment position="end">
               <IconButton onClick={handleClickCalendarIcon}>
-                <CalendarMonthIcon />
+                <EventIcon />
               </IconButton>
             </InputAdornment>
           ),
+          autoComplete: 'bday',
+          name: 'bday',
         }}
       />
       <PickerModal

@@ -28,6 +28,10 @@ export function OverviewQuestionsGroupDOMComponent({
         label="何してる人？？"
         variant="outlined"
         fullWidth
+        InputProps={{
+          autoComplete: 'organization-title',
+          name: 'organization-title',
+        }}
         {...occupation}
       />
       <TextField
