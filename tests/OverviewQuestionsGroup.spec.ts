@@ -13,7 +13,6 @@ test.describe('OverviewQuestionsGroup', () => {
     ).toBeVisible();
   });
 
-  // TODO write tests
   test.describe('DOB', () => {
     test.describe('text field with label `お誕生日` exists', () => {
       test('initial rendering', async ({ page }) => {
