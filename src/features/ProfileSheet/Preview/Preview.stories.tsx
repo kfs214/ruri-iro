@@ -21,7 +21,7 @@ function Children() {
   return (
     <>
       <OverviewDOMComponent
-        shownDOB="95年"
+        DOB="95年"
         occupation="エンジニア"
         location="門前仲町"
       />

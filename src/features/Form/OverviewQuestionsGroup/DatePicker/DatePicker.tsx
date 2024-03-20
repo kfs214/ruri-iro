@@ -17,7 +17,7 @@ function PickerModal({
   PickerProps?: ComponentProps<typeof StaticDatePicker<Dayjs>>;
 }) {
   return (
-    <Modal {...ModalProps}>
+    <Modal keepMounted {...ModalProps}>
       <Box
         sx={{
           position: 'absolute',
@@ -26,7 +26,14 @@ function PickerModal({
           transform: 'translate(-50%, -50%)',
         }}
       >
-        <StaticDatePicker sx={{ maxWidth: '320px' }} {...PickerProps} />
+        <StaticDatePicker
+          views={['year', 'month', 'day']}
+          sx={{ maxWidth: '320px' }}
+          slotProps={{
+            actionBar: { actions: ['accept'] },
+          }}
+          {...PickerProps}
+        />
       </Box>
     </Modal>
   );
@@ -55,12 +62,15 @@ export function DatePicker({
   );
   const handleAcceptDate = useCallback(
     (value: Dayjs | null) => {
-      if (!value) return;
-      onChange(value.format('YYYY年MM月DD日（dddd）'));
+      if (value) {
+        onChange(value.format('YYYY年MM月DD日（dddd）'));
+      }
+
+      setIsModalOpen(false);
     },
     [onChange],
   );
-
+  // TODO autofill
   return (
     <>
       <TextField

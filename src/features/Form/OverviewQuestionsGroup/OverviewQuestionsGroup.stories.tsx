@@ -18,19 +18,16 @@ type Story = StoryObj<typeof meta>;
 export const Sample: Story = {
   args: {
     dateOfBirth: {
-      label: 'お誕生日',
-      isCustomDOBEnabled: false,
-      handleChangeIsCustomDOBEnabled: () => {},
-      customDOB: { value: '', onChange: () => {} },
-      dayjsDOB: { value: null, onChange: () => {} },
+      TextFieldProps: { label: 'お誕生日', value: '5月14日' },
+      onChange: () => undefined,
     },
     occupation: {
       value: 'エンジニア',
-      onChange: () => {},
+      onChange: () => undefined,
     },
     location: {
       value: '門前仲町',
-      onChange: () => {},
+      onChange: () => undefined,
     },
   },
 };

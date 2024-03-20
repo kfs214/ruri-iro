@@ -16,7 +16,7 @@ type ItemProps = {
 };
 
 type OverviewProps = {
-  shownDOB: string;
+  DOB: string;
   occupation: string;
   location: string;
 };
@@ -39,7 +39,7 @@ function Item({ icon, children }: ItemProps) {
 
 // TODO 長さによって折り返し時にはみ出る
 export function OverviewDOMComponent({
-  shownDOB,
+  DOB,
   occupation,
   location,
 }: OverviewProps) {
@@ -47,7 +47,7 @@ export function OverviewDOMComponent({
     // TODO 古いブラウザに対応。flex-gap使わない実装
     // TODO 英字が連続した際の折り返し
     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-      {shownDOB && <Item icon={<CakeIcon />}>{shownDOB}</Item>}
+      {DOB && <Item icon={<CakeIcon />}>{DOB}</Item>}
       {occupation && <Item icon={<VillaIcon />}>{occupation}</Item>}
       {location && <Item icon={<PlaceIcon />}>{location}</Item>}
     </Box>
@@ -55,11 +55,11 @@ export function OverviewDOMComponent({
 }
 
 export function Overview() {
-  const { shownDOB, occupation, location } = useOverviewStore();
+  const { DOB, occupation, location } = useOverviewStore();
 
   return (
     <OverviewDOMComponent
-      shownDOB={shownDOB}
+      DOB={DOB}
       occupation={occupation}
       location={location}
     />

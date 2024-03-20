@@ -13,7 +13,7 @@ import { usePreviewStore } from '@/store/usePreviewStore';
 
 export function usePreview(ref: RefObject<HTMLDivElement>) {
   // TODO 更新を検知するselector
-  const { shownDOB, occupation, location } = useOverviewStore();
+  const { DOB, occupation, location } = useOverviewStore();
   const { fullName, preferredName } = useNameStore();
   const { profileImage, coverImage } = useImageStore();
   const { tags } = useTagStore();
@@ -41,7 +41,7 @@ export function usePreview(ref: RefObject<HTMLDivElement>) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    shownDOB,
+    DOB,
     occupation,
     location,
     fullName,

@@ -6,13 +6,14 @@ test.beforeEach(async ({ page }) => {
 
 // TODO write tests
 // "edit" means "focus out and focus again, and then edit"
-test.describe.skip('OverviewQuestionsGroup', () => {
+test.describe('OverviewQuestionsGroup', () => {
   test('has heading', async ({ page }) => {
     await expect(
       page.getByRole('heading', { name: 'あなたについて' }),
     ).toBeVisible();
   });
 
+  // TODO write tests
   test.describe('DOB', () => {
     test.describe('text field with label `お誕生日` exists', () => {
       test('initial rendering', async () => {});
@@ -22,22 +23,10 @@ test.describe.skip('OverviewQuestionsGroup', () => {
       test('blur/empty', async () => {});
       test('filled/reloaded', async () => {});
     });
-    test.describe('text field with label `お誕生日` exists ("お誕生日をカレンダーから設定する" is chosen)', async () => {
-      test('initial rendering', async () => {});
-      test('blur/filled', async () => {});
-      test('filled/reloaded', async () => {});
-    });
-    test('can input/edit custom DOB as free text at the initial rendering', async () => {});
-    test('can input/edit Dayjs DOB by choosing "お誕生日をカレンダーから設定する"', async () => {});
-    test.describe('DOB setting and value are persisted', () => {
-      test('Dayjs DOB', async () => {});
-      test('Custom DOB', async () => {});
-    });
-    test.describe('can edit after page reload', () => {
-      test('Custom DOB value', async () => {});
-      test('Dayjs DOB value', async () => {});
-      test('Custom DOB -> Dayjs DOB -> Custom DOB', async () => {});
-    });
+    test('can input/edit DOB as free text', async () => {});
+    test('can choose DOB on calender', async () => {});
+    test('DOB setting and value are persisted', () => {});
+    test('can edit after page reload', () => {});
   });
 
   test.describe('Occupation', () => {
