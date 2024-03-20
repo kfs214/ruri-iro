@@ -8,5 +8,12 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
-  "cSpell.words": ["kinoko", "scrollend", "Takenoko", "textbox", "zustand"]
+  "cSpell.words": [
+    "gridcell",
+    "kinoko",
+    "scrollend",
+    "Takenoko",
+    "textbox",
+    "zustand"
+  ]
 }
