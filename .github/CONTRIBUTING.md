@@ -39,7 +39,7 @@ Contribute by providing additional information to existing issues.
 
 ### Good First Issue
 
-The "Good First Issue" tag highlights easy tasks within our project that are ideal for new contributors. These tasks don't require much prior knowledge and serve as a great entry point for participation. They typically involve addressing minor issues or implementing straightforward features. It's a welcoming opportunity for newcomers to engage with our project and learn as they contribute!
+The "[good first issue](https://github.com/kfs214/ruri-iro/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)" tag highlights easy tasks within our project that are ideal for new contributors. These tasks don't require much prior knowledge and serve as a great entry point for participation. They typically involve addressing minor issues or implementing straightforward features. It's a welcoming opportunity for newcomers to engage with our project and learn as they contribute!
 
 ## Pull Requests
 
