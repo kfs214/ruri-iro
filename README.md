@@ -8,6 +8,7 @@ RUri-iro simplifies the creation of customized profile sheets. Users can effortl
 - [Development](#development)
   - [Installation](#installation)
   - [Run locally](#run-locally)
+  - [Testing](#testing)
   - [Recommended VSCode Extensions](#recommended-vscode-extensions)
   - [On Commit](#on-commit)
   - [Environment Variables](#environment-variables)
@@ -42,6 +43,14 @@ npm run dev
 ```
 
 Access the application at [http://localhost:3000](http://localhost:3000) in your preferred browser.
+
+### Testing
+
+Playwright is set up to perform automated end-to-end (E2E) tests. To run all test cases, execute the following command:
+
+```bash
+npm test
+```
 
 ### Recommended VSCode Extensions
 

@@ -10,13 +10,14 @@ In this guide, you'll find an overview of the contribution workflow for opening 
 - [Issues](#issues)
   - [Reproducing a Reported Bug](#reproducing-a-reported-bug)
   - [Updating Issues](#updating-issues)
+  - [Good First Issue](#good-first-issue)
 - [Pull Requests](#pull-requests)
   - [Fork a Repository](#fork-a-repository)
   - [Branches](#branches)
   - [Commit Messages](#commit-messages)
   - [Creating a Pull Request](#creating-a-pull-request)
+  - [CI/CD](#cicd)
   - [Dependency Update Policy](#dependency-update-policy)
-- [CI/CD](#cicd)
 
 ## New Contributor Guide
 
@@ -35,6 +36,10 @@ Contribute by validating an issue or adding additional context to an existing on
 ### Updating Issues
 
 Contribute by providing additional information to existing issues.
+
+### Good First Issue
+
+The "[good first issue](https://github.com/kfs214/ruri-iro/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)" tag highlights easy tasks within our project that are ideal for new contributors. These tasks don't require much prior knowledge and serve as a great entry point for participation. They typically involve addressing minor issues or implementing straightforward features. It's a welcoming opportunity for newcomers to engage with our project and learn as they contribute!
 
 ## Pull Requests
 
@@ -64,10 +69,13 @@ Follow the link to create a pull request: [Creating a Pull Request](https://docs
 - You can directly apply suggested changes through the user interface. For other modifications, make them in your fork and then commit them to your branch.
 - If you encounter merge issues, refer to this [git tutorial](https://github.com/skills/resolve-merge-conflicts) to help resolve conflicts.
 
+### CI/CD
+
+Your pull request triggers automated tasks. These tasks must succeed before merging.
+
+- CI/CD deployment on Vercel.
+- End-to-end (E2E) testing with Playwright.
+
 ### Dependency Update Policy
 
 Maintainers are responsible for modifying dependencies in RUri-iro's `package.json` or `package-lock.json` files. To ensure security, we do not accept pull requests altering these files. While draft pull requests are appreciated, please note that they will be closed in favor of an equivalent pull request submitted by an official RUri-iro maintainer.
-
-## CI/CD
-
-Your pull request triggers automated CI/CD deployment on Vercel.
