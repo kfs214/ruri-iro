@@ -40,10 +40,9 @@ function PickerModal({
 }
 
 export function DatePicker({
-  TextFieldProps,
   onChange,
-}: {
-  TextFieldProps: Omit<ComponentProps<typeof TextField>, 'onChange'>;
+  ...restProps
+}: Omit<ComponentProps<typeof TextField>, 'onChange'> & {
   onChange: (value: string) => void;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,7 +75,7 @@ export function DatePicker({
     <>
       <TextField
         fullWidth
-        {...TextFieldProps}
+        {...restProps}
         onChange={handleChangeTextField}
         InputProps={{
           endAdornment: (

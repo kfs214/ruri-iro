@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    TextFieldProps: { label: 'お誕生日', value: '5月14日' },
+    label: 'お誕生日',
+    value: '5月14日',
   },
 };

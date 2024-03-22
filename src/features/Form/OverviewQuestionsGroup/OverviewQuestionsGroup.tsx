@@ -23,7 +23,7 @@ export function OverviewQuestionsGroupDOMComponent({
 }: OverviewQuestionsGroupProps) {
   return (
     <QuestionsGroupWrapper groupName="あなたについて">
-      <DatePicker {...dateOfBirth}> </DatePicker>
+      <DatePicker {...dateOfBirth} />
       <TextField
         label="何してる人？？"
         variant="outlined"
@@ -81,10 +81,8 @@ export function OverviewQuestionsGroup() {
   return (
     <OverviewQuestionsGroupDOMComponent
       dateOfBirth={{
-        TextFieldProps: {
-          label: 'お誕生日',
-          value: DOB,
-        },
+        label: 'お誕生日',
+        value: DOB,
         onChange: handleChangeDOB,
       }}
       occupation={{
