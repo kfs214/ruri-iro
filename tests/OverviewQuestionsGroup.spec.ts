@@ -28,13 +28,16 @@ test.describe('OverviewQuestionsGroup', () => {
         ).toBeVisible();
       });
       test('focused/filled', async ({ page }) => {
-        await page.getByLabel('お誕生日').fill('5月14日');
+        const dobField = page.getByLabel('お誕生日');
+        await dobField.click();
+        await dobField.fill('5月14日');
         await expect(
           page.locator('label').filter({ hasText: 'お誕生日' }),
         ).toBeVisible();
       });
       test('blur/filled', async ({ page }) => {
         const dobField = page.getByLabel('お誕生日');
+        await dobField.click();
         await dobField.fill('5月14日');
         await dobField.blur();
         await expect(
@@ -50,7 +53,9 @@ test.describe('OverviewQuestionsGroup', () => {
         ).toBeVisible();
       });
       test('filled/reloaded', async ({ page }) => {
-        await page.getByLabel('お誕生日').fill('5月14日');
+        const dobField = page.getByLabel('お誕生日');
+        await dobField.click();
+        await dobField.fill('5月14日');
         await page.reload();
         await expect(
           page.locator('label').filter({ hasText: 'お誕生日' }),
@@ -60,8 +65,10 @@ test.describe('OverviewQuestionsGroup', () => {
     test('can input/edit DOB as free text', async ({ page }) => {
       const dobField = page.getByLabel('お誕生日');
 
+      await dobField.click();
       await dobField.fill('5月14日');
       await expect(dobField).toHaveValue('5月14日');
+      await dobField.click();
       await dobField.fill('5/14');
       await expect(dobField).toHaveValue('5/14');
     });
@@ -80,6 +87,7 @@ test.describe('OverviewQuestionsGroup', () => {
       await page.getByRole('button', { name: 'OK' }).click();
       await expect(dobField).toHaveValue('1995年05月14日（日曜日）');
 
+      await dobField.click();
       await dobField.fill('5月14日');
       await expect(dobField).toHaveValue('5月14日');
 
@@ -91,6 +99,7 @@ test.describe('OverviewQuestionsGroup', () => {
     test('DOB is persisted', async ({ page }) => {
       const dobField = page.getByLabel('お誕生日');
 
+      await dobField.click();
       await dobField.fill('5月14日');
       await page.reload();
       await expect(dobField).toHaveValue('5月14日');
@@ -98,6 +107,7 @@ test.describe('OverviewQuestionsGroup', () => {
     test('can edit after page reload', async ({ page }) => {
       const dobField = page.getByLabel('お誕生日');
 
+      await dobField.click();
       await dobField.fill('5月14日');
       await expect(dobField).toHaveValue('5月14日');
       await page.reload();
