@@ -14,6 +14,22 @@ test.describe('OverviewQuestionsGroup', () => {
   });
 
   test.describe('DOB', () => {
+    // Workaround to prevent assertion failure due to incomplete rendering
+    test.beforeEach(async ({ page }) => {
+      if ((page.viewportSize()?.width ?? 0) < 900) {
+        await expect(
+          page.getByRole('button', {
+            name: 'SHOW PREVIEW',
+          }),
+        ).toBeVisible();
+      } else {
+        await expect(
+          page.getByRole('button', {
+            name: 'DOWNLOAD',
+          }),
+        ).toBeVisible();
+      }
+    });
     test.describe('text field with label `お誕生日` exists', () => {
       test('initial rendering', async ({ page }) => {
         await expect(page.getByLabel('お誕生日')).toBeVisible();
@@ -102,7 +118,9 @@ test.describe('OverviewQuestionsGroup', () => {
       await dobField.click();
       await dobField.fill('5月14日');
       await page.reload();
-      await expect(dobField).toHaveValue('5月14日');
+      await expect(async () => {
+        await expect(dobField).toHaveValue('5月14日');
+      }).toPass();
     });
     test('can edit after page reload', async ({ page }) => {
       const dobField = page.getByLabel('お誕生日');
@@ -111,6 +129,21 @@ test.describe('OverviewQuestionsGroup', () => {
       await dobField.fill('5月14日');
       await expect(dobField).toHaveValue('5月14日');
       await page.reload();
+
+      // Workaround to prevent assertion failure due to incomplete rendering
+      if ((page.viewportSize()?.width ?? 0) < 900) {
+        await expect(
+          page.getByRole('button', {
+            name: 'SHOW PREVIEW',
+          }),
+        ).toBeVisible();
+      } else {
+        await expect(
+          page.getByRole('button', {
+            name: 'DOWNLOAD',
+          }),
+        ).toBeVisible();
+      }
 
       await page
         .locator('div')
