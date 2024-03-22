@@ -3,16 +3,15 @@
 import React, { ChangeEvent, ComponentProps, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
-import { Dayjs } from 'dayjs';
 
 import { QuestionsGroupWrapper } from '@/features/Form/QuestionsGroupWrapper';
 import { useDataLayer } from '@/hooks';
 import { useOverviewStore } from '@/store';
 
-import { DateOfBirth, DateOfBirthProps } from './DateOfBirth';
+import { DatePicker } from './DatePicker';
 
 type OverviewQuestionsGroupProps = {
-  dateOfBirth: DateOfBirthProps;
+  dateOfBirth: ComponentProps<typeof DatePicker>;
   occupation: ComponentProps<typeof TextField>;
   location: ComponentProps<typeof TextField>;
 };
@@ -24,11 +23,15 @@ export function OverviewQuestionsGroupDOMComponent({
 }: OverviewQuestionsGroupProps) {
   return (
     <QuestionsGroupWrapper groupName="あなたについて">
-      <DateOfBirth {...dateOfBirth} />
+      <DatePicker {...dateOfBirth} />
       <TextField
         label="何してる人？？"
         variant="outlined"
         fullWidth
+        InputProps={{
+          autoComplete: 'organization-title',
+          name: 'organization-title',
+        }}
         {...occupation}
       />
       <TextField
@@ -50,33 +53,11 @@ export function OverviewQuestionsGroup() {
     void useOverviewStore.persist.rehydrate();
   }, []);
 
-  const {
-    isCustomDOBEnabled,
-    customDOB,
-    dayjsDOB,
-    occupation,
-    location,
-    setIsCustomDOBEnabled,
-    setCustomDOB,
-    setDayjsDOB,
-    setOccupation,
-    setLocation,
-  } = useOverviewStore();
+  const { DOB, occupation, location, setDOB, setOccupation, setLocation } =
+    useOverviewStore();
 
-  // 本来は変数名を見直した方が良いが、
-  // GTM設定も変える必要があることと、チェックボックス自体を無くしたいので暫定対応
-  const handleChangeIsCustomDOBEnabled = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsCustomDOBEnabled(!e.target.checked);
-    dataLayer.pushEvent('changeIsCustomDOBEnabled', {
-      isCustomDOBEnabled: e.target.checked,
-    });
-  };
-
-  const handleChangeCustomDOB = (e: ChangeEvent<HTMLInputElement>) => {
-    setCustomDOB(e.target.value);
-  };
-  const handleChangeDayjsDOB = (value: Dayjs | null) => {
-    setDayjsDOB(value);
+  const handleChangeDOB = (value: string) => {
+    setDOB(value);
   };
   const handleChangeOccupation = (e: ChangeEvent<HTMLInputElement>) => {
     setOccupation(e.target.value);
@@ -101,10 +82,8 @@ export function OverviewQuestionsGroup() {
     <OverviewQuestionsGroupDOMComponent
       dateOfBirth={{
         label: 'お誕生日',
-        isCustomDOBEnabled,
-        handleChangeIsCustomDOBEnabled,
-        customDOB: { value: customDOB, onChange: handleChangeCustomDOB },
-        dayjsDOB: { value: dayjsDOB, onChange: handleChangeDayjsDOB },
+        value: DOB,
+        onChange: handleChangeDOB,
       }}
       occupation={{
         value: occupation,

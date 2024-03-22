@@ -24,19 +24,20 @@ export function NameInputGroupDOMComponent({
         variant="outlined"
         fullWidth
         required
+        InputProps={{ autoComplete: 'name', name: 'name' }}
         {...fullName}
       />
       <TextField
         label="なんて呼ばれてる？？"
         variant="outlined"
         fullWidth
+        InputProps={{ autoComplete: 'nickname', name: 'nickname' }}
         {...preferredName}
       />
     </QuestionsGroupWrapper>
   );
 }
 
-// TODO オートコンプリート
 export function NameInputGroup() {
   const { fullName, onChangeFullName, preferredName, onChangePreferredName } =
     useNameStore();
